@@ -1,0 +1,49 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+.Python
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Jupyter notebooks and outputs
+notebooks/
+*.ipynb_checkpoints/
+
+# EDA plots (large PNGs — not needed inside containers)
+eda_plots/
+
+# Drift HTML reports (mounted as a volume)
+drift_reports/
+
+# Node / frontend (if any)
+node_modules/
+
+# IDE and OS files
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Local dev scripts
+start_services.bat
+
+# Optuna study files
+*.db
+optuna_study.db
+
+# Logs
+*.log
+
+# Test/scratch directories
+scratch/
+tests/__pycache__/

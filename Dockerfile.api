@@ -1,0 +1,33 @@
+# ─────────────────────────────────────────────────────────────────
+# Dockerfile.api  —  SkillPulse FastAPI Backend
+# ─────────────────────────────────────────────────────────────────
+FROM python:3.11-slim
+
+LABEL maintainer="Kartik Singh"
+LABEL description="SkillPulse FastAPI salary prediction backend"
+
+# Install system deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy dependency manifest first (layer cache optimisation)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY app/          ./app/
+COPY models/       ./models/
+COPY data_exports/ ./data_exports/
+COPY .env          ./.env
+
+EXPOSE 8000
+
+# Health check — polls /health every 30s
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+  CMD python -c "import requests; requests.get('http://localhost:8000/health').raise_for_status()"
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]

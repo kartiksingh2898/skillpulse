@@ -1,0 +1,44 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / OS
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs & local DB artifacts
+*.log
+*.db
+optuna_study.db
+
+# Scratch
+scratch/
+
+# Optional local outputs (uncomment if you prefer not to publish)
+# drift_reports/
+# eda_plots/

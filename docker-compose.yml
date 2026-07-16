@@ -1,0 +1,116 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# docker-compose.yml  —  SkillPulse Full Stack Orchestration
+# ─────────────────────────────────────────────────────────────────────────────
+# Services:
+#   db        — MySQL 8.0 database (persistent volume)
+#   api       — FastAPI backend  (port 8000)
+#   dashboard — Streamlit app    (port 8501)
+#   drift     — One-shot drift monitor (runs and exits, logs to DB)
+#
+# Usage:
+#   docker compose up --build          # Start all services
+#   docker compose up db api dashboard # Skip drift runner
+#   docker compose run --rm drift      # Run drift check manually
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "3.9"
+
+services:
+
+  # ── MySQL Database ────────────────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: skillpulse_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE:      ${DB_NAME:-skillpulse}
+      MYSQL_USER:          ${DB_USER:-skillpulse_user}
+      MYSQL_PASSWORD:      ${DB_PASSWORD:-skillpulse_pass}
+    ports:
+      - "3306:3306"
+    volumes:
+      - skillpulse_mysql_data:/var/lib/mysql
+      - ./schema_mysql.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost",
+             "-u", "${DB_USER:-skillpulse_user}",
+             "-p${DB_PASSWORD:-skillpulse_pass}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - skillpulse_net
+
+  # ── FastAPI Backend ───────────────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: skillpulse_api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_HOST: db    # override .env to use docker service name
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL",
+             "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - skillpulse_net
+
+  # ── Streamlit Dashboard ───────────────────────────────────────────────────
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: skillpulse_dashboard
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_HOST: db
+    ports:
+      - "8501:8501"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - skillpulse_net
+
+  # ── Drift Monitor (one-shot job) ─────────────────────────────────────────
+  drift:
+    build:
+      context: .
+      dockerfile: Dockerfile.api     # reuse the API image (has all deps)
+    container_name: skillpulse_drift
+    env_file: .env
+    environment:
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./drift_reports:/app/drift_reports   # mount local folder for HTML output
+      - ./mlops:/app/mlops                   # mount scripts
+    command: ["python", "mlops/drift_monitor.py"]
+    networks:
+      - skillpulse_net
+    profiles:
+      - drift    # only starts when explicitly requested: docker compose --profile drift up
+
+# ── Persistent Volumes ────────────────────────────────────────────────────
+volumes:
+  skillpulse_mysql_data:
+    driver: local
+
+# ── Networks ──────────────────────────────────────────────────────────────
+networks:
+  skillpulse_net:
+    driver: bridge
