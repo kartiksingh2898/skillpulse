@@ -1,0 +1,16 @@
+{
+  "run_ts": "2026-07-21T16:56:17",
+  "reference_samples": 31534,
+  "current_samples": 500,
+  "total_features": 48,
+  "features_drifted": 2,
+  "feature_drift_pct": 4.17,
+  "drifted_columns": [
+    "country_gb",
+    "country_us"
+  ],
+  "target_drift": false,
+  "alert_triggered": false,
+  "threshold_pct": 30.0,
+  "html_report": "C:\\Users\\Kartik Kumar Singh\\Desktop\\skillpulse\\drift_reports\\drift_20260721_165617.html"
+}
