@@ -13,8 +13,6 @@
 #   docker compose run --rm drift      # Run drift check manually
 # ─────────────────────────────────────────────────────────────────────────────
 
-version: "3.9"
-
 services:
 
   # ── MySQL Database ────────────────────────────────────────────────────────
@@ -23,7 +21,7 @@ services:
     container_name: skillpulse_db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-@kartik123}
       MYSQL_DATABASE:      ${DB_NAME:-skillpulse}
       MYSQL_USER:          ${DB_USER:-skillpulse_user}
       MYSQL_PASSWORD:      ${DB_PASSWORD:-skillpulse_pass}
