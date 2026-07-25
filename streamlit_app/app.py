@@ -807,7 +807,23 @@ elif menu == "💼 Apply for Jobs":
     with col3:
         search_kw = st.text_input("🔎 Search Title / Company", "")
 
+    # Quick suggestion chips
+    st.caption("⚡ Quick Searches:")
+    qc1, qc2, qc3, qc4, qc5, qc6, qc7 = st.columns(7)
+    chip_val = ""
+    if qc1.button("🧠 Data Scientist", key="chip1"): chip_val = "Data Scientist"
+    if qc2.button("💻 Python", key="chip2"): chip_val = "Python"
+    if qc3.button("⚙️ ML Engineer", key="chip3"): chip_val = "ML Engineer"
+    if qc4.button("☁️ AWS", key="chip4"): chip_val = "AWS"
+    if qc5.button("🏢 Google", key="chip5"): chip_val = "Google"
+    if qc6.button("📦 Amazon", key="chip6"): chip_val = "Amazon"
+    if qc7.button("🏡 Remote", key="chip7"): chip_val = "Remote"
+
+    if chip_val:
+        search_kw = chip_val
+
     c_code = "in" if "India" in sel_country else ("us" if "United States" in sel_country else "gb")
+    country_label = "India" if c_code == "in" else ("United States" if c_code == "us" else "United Kingdom")
 
     snap = load_db_snapshot()
     jobs_map = snap.get("matching_jobs", {})
@@ -817,12 +833,14 @@ elif menu == "💼 Apply for Jobs":
     if df_all_jobs.empty:
         st.info("No job postings found for this region.")
     else:
+        # Multi-field filtering (Title, Company, Location, Description)
         if search_kw:
-            kw = search_kw.lower()
+            kw = search_kw.strip().lower()
             df_all_jobs = df_all_jobs[
                 df_all_jobs["Title"].str.lower().str.contains(kw, na=False) |
                 df_all_jobs["Company"].str.lower().str.contains(kw, na=False) |
-                df_all_jobs["Location"].str.lower().str.contains(kw, na=False)
+                df_all_jobs["Location"].str.lower().str.contains(kw, na=False) |
+                df_all_jobs["Description"].str.lower().str.contains(kw, na=False)
             ]
 
         if sel_skill != "All Skills":
@@ -832,11 +850,68 @@ elif menu == "💼 Apply for Jobs":
                 df_all_jobs["Description"].str.lower().str.contains(sk, na=False)
             ]
 
-        st.markdown(f"### 📋 Showing {len(df_all_jobs)} Live Job Openings")
+        # Header with live count & live external search link
         st.markdown("---")
+        m1, m2 = st.columns([2, 1])
+        with m1:
+            st.markdown(f"### 📋 Showing {len(df_all_jobs)} Live Job Openings in {country_label}")
+        with m2:
+            query_term = search_kw if search_kw else (sel_skill if sel_skill != "All Skills" else "Tech Jobs")
+            ext_url = f"https://www.linkedin.com/jobs/search/?keywords={quote_plus(query_term)}&location={quote_plus(country_label)}"
+            st.markdown(f'''
+                <a href="{ext_url}" target="_blank" style="
+                    display:inline-block;
+                    float:right;
+                    background:linear-gradient(135deg,#0077b5,#005582);
+                    color:white;
+                    font-weight:700;
+                    font-size:12px;
+                    padding:8px 16px;
+                    border-radius:8px;
+                    text-decoration:none;
+                    box-shadow:0 4px 15px rgba(0,119,181,0.3);
+                ">🌐 Search 10,000+ Live Jobs for "{query_term}" →</a>
+            ''', unsafe_allow_html=True)
+
+        st.markdown("")
 
         if df_all_jobs.empty:
-            st.warning("No listings match your exact search filters. Try clearing the search box or selecting 'All Skills'.")
+            query_term = search_kw if search_kw else sel_skill
+            st.warning(f"No snapshot listings match '{query_term}' in {country_label} right now.")
+            
+            # Prominent Live Search Banner when 0 local results match
+            linkedin_url = f"https://www.linkedin.com/jobs/search/?keywords={quote_plus(query_term)}&location={quote_plus(country_label)}"
+            google_jobs_url = f"https://www.google.com/search?q={quote_plus(f'{query_term} jobs in {country_label}')}&ibp=htc;jobs"
+            
+            st.markdown(f"""
+            <div style="
+                background:linear-gradient(135deg,rgba(13,148,136,0.12),rgba(99,102,241,0.12));
+                border:1px solid rgba(13,148,136,0.3);
+                border-radius:16px;
+                padding:24px;
+                text-align:center;
+                margin:20px 0;
+            ">
+                <div style="font-size:18px;font-weight:700;color:#f1f5f9;margin-bottom:8px;">
+                    🚀 Search 10,000+ Live Openings on External Job Portals
+                </div>
+                <div style="font-size:13px;color:#94a3b8;margin-bottom:18px;">
+                    We found no local database cached results for <strong>"{query_term}"</strong> in <strong>{country_label}</strong>. Search live portals instantly:
+                </div>
+                <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+                    <a href="{linkedin_url}" target="_blank" style="
+                        background:linear-gradient(135deg,#0077b5,#005582);
+                        color:white;font-weight:700;font-size:13px;padding:11px 22px;
+                        border-radius:10px;text-decoration:none;box-shadow:0 4px 15px rgba(0,119,181,0.4);
+                    ">🔎 Search "{query_term}" on LinkedIn Jobs →</a>
+                    <a href="{google_jobs_url}" target="_blank" style="
+                        background:linear-gradient(135deg,#ea4335,#4285f4);
+                        color:white;font-weight:700;font-size:13px;padding:11px 22px;
+                        border-radius:10px;text-decoration:none;box-shadow:0 4px 15px rgba(66,133,244,0.4);
+                    ">🌐 Search "{query_term}" on Google Jobs →</a>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
         else:
             for _, job in df_all_jobs.iterrows():
                 title    = job.get("Title", "Job Opening")

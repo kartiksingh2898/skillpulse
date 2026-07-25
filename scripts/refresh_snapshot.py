@@ -74,15 +74,15 @@ for country in ["us", "gb", "in"]:
                jp.description AS Description, jp.posted_date, jp.raw_json
         FROM job_postings jp
         WHERE jp.country = %s
-        ORDER BY jp.posted_date DESC, jp.id DESC
-        LIMIT 200
+        ORDER BY jp.id DESC
+        LIMIT 500
         """,
         engine, params=(country,)
     )
     df["Apply URL"] = df["raw_json"].apply(get_url)
     df["Posted"]    = pd.to_datetime(df["posted_date"], errors="coerce").dt.strftime("%Y-%m-%d").fillna("N/A")
     df = df.drop(columns=["raw_json", "posted_date", "id"], errors="ignore")
-    df = df.drop_duplicates(subset=["Title", "Company"]).head(50)
+    df = df.drop_duplicates(subset=["Title", "Company"]).head(250)
     new_jobs[country] = df.to_dict(orient="records")
     with_url = df["Apply URL"].astype(bool).sum()
     print(f"  [{country.upper()}] {len(df)} jobs | {with_url} with direct apply URL")
