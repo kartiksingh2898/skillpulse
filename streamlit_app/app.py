@@ -179,13 +179,16 @@ def run_query(sql, params=None):
     # Fallback when database is unavailable (e.g. Streamlit Cloud)
     df_csv = load_csv_data()
     sql_lower = sql.strip().lower()
+    model_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
     
-    if "SELECT \n            (SELECT COUNT(*) FROM job_postings)" in sql or "total_rows" in sql:
+    if "select name from skills" in sql_lower:
+        return pd.DataFrame({"name": model_skills})
+    elif "select \n            (select count(*) from job_postings)" in sql or "total_rows" in sql:
         total_rows = len(df_csv) if not df_csv.empty else 31534
         return pd.DataFrame([{
             "total_rows": total_rows,
             "total_mappings": total_rows * 2,
-            "total_skills": 47,
+            "total_skills": len(model_skills),
             "total_runs": 18
         }])
     elif "from job_postings" in sql_lower and "group by country" in sql_lower:
@@ -204,13 +207,29 @@ def run_query(sql, params=None):
             {"Company": "Meta", "Open Postings": 290},
             {"Company": "Apple", "Open Postings": 250}
         ])
+    elif "cooccurrences" in sql_lower or "s2.name" in sql_lower:
+        base_sk = params.get("skill", "Python") if params else "Python"
+        co_list = [s for s in model_skills if s != base_sk][:8]
+        return pd.DataFrame({
+            "Skill": co_list,
+            "CoOccurrences": [520 - i * 40 for i in range(len(co_list))]
+        })
+    elif "average salary (usd)" in sql_lower:
+        return pd.DataFrame({
+            "Skill": model_skills[:15],
+            "Average Salary (USD)": [155000 - i * 2000 for i in range(15)],
+            "Sample Size": [850 - i * 20 for i in range(15)]
+        })
     elif "from skills" in sql_lower or "job_skills" in sql_lower:
+        return pd.DataFrame({
+            "Skill": model_skills[:15],
+            "Mentions": [1320 - i * 50 for i in range(15)]
+        })
+    elif "matching_jobs" in sql_lower or "salary range" in sql_lower or "title" in sql_lower:
         return pd.DataFrame([
-            {"Skill": "Machine Learning", "Mentions": 1321, "CoOccurrences": 450, "Average Salary (USD)": 147650, "Sample Size": 850},
-            {"Skill": "Python", "Mentions": 945, "CoOccurrences": 620, "Average Salary (USD)": 138500, "Sample Size": 1200},
-            {"Skill": "SQL", "Mentions": 780, "CoOccurrences": 510, "Average Salary (USD)": 125000, "Sample Size": 950},
-            {"Skill": "AWS", "Mentions": 650, "CoOccurrences": 430, "Average Salary (USD)": 142000, "Sample Size": 720},
-            {"Skill": "Docker", "Mentions": 580, "CoOccurrences": 390, "Average Salary (USD)": 135000, "Sample Size": 610}
+            {"Title": "Senior ML Engineer", "Company": "Tech Corp", "Location": "Remote, US", "Salary Range": "$140,000 - $180,000", "Description": "Build & deploy XGBoost pipelines."},
+            {"Title": "Data Scientist", "Company": "Analytics AI", "Location": "New York, US", "Salary Range": "$130,000 - $160,000", "Description": "Python, SQL, AWS, and MLOps."},
+            {"Title": "Backend Python Developer", "Company": "Cloud Scale", "Location": "London, UK", "Salary Range": "£60,000 - £80,000", "Description": "FastAPI, Docker, Microservices."}
         ])
     elif "model_runs" in sql_lower:
         return pd.DataFrame([{
