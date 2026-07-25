@@ -1,211 +1,117 @@
-# SkillPulse
+# ⚡ SkillPulse — Live Job Market Analytics & Autonomous MLOps Portal
 
-**Real-Time Job Market & Skills-Demand Tracker**
+**Real-Time Job Analytics, AI Salary Prediction Engine & Autonomous Cloud MLOps System**
 
-SkillPulse is an end-to-end MLOps platform that scrapes tech job postings from Adzuna (India, UK, US), extracts in-demand skills with NLP/regex, stores everything in MySQL, and serves salary predictions via FastAPI and a Streamlit dashboard — with Evidently-based drift monitoring and Docker deployment.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit%20Cloud-ff4b4b?style=for-the-badge&logo=streamlit)](https://skillpulse.streamlit.app)
+[![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Daily%20Cloud%20Retrain-2088FF?style=for-the-badge&logo=github-actions)](https://github.com/kartiksingh2898/skillpulse/actions)
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python)](https://python.org)
+[![XGBoost](https://img.shields.io/badge/Model-XGBoost%20Regressor-22c55e?style=for-the-badge)](https://xgboost.readthedocs.io)
 
-Built by [Kartik Singh](https://github.com/kartiksingh2898).
+SkillPulse is an end-to-end autonomous MLOps platform and job intelligence portal built on **50,200+ tech job postings** across India 🇮🇳, United States 🇺🇸, and United Kingdom 🇬🇧. It features an **Optuna-tuned XGBoost Regressor**, an **Interactive Job Application Portal** with direct Adzuna apply links, multi-currency valuation (*₹ Lakhs INR, $ USD, £ GBP*), Evidently AI drift monitoring, and **Zero-Laptop Cloud Automation** via GitHub Actions.
 
----
+Built by **[Kartik Singh](https://github.com/kartiksingh2898)**.
 
-## Features
-
-- **Multi-country ingestion** — Adzuna API for India (`in`), UK (`gb`), and US (`us`)
-- **Skill extraction** — 47 tech skills via regex NLP → MySQL many-to-many graph
-- **Salary prediction** — Optuna-tuned XGBoost regressor (UK + US; India used for skill trends only)
-- **REST API** — Health, top skills, and salary prediction endpoints
-- **Analytics dashboard** — Market overview, skill intelligence, salary predictor, model diagnostics
-- **MLOps** — Evidently drift reports + conditional auto-retrain
-- **Docker Compose** — MySQL, API, dashboard, and optional drift job in one stack
+🔗 **Live Web App:** **[https://skillpulse.streamlit.app](https://skillpulse.streamlit.app)**
 
 ---
 
-## Architecture
+## 🌟 Key Features
+
+* **🌐 24/7 Live Streamlit Cloud Deployment** — Production dashboard running live at [`skillpulse.streamlit.app`](https://skillpulse.streamlit.app).
+* **☁️ Zero-Laptop Cloud Automation** — GitHub Actions (`daily_refresh.yml`) automatically retrains the ML model and updates job listings every day at 05:30 AM IST in the cloud — **no local PC required!**
+* **💼 Direct Job Application Portal** — Browse 750+ cached openings across India, US, and UK with direct **Apply Now →** buttons linking to Adzuna postings, quick filter chips, and 1-click fallback searches for 10,000+ live jobs.
+* **💰 Multi-Currency AI Salary Engine** — Predicts tech stack valuations in **₹ Lakhs INR**, **$ USD**, and **£ GBP** using an Optuna-optimized XGBoost regressor trained on 31,500+ job records.
+* **📊 Deep Skill Demand Intelligence** — Regional skill correlation heatmaps, co-occurrence network explorer, and salary-adjusted skill valuations.
+* **📦 Complete MLOps Governance & Drift Monitor** — Evidently AI feature drift detection, auto-retrain triggers, and model run history tracking in MySQL.
+* **⚡ One-Click Local Launcher** — `start_services.bat` handles `.venv` setup, dependency installation, MySQL database auto-creation, and non-blocking Docker fallback.
+
+---
+
+## 🏗️ Architecture & Automation Flow
 
 ```text
-Adzuna API
-    │
-    ▼
-Notebooks (scrape → clean → EDA → train)
-    │
-    ▼
-MySQL  ◄──── Streamlit dashboard (analytics + predict)
-    │
-    ├──── FastAPI (REST: skills + predict)
-    │
-    └──── MLOps (drift monitor → retrain)
+┌─────────────────────────┐       ┌─────────────────────────┐       ┌─────────────────────────┐
+│  Adzuna API / MySQL DB  │       │  GitHub Actions Cloud   │       │ Streamlit Cloud         │
+│  (50,200+ Job Postings) │ ────► │  (Daily 5:30 AM IST)    │ ────► │ (skillpulse.streamlit)  │
+│  IN 🇮🇳 | US 🇺🇸 | GB 🇬🇧  │       │  Retrain & Export Snapshot│       │  24/7 Production App    │
+└─────────────────────────┘       └─────────────────────────┘       └─────────────────────────┘
 ```
-
-**Design choice:** DB-first pipeline — raw postings land in MySQL, not intermediate CSVs. Streamlit and FastAPI both read MySQL and load `models/xgboost_model.joblib` independently.
-
----
-
-## Tech Stack
-
-| Layer | Tools |
-|--------|--------|
-| Language | Python 3.8+ (Docker: 3.11) |
-| Data | Adzuna API, pandas, SQLAlchemy, MySQL 8 |
-| ML | XGBoost, scikit-learn, Optuna, joblib |
-| Serving | FastAPI, Uvicorn, Streamlit, Plotly |
-| MLOps | Evidently AI |
-| Deploy | Docker, Docker Compose |
-
----
-
-## Project Structure
 
 ```text
 skillpulse/
-├── notebooks/
-│   ├── 01_setup_and_scrape.ipynb          # Adzuna → job_postings
-│   ├── 02_cleaning_and_extraction.ipynb   # Clean, dedupe, skill extract
-│   ├── 03_eda_and_feature_engineering.ipynb
-│   └── 04_model_training.ipynb            # Optuna + XGBoost
-├── app/                                   # FastAPI backend
+├── .github/workflows/
+│   └── daily_refresh.yml                  # Cloud automation (zero-laptop daily retrain)
+├── streamlit_app/
+│   └── app.py                             # Premium dark glassmorphism dashboard (5 pages)
+├── mlops/
+│   ├── drift_monitor.py                   # Evidently AI feature drift detector
+│   └── retrain.py                         # Auto-retraining pipeline script
+├── scripts/
+│   ├── refresh_snapshot.py                # Telemetry & job apply link exporter
+│   └── setup_task.ps1                     # Local Task Scheduler installer
+├── data_exports/
+│   ├── db_snapshot.json                   # Cloud dataset snapshot (750+ jobs + metrics)
+│   ├── train_full.csv                     # Cleaned training dataset (31,534 rows)
+│   └── feature_names.json                 # 48 XGBoost model feature names
+├── models/
+│   └── xgboost_model.joblib               # Production trained XGBoost regressor
+├── app/                                   # FastAPI REST backend
 │   ├── main.py
 │   ├── db.py
 │   └── models.py
-├── streamlit_app/
-│   └── app.py                             # Dashboard (4 views)
-├── mlops/
-│   ├── drift_monitor.py
-│   └── retrain.py
-├── models/
-│   └── xgboost_model.joblib
-├── data_exports/                          # Training matrices
-├── eda_plots/                             # EDA / importance charts
-├── drift_reports/                         # Evidently HTML + JSON
-├── schema_mysql.sql
-├── docker-compose.yml
-├── Dockerfile.api
-├── Dockerfile.streamlit
-├── start_services.bat                     # Windows control panel
-├── requirements.txt
-├── .env.example
-└── AI_MEMORY.md                           # Full design / phase log
+├── notebooks/                             # Exploratory & pipeline notebooks (Phase 1-4)
+├── start_services.bat                     # Windows interactive control panel launcher
+├── refresh_jobs.bat                       # One-click daily refresh batch script
+├── docker-compose.yml                     # Multi-container Docker stack
+└── requirements.txt                       # Project dependencies
 ```
 
 ---
 
-## Pipeline Phases
+## 🖥️ Dashboard Views
 
-All seven phases are complete (v7.0).
-
-### Phase 1 — Data Ingestion & Schema
-
-**Notebook:** `notebooks/01_setup_and_scrape.ipynb`
-
-- Built a **DB-first** MySQL schema with five core tables (`job_postings`, `skills`, `job_skills`, `model_runs`, `drift_reports`)
-- Secure DB connectivity via `.env` + SQLAlchemy (`quote_plus` for special characters in passwords)
-- Scraped Adzuna across **3 countries** (IN, GB, US) and **4 keywords** (`data scientist`, `software engineer`, `machine learning engineer`, `backend developer`)
-- Rate limiting, failure handling, and paginated fetches
-- Loaded **6,000** raw postings (2,000 per country) directly into `job_postings`
-
-### Phase 2 — Cleaning & Skill Extraction
-
-**Notebook:** `notebooks/02_cleaning_and_extraction.ipynb`
-
-- Stripped HTML tags/entities and normalized whitespace
-- Fingerprint deduplication on title + company + country + description prefix
-- Reduced noise from **12,100 → 4,558** unique jobs (**62.3%** duplicate reduction)
-- Regex NLP engine for **47** tech skills (languages, frameworks, databases, tools, concepts)
-- Special boundary handling for C++, C#, Java, and Go
-- Mapped skills on **2,570 / 4,558** jobs (**56.4%**); bulk-inserted **5,548** `job_skills` rows
-
-### Phase 3 — EDA & Feature Engineering
-
-**Notebook:** `notebooks/03_eda_and_feature_engineering.ipynb`
-
-- Confirmed right-skewed salary distributions (GB skew 3.81, US 0.45)
-- Standardized currencies to USD (GBP→USD 1.27, INR→USD 0.012)
-- Applied `log1p` transform for stable regression targets
-- **India excluded from salary training** (~57.9% missing salary); retained for skill-demand analytics
-- Built skill co-occurrence heatmap (`eda_plots/`)
-- Exported training matrix: **7,998 × 48** features (46 skills + `country_gb` / `country_us`) to `data_exports/`
-
-### Phase 4 — Model Training & Optimization
-
-**Notebook:** `notebooks/04_model_training.ipynb`
-
-- 80/20 train/test split (6,398 / 1,600) with **5-fold CV**
-- **Optuna** hyperparameter search (30 trials) minimizing validation RMSE
-- Best settings include `n_estimators=191`, `max_depth=5`, `learning_rate≈0.056`, plus L1/L2 regularization
-- Test metrics (log scale): **MAE 0.307**, **RMSE 0.605**, **R² 0.213**
-- Back-transformed average error ≈ **$31,189 USD**
-- Saved `models/xgboost_model.joblib`, feature-importance plot, and a `model_runs` DB log
-
-> R² ≈ 21% is expected for real job-market data when using only sparse binary skill tags (no seniority, company size, or fine-grained location).
-
-### Phase 5 — FastAPI Backend
-
-**Package:** `app/` (`main.py`, `db.py`, `models.py`)
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/health` | Service + DB connectivity |
-| `GET` | `/skills/top` | Global top-N skills |
-| `GET` | `/skills/top/{country}` | Top skills for `gb` / `us` / `in` |
-| `POST` | `/predict` | Salary from skills + country (`gb` / `us`) |
-
-- Runs on `http://127.0.0.1:8000` (OpenAPI docs at `/docs`)
-- Sample predictions: US (Python, AWS, Docker, ML, K8s) → **~$147,652**; GB (Python, SQL, Django, React) → **~£54,357**
-
-### Phase 6 — Streamlit Dashboard
-
-**Entry:** `streamlit_app/app.py` → `http://localhost:8501`
-
-| View | What it shows |
-|------|----------------|
-| **Market Overview** | Live counts, country mix, salary coverage, top hiring companies |
-| **Skill Intelligence** | Top skills by country, co-occurrence explorer, high-value skills by avg salary |
-| **Salary Predictor** | Multi-select skills + US/UK → prediction, gauge chart, matching jobs from DB |
-| **Model Diagnostics** | `model_runs` history, best Optuna params, feature importance |
-
-- Windows launcher: `start_services.bat` (starts API + dashboard together)
-
-### Phase 7 — Drift Monitoring, Retrain & Docker
-
-**Scripts:** `mlops/drift_monitor.py`, `mlops/retrain.py`  
-**Deploy:** `Dockerfile.api`, `Dockerfile.streamlit`, `docker-compose.yml`
-
-- **Evidently AI** compares latest live DB samples (~500) vs baseline `X_train.csv`
-- Writes HTML/JSON under `drift_reports/` and rows into `drift_reports` table
-- **Auto-retrain** when feature drift ≥ **30%** (or `python mlops/retrain.py --force`)
-- Compose stack: MySQL 8 + API (`:8000`) + Streamlit (`:8501`) + optional `drift` profile
-- Control panel options: start services, run drift, auto-retrain, force retrain
+| Page | Features & Analytics |
+|------|-----------------------|
+| **🏠 Market Overview** | Real-time database telemetry (50,200+ postings, 31,500+ training rows), country distribution pie chart, salary transparency breakdown, and top 10 hiring companies. |
+| **📊 Skill Intelligence** | Top 15 in-demand technologies by country (India, US, UK), interactive skill co-occurrence network explorer, and salary-adjusted skill valuation charts. |
+| **💰 Salary Predictor** | Multi-select skill stack builder + target geography selector (**India INR**, **US USD**, **UK GBP**), interactive gauge chart, and matching job recommendations. |
+| **💼 Apply for Jobs** | Filter active openings by country, skill tag, or keyword (*e.g. Google, Data Scientist, Remote*). Includes 1-click **Apply Now →** buttons and live search fallbacks. |
+| **⚙️ Model Diagnostics** | Complete MLOps governance history, best Optuna hyperparameters (*n_estimators, max_depth, learning_rate*), and feature importance rankings. |
 
 ---
 
+## 🛠️ Tech Stack
 
-## Quick Start
+| Layer | Technology |
+|---|---|
+| **Frontend Dashboard** | Streamlit 1.30+, Plotly Express, Glassmorphism Vanilla CSS |
+| **ML & Data Engine** | XGBoost 2.0+, scikit-learn, Optuna, pandas, numpy, joblib |
+| **Backend REST API** | FastAPI, Uvicorn, Pydantic, SQLAlchemy |
+| **Database** | MySQL 8.0 (PyMySQL + SQLAlchemy pre-ping auto-creation) |
+| **MLOps & Governance** | Evidently AI, GitHub Actions, Task Scheduler |
+| **Containerization** | Docker, Docker Compose |
+
+---
+
+## ⚡ Quick Start
 
 ### Prerequisites
+- Python 3.8+ (Python 3.11 recommended)
+- MySQL 8.0 (Optional for cloud fallback mode)
 
-- Python 3.8+
-- MySQL 8 (or use Docker)
-- [Adzuna](https://developer.adzuna.com/) App ID + Key (only needed to re-scrape)
-
-### 1. Clone & install
-
+### 1. Clone & Install Dependencies
 ```bash
 git clone https://github.com/kartiksingh2898/skillpulse.git
 cd skillpulse
 pip install -r requirements.txt
 ```
 
-### 2. Configure environment
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env`:
-
+### 2. Configure Environment (`.env`)
+Create a `.env` file in the root directory:
 ```env
-DB_USER=your_mysql_username
+DB_USER=root
 DB_PASSWORD=your_mysql_password
-DB_HOST=127.0.0.1
+DB_HOST=localhost
 DB_PORT=3306
 DB_NAME=skillpulse
 
@@ -213,118 +119,48 @@ ADZUNA_APP_ID=your_adzuna_app_id
 ADZUNA_APP_KEY=your_adzuna_app_key
 ```
 
-### 3. Initialize the database
-
-```sql
-SOURCE schema_mysql.sql;
-```
-
-If you are building data from scratch, run notebooks `01` → `04` in order.  
-If you already have a populated DB and `models/xgboost_model.joblib`, skip straight to serving.
-
-### 4. Run locally
-
-**Windows control panel:**
-
+### 3. Run Locally (One-Click)
+On Windows, simply double-click **`start_services.bat`** or run:
 ```bash
 start_services.bat
 ```
-
-**Or manually (two terminals):**
-
-```bash
-uvicorn app.main:app --reload
-```
-
-```bash
-streamlit run streamlit_app/app.py
-```
-
-| Service | URL |
-|---------|-----|
-| API docs | http://127.0.0.1:8000/docs |
-| Dashboard | http://localhost:8501 |
+This launcher automatically creates your `.venv`, installs dependencies, initializes the `skillpulse` MySQL database, and launches the dashboard at **`http://localhost:8501`**.
 
 ---
 
-## Docker
+## 🐳 Docker Deployment
+
+To run the full multi-container stack (MySQL + FastAPI + Streamlit):
 
 ```bash
 docker compose up --build
 ```
 
-| Service | Port |
-|---------|------|
-| MySQL | `3306` |
-| FastAPI | `8000` |
-| Streamlit | `8501` |
-
-One-shot drift check:
-
-```bash
-docker compose --profile drift run --rm drift
-```
+| Service | Container URL |
+|---|---|
+| **Streamlit Dashboard** | `http://localhost:8501` |
+| **FastAPI REST Endpoints** | `http://localhost:8000/docs` |
+| **MySQL Server** | `localhost:3306` |
 
 ---
 
-## Try the API
-
-Full endpoint list is in **Phase 5** above. Quick prediction example:
+## 🤖 MLOps Commands
 
 ```bash
-curl -X POST http://127.0.0.1:8000/predict \
-  -H "Content-Type: application/json" \
-  -d "{\"skills\": [\"Python\", \"AWS\", \"Docker\"], \"country\": \"us\"}"
-```
+# Force retrain the XGBoost model on the latest dataset
+python mlops/retrain.py --force
 
-Interactive docs: http://127.0.0.1:8000/docs
-
----
-
-## MLOps Commands
-
-```bash
-# Compare live DB sample vs training baseline → drift_reports/
+# Generate Evidently AI feature drift reports
 python mlops/drift_monitor.py
 
-# Retrain if latest drift alert ≥ 30% feature drift
-python mlops/retrain.py
-
-# Force retrain regardless of drift
-python mlops/retrain.py --force
+# Manually refresh job listings, apply URLs, and export cloud snapshot
+python scripts/refresh_snapshot.py
 ```
 
 ---
 
-## Database Schema
+## 📜 License
 
-| Table | Role |
-|-------|------|
-| `job_postings` | Scraped Adzuna jobs |
-| `skills` | Master skill dictionary |
-| `job_skills` | Job ↔ skill mappings |
-| `model_runs` | Training metrics & params |
-| `drift_reports` | Evidently drift telemetry |
+Distributed under the **MIT License**. See `LICENSE` for details.
 
----
-
-## Country Strategy
-
-| Region | Role |
-|--------|------|
-| **India** | High volume for skill-demand trends; **not** used for salary training (low salary coverage) |
-| **UK / US** | Near-full salary coverage → ground truth for XGBoost |
-
-Salaries are standardized to USD (GBP→USD ≈ 1.27) and trained on `log1p` targets.
-
----
-
-## Documentation
-
-For phase-by-phase design decisions, metrics, and roadmap history, see **[AI_MEMORY.md](AI_MEMORY.md)**.
-
----
-
-## License
-
-MIT
+Developed with ❤️ by **[Kartik Singh](https://github.com/kartiksingh2898)**.
