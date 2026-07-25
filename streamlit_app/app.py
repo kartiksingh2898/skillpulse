@@ -161,10 +161,11 @@ except Exception:
 model, FEATURE_NAMES = get_prediction_model()
 
 @st.cache_data
-def load_csv_data():
-    if os.path.exists("data_exports/train_full.csv"):
-        return pd.read_csv("data_exports/train_full.csv")
-    return pd.DataFrame()
+def load_db_snapshot():
+    if os.path.exists("data_exports/db_snapshot.json"):
+        with open("data_exports/db_snapshot.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
 
 # ── Database & Fallback Query Helper ──────────────────────────────────────────
 def run_query(sql, params=None):
@@ -177,61 +178,59 @@ def run_query(sql, params=None):
             pass
     
     # Fallback when database is unavailable (e.g. Streamlit Cloud)
-    df_csv = load_csv_data()
+    snap = load_db_snapshot()
     sql_lower = sql.strip().lower()
     model_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
     
     if "select name from skills" in sql_lower:
-        return pd.DataFrame({"name": model_skills})
+        return pd.DataFrame({"name": snap.get("all_skills", model_skills)})
     elif "select \n            (select count(*) from job_postings)" in sql or "total_rows" in sql:
-        total_rows = len(df_csv) if not df_csv.empty else 31534
-        return pd.DataFrame([{
-            "total_rows": total_rows,
-            "total_mappings": total_rows * 2,
-            "total_skills": len(model_skills),
-            "total_runs": 18
-        }])
+        st_data = snap.get("stats", {"total_rows": 50200, "total_mappings": 6443, "total_skills": 47, "total_runs": 18})
+        return pd.DataFrame([st_data])
     elif "from job_postings" in sql_lower and "group by country" in sql_lower:
-        if not df_csv.empty and "country" in df_csv.columns:
-            res = df_csv.groupby("country").size().reset_index(name="count")
-            res["populated"] = res["count"]
-            res["total"] = res["count"]
-            return res
-        return pd.DataFrame([{"country": "us", "count": 20000, "populated": 20000, "total": 20000},
-                             {"country": "gb", "count": 11534, "populated": 11534, "total": 11534}])
+        if "transparency" in sql_lower or "salary_min" in sql_lower:
+            return pd.DataFrame(snap.get("transparency", []))
+        return pd.DataFrame(snap.get("country_counts", []))
     elif "from company" in sql_lower or "company" in sql_lower:
-        return pd.DataFrame([
-            {"Company": "Amazon", "Open Postings": 420},
-            {"Company": "Google", "Open Postings": 380},
-            {"Company": "Microsoft", "Open Postings": 310},
-            {"Company": "Meta", "Open Postings": 290},
-            {"Company": "Apple", "Open Postings": 250}
-        ])
+        df_c = pd.DataFrame(snap.get("top_companies", []))
+        if not df_c.empty and "open_postings" in df_c.columns:
+            df_c = df_c.rename(columns={"open_postings": "Open Postings"})
+        return df_c
     elif "cooccurrences" in sql_lower or "s2.name" in sql_lower:
         base_sk = params.get("skill", "Python") if params else "Python"
+        co_map = snap.get("co_occurrences", {})
+        if base_sk in co_map:
+            return pd.DataFrame(co_map[base_sk])
         co_list = [s for s in model_skills if s != base_sk][:8]
-        return pd.DataFrame({
-            "Skill": co_list,
-            "CoOccurrences": [520 - i * 40 for i in range(len(co_list))]
-        })
+        return pd.DataFrame({"Skill": co_list, "CoOccurrences": [520 - i * 40 for i in range(len(co_list))]})
     elif "average salary (usd)" in sql_lower:
-        return pd.DataFrame({
-            "Skill": model_skills[:15],
-            "Average Salary (USD)": [155000 - i * 2000 for i in range(15)],
-            "Sample Size": [850 - i * 20 for i in range(15)]
-        })
+        df_sal = pd.DataFrame(snap.get("skill_salaries", []))
+        if not df_sal.empty:
+            df_sal = df_sal.rename(columns={"avg_salary_usd": "Average Salary (USD)", "sample_size": "Sample Size"})
+        return df_sal
     elif "from skills" in sql_lower or "job_skills" in sql_lower:
-        return pd.DataFrame({
-            "Skill": model_skills[:15],
-            "Mentions": [1320 - i * 50 for i in range(15)]
-        })
+        c_code = params.get("country", "us") if params else "us"
+        sk_map = snap.get("top_skills_by_country", {})
+        if c_code in sk_map:
+            return pd.DataFrame(sk_map[c_code])
+        return pd.DataFrame({"Skill": model_skills[:15], "Mentions": [1320 - i * 50 for i in range(15)]})
     elif "matching_jobs" in sql_lower or "salary range" in sql_lower or "title" in sql_lower:
+        c_code = params.get("country", "us") if params else "us"
+        jobs_map = snap.get("matching_jobs", {})
+        if c_code in jobs_map:
+            df_j = pd.DataFrame(jobs_map[c_code])
+            if not df_j.empty and "salary_range" in df_j.columns:
+                df_j = df_j.rename(columns={"salary_range": "Salary Range"})
+            return df_j.drop(columns=["Skill"], errors="ignore").head(10)
         return pd.DataFrame([
             {"Title": "Senior ML Engineer", "Company": "Tech Corp", "Location": "Remote, US", "Salary Range": "$140,000 - $180,000", "Description": "Build & deploy XGBoost pipelines."},
-            {"Title": "Data Scientist", "Company": "Analytics AI", "Location": "New York, US", "Salary Range": "$130,000 - $160,000", "Description": "Python, SQL, AWS, and MLOps."},
-            {"Title": "Backend Python Developer", "Company": "Cloud Scale", "Location": "London, UK", "Salary Range": "£60,000 - £80,000", "Description": "FastAPI, Docker, Microservices."}
+            {"Title": "Data Scientist", "Company": "Analytics AI", "Location": "New York, US", "Salary Range": "$130,000 - $160,000", "Description": "Python, SQL, AWS, and MLOps."}
         ])
     elif "model_runs" in sql_lower:
+        df_r = pd.DataFrame(snap.get("model_runs", []))
+        if not df_r.empty:
+            df_r = df_r.rename(columns={"log_mae": "Log MAE", "log_rmse": "Log RMSE"})
+            return df_r
         return pd.DataFrame([{
             "RunID": 18, "Trained At": "2026-07-23 16:07:11", "Type": "xgboost",
             "Log MAE": 0.2999, "Log RMSE": 0.5998,
