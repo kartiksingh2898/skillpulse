@@ -345,6 +345,34 @@ def load_db_snapshot():
             return json.load(f)
     return {}
 
+def format_salary(salary_raw, country_code="us"):
+    if not salary_raw or str(salary_raw).strip() in ["", "None", "nan", "0 - 0", "0.0 - 0.0", "0.0"]:
+        return "Salary Undisclosed"
+    
+    parts = str(salary_raw).replace("$", "").replace("£", "").replace("₹", "").replace(",", "").split("-")
+    try:
+        nums = [float(p.strip()) for p in parts if p.strip()]
+        if not nums or all(n == 0 for n in nums):
+            return "Salary Undisclosed"
+        
+        if country_code == "in":
+            formatted_parts = []
+            for n in nums:
+                if n >= 100000:
+                    lakhs = n / 100000.0
+                    formatted_parts.append(f"₹{lakhs:.1f}L")
+                else:
+                    formatted_parts.append(f"₹{n:,.0f}")
+            return " - ".join(formatted_parts) + " INR" if len(formatted_parts) > 1 else formatted_parts[0] + " INR"
+        elif country_code == "gb":
+            formatted_parts = [f"£{n:,.0f}" for n in nums]
+            return " - ".join(formatted_parts) + " GBP"
+        else:
+            formatted_parts = [f"${n:,.0f}" for n in nums]
+            return " - ".join(formatted_parts) + " USD"
+    except Exception:
+        return str(salary_raw)
+
 def render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style):
     posted_html = f'<span style="color:#64748b;font-size:11px;">🗓 {posted}</span>' if posted and posted != "N/A" else ""
     card_html = (
@@ -678,9 +706,9 @@ elif menu == "💰 Salary Predictor":
             default=["Python", "AWS", "SQL"] if "Python" in model_skills else []
         )
     with col2:
-        user_country = st.selectbox("🌍 Target Geography", ["United States (USD)", "United Kingdom (GBP)"])
+        user_country = st.selectbox("🌍 Target Geography", ["India (INR)", "United States (USD)", "United Kingdom (GBP)"])
 
-    country_key = "us" if "United States" in user_country else "gb"
+    country_key = "in" if "India" in user_country else ("gb" if "United Kingdom" in user_country else "us")
 
     st.markdown("")
     if st.button("🔮 Calculate Salary & Scan Postings"):
@@ -702,20 +730,45 @@ elif menu == "💰 Salary Predictor":
             pred_log = float(model.predict(np.array([fv], dtype=np.float32))[0])
             pred_usd = float(np.expm1(pred_log))
 
-            if country_key == "gb":
+            if country_key == "in":
+                pred_local = pred_usd * 86.5
+                local_symbol = "₹"
+                local_suffix = "INR"
+                val_text = f"₹{pred_local/100000:.2f} Lakhs INR" if pred_local >= 100000 else f"₹{pred_local:,.2f} INR"
+                gauge_max = 4500000
+                gauge_steps = [
+                    {"range": [300000, 1200000], "color": "#1f2937"},
+                    {"range": [1200000, 2500000], "color": "#111827"},
+                    {"range": [2500000, 4500000], "color": "#032b26"}
+                ]
+            elif country_key == "gb":
                 pred_local = pred_usd / 1.27
                 local_symbol = "£"
                 local_suffix = "GBP"
+                val_text = f"£{pred_local:,.2f} GBP"
+                gauge_max = 180000
+                gauge_steps = [
+                    {"range": [25000, 70000], "color": "#1f2937"},
+                    {"range": [70000, 120000], "color": "#111827"},
+                    {"range": [120000, 180000], "color": "#032b26"}
+                ]
             else:
                 pred_local = pred_usd
                 local_symbol = "$"
                 local_suffix = "USD"
+                val_text = f"${pred_local:,.2f} USD"
+                gauge_max = 220000
+                gauge_steps = [
+                    {"range": [30000, 90000], "color": "#1f2937"},
+                    {"range": [90000, 150000], "color": "#111827"},
+                    {"range": [150000, 220000], "color": "#032b26"}
+                ]
 
             # Display card
             st.markdown(f"""
                 <div class="prediction-card">
-                    <div class="label" style="color:rgba(255,255,255,0.7)">Projected Salary Base Valuation</div>
-                    <div class="val">{local_symbol}{pred_local:,.2f} {local_suffix}</div>
+                    <div class="label" style="color:rgba(255,255,255,0.75)">Projected Salary Base Valuation</div>
+                    <div class="val">{val_text}</div>
                     <div class="sub-val">Equivalent to ${pred_usd:,.2f} USD</div>
                 </div>
             """, unsafe_allow_html=True)
@@ -724,17 +777,13 @@ elif menu == "💰 Salary Predictor":
             fig_g = go.Figure(go.Indicator(
                 mode="gauge+number",
                 value=pred_local,
-                number={"prefix": local_symbol, "font": {"size": 38, "color": "#0d9488"}},
+                number={"prefix": local_symbol, "font": {"size": 36, "color": "#0d9488"}},
                 gauge={
-                    "axis": {"range": [30000, 220000], "tickcolor": "#9ca3af"},
+                    "axis": {"range": [0, gauge_max], "tickcolor": "#9ca3af"},
                     "bar": {"color": "#0d9488"},
                     "bgcolor": "#111827",
                     "bordercolor": "#1f2937",
-                    "steps": [
-                        {"range": [30000, 90000], "color": "#1f2937"},
-                        {"range": [90000, 150000], "color": "#111827"},
-                        {"range": [150000, 220000], "color": "#032b26"}
-                    ]
+                    "steps": gauge_steps
                 }
             ))
             fig_g.update_layout(paper_bgcolor="rgba(0,0,0,0)", font_color="#e5e7eb", height=240, margin=dict(t=10, b=10))
@@ -785,7 +834,7 @@ elif menu == "💰 Salary Predictor":
                         apply_label = "Apply Now →"
                         btn_style = "background:linear-gradient(135deg,#0d9488,#0891b2)"
 
-                    sal_display = sal if sal != "0 - 0" else "Salary Undisclosed"
+                    sal_display = format_salary(sal, country_key)
                     render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style)
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -794,7 +843,7 @@ elif menu == "💰 Salary Predictor":
 elif menu == "💼 Apply for Jobs":
     st.markdown('<div class="section-badge">Live Job Portal</div>', unsafe_allow_html=True)
     st.markdown("# 💼 Live Job Openings & Apply Portal")
-    st.markdown("<div class='info-banner'>🎯 Explore active job openings across <strong>India 🇮🇳, United States 🇺🇸, and United Kingdom 🇬🇧</strong> with direct application links.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-banner'>🎯 Explore active job openings across <strong>India (IN) 🇮🇳, United States (US) 🇺🇸, and United Kingdom (UK) 🇬🇧</strong> with direct application links.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
     model_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
@@ -807,17 +856,20 @@ elif menu == "💼 Apply for Jobs":
     with col3:
         search_kw = st.text_input("🔎 Search Title / Company", "")
 
-    # Quick suggestion chips
+    # Quick suggestion chips - 4 columns in 2 neat rows to prevent text wrapping
     st.caption("⚡ Quick Searches:")
-    qc1, qc2, qc3, qc4, qc5, qc6, qc7 = st.columns(7)
+    q_col1, q_col2, q_col3, q_col4 = st.columns(4)
     chip_val = ""
-    if qc1.button("🧠 Data Scientist", key="chip1"): chip_val = "Data Scientist"
-    if qc2.button("💻 Python", key="chip2"): chip_val = "Python"
-    if qc3.button("⚙️ ML Engineer", key="chip3"): chip_val = "ML Engineer"
-    if qc4.button("☁️ AWS", key="chip4"): chip_val = "AWS"
-    if qc5.button("🏢 Google", key="chip5"): chip_val = "Google"
-    if qc6.button("📦 Amazon", key="chip6"): chip_val = "Amazon"
-    if qc7.button("🏡 Remote", key="chip7"): chip_val = "Remote"
+    if q_col1.button("🧠 Data Scientist", key="chip1"): chip_val = "Data Scientist"
+    if q_col2.button("⚙️ ML Engineer", key="chip2"): chip_val = "ML Engineer"
+    if q_col3.button("💻 Python", key="chip3"): chip_val = "Python"
+    if q_col4.button("☁️ AWS", key="chip4"): chip_val = "AWS"
+
+    q_col5, q_col6, q_col7, q_col8 = st.columns(4)
+    if q_col5.button("🏢 Google", key="chip5"): chip_val = "Google"
+    if q_col6.button("📦 Amazon", key="chip6"): chip_val = "Amazon"
+    if q_col7.button("🏡 Remote", key="chip7"): chip_val = "Remote"
+    if q_col8.button("📊 SQL", key="chip8"): chip_val = "SQL"
 
     if chip_val:
         search_kw = chip_val
@@ -931,7 +983,7 @@ elif menu == "💼 Apply for Jobs":
                     apply_label = "Apply Now →"
                     btn_style = "background:linear-gradient(135deg,#0d9488,#0891b2)"
 
-                sal_display = sal if sal != "0 - 0" else "Salary Undisclosed"
+                sal_display = format_salary(sal, c_code)
                 render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style)
 
 # ══════════════════════════════════════════════════════════════════════════════
