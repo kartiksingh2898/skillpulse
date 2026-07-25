@@ -487,6 +487,27 @@ def run_query(sql, params=None):
     
     return pd.DataFrame()
 
+def get_last_refreshed_time():
+    if HAS_DB:
+        try:
+            with engine.connect() as conn:
+                res = conn.execute(text("SELECT max(trained_at) FROM model_runs")).fetchone()
+                if res and res[0]:
+                    return pd.to_datetime(res[0]).strftime("%Y-%m-%d %H:%M") + " IST"
+        except Exception:
+            pass
+
+    snap_meta = load_db_snapshot()
+    if snap_meta and snap_meta.get("last_refreshed"):
+        lr = str(snap_meta.get("last_refreshed"))
+        return lr if "IST" in lr else lr + " IST"
+    
+    if os.path.exists("data_exports/db_snapshot.json"):
+        mtime = os.path.getmtime("data_exports/db_snapshot.json")
+        return pd.to_datetime(mtime, unit='s').strftime("%Y-%m-%d %H:%M") + " IST"
+
+    return datetime.now().strftime("%Y-%m-%d %H:%M") + " IST"
+
 # ── Sidebar Navigation ────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
@@ -511,9 +532,8 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
-    # Last refreshed timestamp from snapshot
-    snap_meta = load_db_snapshot()
-    last_ref = snap_meta.get('last_refreshed', 'Unknown')
+    # Dynamic last refreshed timestamp
+    last_ref = get_last_refreshed_time()
     st.markdown(f"""
         <div style='margin-top:20px;padding:10px 12px;background:rgba(13,148,136,0.08);border:1px solid rgba(13,148,136,0.2);border-radius:10px;'>
             <div style='font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#475569;margin-bottom:4px;'>Data Last Refreshed</div>
