@@ -21,100 +21,277 @@ st.set_page_config(
 # ── Premium CSS ───────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-/* Sidebar Styling */
-section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #090d16 0%, #0f172a 100%);
-    border-right: 1px solid #1e293b;
-}
-section[data-testid="stSidebar"] * {
-    color: #e2e8f0 !important;
-}
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0b0f19; }
+::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 10px; }
 
-/* Main Background */
+/* ── Main Background ── */
 .stApp {
-    background-color: #0b0f19;
+    background: radial-gradient(ellipse at 20% 0%, #0d1f3c 0%, #0b0f19 50%, #060810 100%);
     color: #f1f5f9;
 }
 
-/* Card layout */
-.metric-card {
-    background: #111827;
-    border: 1px solid #1f2937;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    text-align: center;
+/* ── Sidebar ── */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #050810 0%, #0a0e1a 60%, #060a14 100%);
+    border-right: 1px solid rgba(14, 165, 233, 0.12);
 }
-.metric-card .label {
-    font-size: 11px;
-    color: #9ca3af;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+section[data-testid="stSidebar"] * { color: #cbd5e1 !important; }
+section[data-testid="stSidebar"] .stRadio label {
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+    transition: background 0.2s !important;
 }
-.metric-card .value {
-    font-size: 32px;
-    font-weight: 800;
-    color: #0d9488;
-    margin-top: 6px;
+section[data-testid="stSidebar"] .stRadio label:hover {
+    background: rgba(14, 165, 233, 0.1) !important;
 }
 
-/* Custom Predictions Card */
-.prediction-card {
-    background: linear-gradient(135deg, #0d9488 0%, #0f766e 50%, #115e59 100%);
+/* ── Glowing Page Divider ── */
+hr {
+    border: none !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, rgba(13, 148, 136, 0.5), rgba(99, 102, 241, 0.5), transparent) !important;
+    margin: 24px 0 !important;
+}
+
+/* ── Stat / Metric Cards ── */
+.metric-card {
+    background: linear-gradient(135deg, rgba(17,24,39,0.95) 0%, rgba(15,23,42,0.95) 100%);
+    border: 1px solid rgba(14, 165, 233, 0.15);
     border-radius: 16px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(13, 148, 136, 0.25);
+    padding: 24px 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03);
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
 }
-.prediction-card .val {
-    font-size: 54px;
-    font-weight: 800;
-    color: #ffffff;
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #0d9488, #6366f1, #0ea5e9);
+}
+.metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(13, 148, 136, 0.2), 0 0 0 1px rgba(13,148,136,0.1);
+}
+.metric-card .label {
+    font-size: 10px;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+}
+.metric-card .value {
+    font-size: 36px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #0d9488, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     letter-spacing: -0.02em;
+    line-height: 1;
 }
-.prediction-card .sub-val {
-    font-size: 16px;
-    color: #ccfbf1;
-    margin-top: 5px;
+.metric-card .delta {
+    font-size: 11px;
+    color: #34d399;
+    margin-top: 6px;
     font-weight: 500;
 }
 
-/* Style Selectors & Inputs */
-div[data-baseweb="select"] {
-    background-color: #111827 !important;
-    border: 1px solid #1f2937 !important;
-    border-radius: 8px !important;
+/* ── Section Headers ── */
+h1 { 
+    font-size: 2rem !important; 
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    background: linear-gradient(135deg, #f1f5f9 40%, #0d9488 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+h2, h3 { 
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    color: #e2e8f0 !important;
 }
 
-/* Buttons */
+/* ── Section Tag Badge ── */
+.section-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    background: rgba(13, 148, 136, 0.15);
+    border: 1px solid rgba(13, 148, 136, 0.3);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #0d9488;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+/* ── Prediction Card ── */
+.prediction-card {
+    background: linear-gradient(135deg, #0d9488 0%, #0891b2 50%, #6366f1 100%);
+    border-radius: 20px;
+    padding: 36px 30px;
+    box-shadow: 0 20px 60px rgba(13, 148, 136, 0.35), 0 0 0 1px rgba(255,255,255,0.08);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 20px 60px rgba(13,148,136,0.35), 0 0 0 1px rgba(255,255,255,0.08); }
+    50% { box-shadow: 0 20px 80px rgba(13,148,136,0.55), 0 0 0 1px rgba(255,255,255,0.12); }
+}
+.prediction-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+    pointer-events: none;
+}
+.prediction-card .label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+}
+.prediction-card .val {
+    font-size: 58px;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+.prediction-card .sub-val {
+    font-size: 15px;
+    color: rgba(255,255,255,0.8);
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+/* ── Info Banner ── */
+.info-banner {
+    background: linear-gradient(135deg, rgba(13,148,136,0.08), rgba(99,102,241,0.08));
+    border: 1px solid rgba(13, 148, 136, 0.2);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+/* ── Select / Input ── */
+div[data-baseweb="select"] > div {
+    background-color: rgba(15, 23, 42, 0.9) !important;
+    border: 1px solid rgba(14, 165, 233, 0.2) !important;
+    border-radius: 10px !important;
+    color: #e2e8f0 !important;
+}
+div[data-baseweb="select"] > div:focus-within {
+    border-color: rgba(13, 148, 136, 0.6) !important;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12) !important;
+}
+div[data-baseweb="tag"] {
+    background-color: rgba(13, 148, 136, 0.25) !important;
+    border: 1px solid rgba(13, 148, 136, 0.4) !important;
+    border-radius: 6px !important;
+}
+
+/* ── Buttons ── */
 .stButton > button {
-    background: linear-gradient(135deg, #0d9488 0%, #0d9488 100%) !important;
+    background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%) !important;
     color: white !important;
     font-weight: 700 !important;
     border: none !important;
-    padding: 12px 30px !important;
-    border-radius: 8px !important;
-    box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4) !important;
-    transition: all 0.2s ease-in-out;
+    padding: 13px 32px !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+    letter-spacing: 0.02em !important;
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.45), 0 0 0 1px rgba(255,255,255,0.05) !important;
+    transition: all 0.2s ease !important;
 }
 .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.6) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    box-shadow: 0 8px 30px rgba(13, 148, 136, 0.65) !important;
+}
+.stButton > button:active { transform: translateY(0) !important; }
+
+/* ── DataFrames ── */
+.stDataFrame {
+    border: 1px solid rgba(30, 41, 59, 0.8) !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+}
+.stDataFrame iframe { border-radius: 14px !important; }
+
+/* ── st.metric overrides ── */
+div[data-testid="metric-container"] {
+    background: linear-gradient(135deg, rgba(17,24,39,0.95), rgba(15,23,42,0.95));
+    border: 1px solid rgba(14, 165, 233, 0.12);
+    border-radius: 14px;
+    padding: 18px 22px;
 }
 
-/* Table container styling */
-.stDataFrame {
-    border: 1px solid #1f2937;
-    border-radius: 10px;
-    background: #0f172a;
+/* ── Caption ── */
+.stCaption, .stMarkdown p:has(small), small { 
+    color: #64748b !important; 
+    font-size: 12px !important;
+}
+
+/* ── Sidebar brand ── */
+.sidebar-brand {
+    padding: 8px 0 16px;
+    border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+    margin-bottom: 20px;
+}
+.sidebar-brand .brand-title {
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0d9488, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+}
+.sidebar-brand .brand-sub {
+    font-size: 11px;
+    color: #475569;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+}
+
+/* ── Stack Pills ── */
+.stack-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    margin: 3px 2px;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #818cf8;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -241,25 +418,35 @@ def run_query(sql, params=None):
 
 # ── Sidebar Navigation ────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("<h2 style='color:#0d9488;'>⚡ SkillPulse</h2>", unsafe_allow_html=True)
-    st.markdown("🌐 **MLOps Market Analytics Portal**")
-    st.markdown("---")
+    st.markdown("""
+        <div class="sidebar-brand">
+            <div class="brand-title">⚡ SkillPulse</div>
+            <div class="brand-sub">MLOps Market Analytics</div>
+        </div>
+    """, unsafe_allow_html=True)
     menu = st.radio(
         "Choose Dashboard View",
         ["🏠 Market Overview", "📊 Skill Intelligence", "💰 Salary Predictor", "⚙️ Model Diagnostics"]
     )
-    st.markdown("---")
-    st.caption("Active Stack:")
-    st.caption("• XGBoost Regressor")
-    st.caption("• Optuna Hyper-Tuning")
-    st.caption("• MySQL Database Store")
+    st.markdown("<hr style='margin:20px 0'>", unsafe_allow_html=True)
+    st.markdown("""
+        <div style='padding:4px 0'>
+            <div style='font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#475569;margin-bottom:10px;'>Active Stack</div>
+            <span class="stack-pill">XGBoost</span>
+            <span class="stack-pill">Optuna</span>
+            <span class="stack-pill">MySQL</span>
+            <span class="stack-pill">FastAPI</span>
+            <span class="stack-pill">Streamlit</span>
+        </div>
+    """, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 1: MARKET OVERVIEW
 # ══════════════════════════════════════════════════════════════════════════════
 if menu == "🏠 Market Overview":
+    st.markdown('<div class="section-badge">Live Analytics</div>', unsafe_allow_html=True)
     st.markdown("# 🏠 Job Market Overview")
-    st.markdown("Real-time telemetry and database ingestion statistics.")
+    st.markdown("<div class='info-banner'>📡 Real-time telemetry from <strong>50,200+ job postings</strong> across US, UK and India — updated with every model training cycle.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
     # Ingested counts
@@ -342,8 +529,9 @@ if menu == "🏠 Market Overview":
 # PAGE 2: SKILL INTELLIGENCE
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "📊 Skill Intelligence":
+    st.markdown('<div class="section-badge">Skill Intelligence</div>', unsafe_allow_html=True)
     st.markdown("# 📊 Skill Demand Intelligence")
-    st.markdown("Deep analytical tracking of technology profiles and skill correlation frameworks.")
+    st.markdown("<div class='info-banner'>🧠 Deep analytical tracking of <strong>technology demand trends</strong> across regions, with co-occurrence networks and salary-adjusted skill valuations.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
     # Select country for detailed skill breakdown
@@ -439,8 +627,9 @@ elif menu == "📊 Skill Intelligence":
 # PAGE 3: SALARY PREDICTOR & MATCHING JOBS
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "💰 Salary Predictor":
+    st.markdown('<div class="section-badge">AI Salary Engine</div>', unsafe_allow_html=True)
     st.markdown("# 💰 Salary Prediction Engine")
-    st.markdown("Estimate candidate valuations using our optimized XGBoost model and scan matching live listings.")
+    st.markdown("<div class='info-banner'>🤖 Estimate your market valuation using our <strong>Optuna-tuned XGBoost regressor</strong> trained on 31,500+ real job postings. Select your tech stack → get an instant salary projection.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
     # Get skill items that are in feature names list
@@ -547,8 +736,9 @@ elif menu == "💰 Salary Predictor":
 # PAGE 4: MODEL DIAGNOSTICS & HISTORY
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "⚙️ Model Diagnostics":
+    st.markdown('<div class="section-badge">MLOps Governance</div>', unsafe_allow_html=True)
     st.markdown("# ⚙️ Model Diagnostics & MLOps Runs")
-    st.markdown("Governance records, parameter footprints, and feature relevance indicators.")
+    st.markdown("<div class='info-banner'>📦 Full governance records for every training experiment — hyperparameter footprints, error metrics, and <strong>feature importance rankings</strong> for the production XGBoost estimator.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
     # DB records
