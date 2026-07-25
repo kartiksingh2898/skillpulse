@@ -116,10 +116,28 @@ h1 {
     font-size: 2rem !important; 
     font-weight: 800 !important;
     letter-spacing: -0.03em !important;
-    background: linear-gradient(135deg, #f1f5f9 40%, #0d9488 100%) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
+    color: #f1f5f9 !important;
+}
+.page-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.page-title .title-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    display: inline-block;
+    filter: drop-shadow(0 2px 10px rgba(13, 148, 136, 0.45));
+}
+.page-title .title-text {
+    background: linear-gradient(135deg, #f1f5f9 40%, #0d9488 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 h2, h3 { 
     font-weight: 700 !important;
@@ -508,7 +526,7 @@ with st.sidebar:
 # ══════════════════════════════════════════════════════════════════════════════
 if menu == "🏠 Market Overview":
     st.markdown('<div class="section-badge">Live Analytics</div>', unsafe_allow_html=True)
-    st.markdown("# 🏠 Job Market Overview")
+    st.markdown('<div class="page-title"><span class="title-icon">🏠</span><span class="title-text">Job Market Overview</span></div>', unsafe_allow_html=True)
     st.markdown("<div class='info-banner'>📡 Real-time telemetry from <strong>50,200+ job postings</strong> across US, UK and India — updated with every model training cycle.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -593,7 +611,7 @@ if menu == "🏠 Market Overview":
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "📊 Skill Intelligence":
     st.markdown('<div class="section-badge">Skill Intelligence</div>', unsafe_allow_html=True)
-    st.markdown("# 📊 Skill Demand Intelligence")
+    st.markdown('<div class="page-title"><span class="title-icon">📊</span><span class="title-text">Skill Demand Intelligence</span></div>', unsafe_allow_html=True)
     st.markdown("<div class='info-banner'>🧠 Deep analytical tracking of <strong>technology demand trends</strong> across regions, with co-occurrence networks and salary-adjusted skill valuations.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -691,7 +709,7 @@ elif menu == "📊 Skill Intelligence":
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "💰 Salary Predictor":
     st.markdown('<div class="section-badge">AI Salary Engine</div>', unsafe_allow_html=True)
-    st.markdown("# 💰 Salary Prediction Engine")
+    st.markdown('<div class="page-title"><span class="title-icon">💰</span><span class="title-text">Salary Prediction Engine</span></div>', unsafe_allow_html=True)
     st.markdown("<div class='info-banner'>🤖 Estimate your market valuation using our <strong>Optuna-tuned XGBoost regressor</strong> trained on 31,500+ real job postings. Select your tech stack → get an instant salary projection.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -842,7 +860,7 @@ elif menu == "💰 Salary Predictor":
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "💼 Apply for Jobs":
     st.markdown('<div class="section-badge">Live Job Portal</div>', unsafe_allow_html=True)
-    st.markdown("# 💼 Live Job Openings & Apply Portal")
+    st.markdown('<div class="page-title"><span class="title-icon">💼</span><span class="title-text">Live Job Openings & Apply Portal</span></div>', unsafe_allow_html=True)
     st.markdown("<div class='info-banner'>🎯 Explore active job openings across <strong>India (IN) 🇮🇳, United States (US) 🇺🇸, and United Kingdom (UK) 🇬🇧</strong> with direct application links.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
@@ -991,7 +1009,7 @@ elif menu == "💼 Apply for Jobs":
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "⚙️ Model Diagnostics":
     st.markdown('<div class="section-badge">MLOps Governance</div>', unsafe_allow_html=True)
-    st.markdown("# ⚙️ Model Diagnostics & MLOps Runs")
+    st.markdown('<div class="page-title"><span class="title-icon">⚙️</span><span class="title-text">Model Diagnostics & MLOps Runs</span></div>', unsafe_allow_html=True)
     st.markdown("<div class='info-banner'>📦 Full governance records for every training experiment — hyperparameter footprints, error metrics, and <strong>feature importance rankings</strong> for the production XGBoost estimator.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
