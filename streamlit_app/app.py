@@ -229,7 +229,7 @@ def run_query(sql, params=None):
     elif "model_runs" in sql_lower:
         df_r = pd.DataFrame(snap.get("model_runs", []))
         if not df_r.empty:
-            df_r = df_r.rename(columns={"log_mae": "Log MAE", "log_rmse": "Log RMSE"})
+            df_r = df_r.rename(columns={"trained_at": "Trained At", "log_mae": "Log MAE", "log_rmse": "Log RMSE"})
             return df_r
         return pd.DataFrame([{
             "RunID": 18, "Trained At": "2026-07-23 16:07:11", "Type": "xgboost",
