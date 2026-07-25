@@ -440,6 +440,16 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
+    # Last refreshed timestamp from snapshot
+    snap_meta = load_db_snapshot()
+    last_ref = snap_meta.get('last_refreshed', 'Unknown')
+    st.markdown(f"""
+        <div style='margin-top:20px;padding:10px 12px;background:rgba(13,148,136,0.08);border:1px solid rgba(13,148,136,0.2);border-radius:10px;'>
+            <div style='font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#475569;margin-bottom:4px;'>Data Last Refreshed</div>
+            <div style='font-size:12px;color:#0d9488;font-weight:600;font-family:monospace;'>🟢 {last_ref}</div>
+        </div>
+    """, unsafe_allow_html=True)
+
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 1: MARKET OVERVIEW
 # ══════════════════════════════════════════════════════════════════════════════
@@ -730,7 +740,69 @@ elif menu == "💰 Salary Predictor":
             if matching_jobs.empty:
                 st.info("No active jobs matching these parameters were found in the database.")
             else:
-                st.dataframe(matching_jobs, use_container_width=True, hide_index=True)
+                # Render premium job cards with Apply Now buttons
+                display_cols = [c for c in ["Title", "Company", "Location", "salary_range", "Salary Range", "Posted", "Apply URL", "Description"] if c in matching_jobs.columns]
+                for _, job in matching_jobs.head(10).iterrows():
+                    title    = job.get("Title", "Job Opening")
+                    company  = job.get("Company", "")
+                    location = job.get("Location", "")
+                    sal      = job.get("salary_range") or job.get("Salary Range", "Salary N/A")
+                    posted   = job.get("Posted", "")
+                    desc     = str(job.get("Description", ""))[:200].replace("<", "&lt;").replace(">", "&gt;") + "..."
+                    apply_url = str(job.get("Apply URL", "")).strip()
+
+                    # Generate fallback search URLs if direct apply link missing
+                    if not apply_url or apply_url == "nan":
+                        q = urllib.parse.quote_plus(f'{title} {company}')
+                        apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
+                        apply_label = "Search on LinkedIn"
+                        btn_style = "background:linear-gradient(135deg,#0077b5,#005582)"
+                    else:
+                        apply_label = "Apply Now →"
+                        btn_style = "background:linear-gradient(135deg,#0d9488,#0891b2)"
+
+                    sal_display = sal if sal != "0 - 0" else "Salary Undisclosed"
+                    posted_html = f'<span style="color:#64748b;font-size:11px;">🗓 {posted}</span>' if posted and posted != "N/A" else ""
+
+                    st.markdown(f"""
+                    <div style="
+                        background:linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.95));
+                        border:1px solid rgba(14,165,233,0.12);
+                        border-left:3px solid #0d9488;
+                        border-radius:14px;
+                        padding:18px 22px;
+                        margin-bottom:14px;
+                        position:relative;
+                        transition:all 0.2s;
+                    ">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+                            <div style="flex:1;min-width:200px;">
+                                <div style="font-size:16px;font-weight:700;color:#f1f5f9;margin-bottom:4px;">{title}</div>
+                                <div style="font-size:13px;color:#94a3b8;margin-bottom:6px;">
+                                    🏢 <strong style='color:#cbd5e1;'>{company}</strong> &nbsp;&middot;&nbsp; 📍 {location}
+                                </div>
+                                <div style="font-size:12px;color:#64748b;margin-bottom:8px;">{desc}</div>
+                                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                                    <span style="font-size:13px;color:#34d399;font-weight:600;">💰 {sal_display}</span>
+                                    {posted_html}
+                                </div>
+                            </div>
+                            <a href="{apply_url}" target="_blank" style="
+                                {btn_style};
+                                color:white;
+                                font-weight:700;
+                                font-size:13px;
+                                padding:10px 20px;
+                                border-radius:9px;
+                                text-decoration:none;
+                                white-space:nowrap;
+                                box-shadow:0 4px 15px rgba(13,148,136,0.35);
+                                display:inline-block;
+                                align-self:center;
+                            ">{apply_label}</a>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 4: MODEL DIAGNOSTICS & HISTORY
