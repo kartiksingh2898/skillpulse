@@ -426,7 +426,7 @@ with st.sidebar:
     """, unsafe_allow_html=True)
     menu = st.radio(
         "Choose Dashboard View",
-        ["🏠 Market Overview", "📊 Skill Intelligence", "💰 Salary Predictor", "⚙️ Model Diagnostics"]
+        ["🏠 Market Overview", "📊 Skill Intelligence", "💰 Salary Predictor", "💼 Apply for Jobs", "⚙️ Model Diagnostics"]
     )
     st.markdown("<hr style='margin:20px 0'>", unsafe_allow_html=True)
     st.markdown("""
@@ -805,7 +805,117 @@ elif menu == "💰 Salary Predictor":
                     """, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
-# PAGE 4: MODEL DIAGNOSTICS & HISTORY
+# PAGE 4: APPLY FOR JOBS PORTAL
+# ══════════════════════════════════════════════════════════════════════════════
+elif menu == "💼 Apply for Jobs":
+    st.markdown('<div class="section-badge">Live Job Portal</div>', unsafe_allow_html=True)
+    st.markdown("# 💼 Live Job Openings & Apply Portal")
+    st.markdown("<div class='info-banner'>🎯 Explore active job openings across <strong>India 🇮🇳, United States 🇺🇸, and United Kingdom 🇬🇧</strong> with direct application links.</div>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    model_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
+
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col1:
+        sel_country = st.selectbox("🌍 Country", ["India (🇮🇳)", "United States (🇺🇸)", "United Kingdom (🇬🇧)"])
+    with col2:
+        sel_skill = st.selectbox("🛠️ Filter by Skill", ["All Skills"] + model_skills)
+    with col3:
+        search_kw = st.text_input("🔎 Search Title / Company", "")
+
+    c_code = "in" if "India" in sel_country else ("us" if "United States" in sel_country else "gb")
+
+    snap = load_db_snapshot()
+    jobs_map = snap.get("matching_jobs", {})
+    job_list = jobs_map.get(c_code, [])
+    df_all_jobs = pd.DataFrame(job_list)
+
+    if df_all_jobs.empty:
+        st.info("No job postings found for this region.")
+    else:
+        if search_kw:
+            kw = search_kw.lower()
+            df_all_jobs = df_all_jobs[
+                df_all_jobs["Title"].str.lower().str.contains(kw, na=False) |
+                df_all_jobs["Company"].str.lower().str.contains(kw, na=False) |
+                df_all_jobs["Location"].str.lower().str.contains(kw, na=False)
+            ]
+
+        if sel_skill != "All Skills":
+            sk = sel_skill.lower()
+            df_all_jobs = df_all_jobs[
+                df_all_jobs["Title"].str.lower().str.contains(sk, na=False) |
+                df_all_jobs["Description"].str.lower().str.contains(sk, na=False)
+            ]
+
+        st.markdown(f"### 📋 Showing {len(df_all_jobs)} Live Job Openings")
+        st.markdown("---")
+
+        if df_all_jobs.empty:
+            st.warning("No listings match your exact search filters. Try clearing the search box or selecting 'All Skills'.")
+        else:
+            for _, job in df_all_jobs.iterrows():
+                title    = job.get("Title", "Job Opening")
+                company  = job.get("Company", "")
+                location = job.get("Location", "")
+                sal      = job.get("salary_range") or job.get("Salary Range", "Salary N/A")
+                posted   = job.get("Posted", "")
+                desc     = str(job.get("Description", ""))[:220].replace("<", "&lt;").replace(">", "&gt;") + "..."
+                apply_url = str(job.get("Apply URL", "")).strip()
+
+                if not apply_url or apply_url == "nan":
+                    q = urllib.parse.quote_plus(f'{title} {company}')
+                    apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
+                    apply_label = "Search on LinkedIn"
+                    btn_style = "background:linear-gradient(135deg,#0077b5,#005582)"
+                else:
+                    apply_label = "Apply Now →"
+                    btn_style = "background:linear-gradient(135deg,#0d9488,#0891b2)"
+
+                sal_display = sal if sal != "0 - 0" else "Salary Undisclosed"
+                posted_html = f'<span style="color:#64748b;font-size:11px;">🗓 {posted}</span>' if posted and posted != "N/A" else ""
+
+                st.markdown(f"""
+                <div style="
+                    background:linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.95));
+                    border:1px solid rgba(14,165,233,0.12);
+                    border-left:3px solid #0d9488;
+                    border-radius:14px;
+                    padding:20px 24px;
+                    margin-bottom:16px;
+                    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+                ">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+                        <div style="flex:1;min-width:240px;">
+                            <div style="font-size:17px;font-weight:700;color:#f1f5f9;margin-bottom:6px;">{title}</div>
+                            <div style="font-size:13px;color:#94a3b8;margin-bottom:8px;">
+                                🏢 <strong style='color:#e2e8f0;'>{company}</strong> &nbsp;&middot;&nbsp; 📍 {location}
+                            </div>
+                            <div style="font-size:12px;color:#64748b;margin-bottom:10px;line-height:1.5;">{desc}</div>
+                            <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+                                <span style="font-size:13px;color:#34d399;font-weight:600;">💰 {sal_display}</span>
+                                {posted_html}
+                            </div>
+                        </div>
+                        <a href="{apply_url}" target="_blank" style="
+                            {btn_style};
+                            color:white;
+                            font-weight:700;
+                            font-size:13px;
+                            padding:11px 22px;
+                            border-radius:10px;
+                            text-decoration:none;
+                            white-space:nowrap;
+                            box-shadow:0 4px 15px rgba(13,148,136,0.35);
+                            display:inline-block;
+                            align-self:center;
+                        ">{apply_label}</a>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PAGE 5: MODEL DIAGNOSTICS & HISTORY
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "⚙️ Model Diagnostics":
     st.markdown('<div class="section-badge">MLOps Governance</div>', unsafe_allow_html=True)

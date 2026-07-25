@@ -18,6 +18,10 @@ import os, sys, json, urllib.parse
 from datetime import datetime
 from pathlib import Path
 
+# Ensure UTF-8 output encoding for Windows CMD
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 # Find project root (parent of scripts/)
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -36,6 +40,18 @@ p  = urllib.parse.quote_plus(pw)
 
 print(f"[{datetime.now():%H:%M:%S}] Connecting to MySQL at {h}/{d}...")
 engine = create_engine(f"mysql+pymysql://{u}:{p}@{h}/{d}")
+
+# 1. Trigger Model Retraining Pipeline on New Data
+print(f"[{datetime.now():%H:%M:%S}] 🤖 Executing ML Retraining pipeline on new data...")
+import subprocess
+retrain_res = subprocess.run(
+    [sys.executable, str(ROOT / "mlops" / "retrain.py"), "--force"],
+    cwd=ROOT, capture_output=True, text=True
+)
+if retrain_res.returncode == 0:
+    print(f"[{datetime.now():%H:%M:%S}] ✅ Model retrained & saved to models/xgboost_model.joblib")
+else:
+    print(f"[{datetime.now():%H:%M:%S}] ⚠️ Retrain warning: {retrain_res.stderr.strip()}")
 
 SNAP_PATH = ROOT / "data_exports" / "db_snapshot.json"
 with open(SNAP_PATH, "r", encoding="utf-8") as f:
@@ -80,11 +96,10 @@ with open(SNAP_PATH, "w", encoding="utf-8") as f:
 size_kb = SNAP_PATH.stat().st_size // 1024
 print(f"[{datetime.now():%H:%M:%S}] Snapshot saved ({size_kb} KB)")
 
-# Auto-commit and push to GitHub so Streamlit Cloud picks up new jobs
-print(f"[{datetime.now():%H:%M:%S}] Pushing updated snapshot to GitHub...")
-import subprocess
+# Auto-commit and push to GitHub so Streamlit Cloud picks up new jobs & retrained model
+print(f"[{datetime.now():%H:%M:%S}] Pushing updated snapshot and retrained XGBoost model to GitHub...")
 result = subprocess.run(
-    ["git", "add", "data_exports/db_snapshot.json"],
+    ["git", "add", "data_exports/db_snapshot.json", "models/xgboost_model.joblib"],
     cwd=ROOT, capture_output=True, text=True
 )
 result2 = subprocess.run(
