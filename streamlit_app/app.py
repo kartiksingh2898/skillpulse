@@ -345,6 +345,30 @@ def load_db_snapshot():
             return json.load(f)
     return {}
 
+def render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style):
+    posted_html = f'<span style="color:#64748b;font-size:11px;">🗓 {posted}</span>' if posted and posted != "N/A" else ""
+    card_html = (
+        f'<div style="background:linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.95));'
+        f'border:1px solid rgba(14,165,233,0.12);border-left:4px solid #0d9488;border-radius:14px;'
+        f'padding:20px 24px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,0.3);">'
+        f'<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">'
+        f'<div style="flex:1;min-width:240px;">'
+        f'<div style="font-size:17px;font-weight:700;color:#f1f5f9;margin-bottom:6px;">{title}</div>'
+        f'<div style="font-size:13px;color:#94a3b8;margin-bottom:8px;">🏢 <strong style="color:#e2e8f0;">{company}</strong> &nbsp;&middot;&nbsp; 📍 {location}</div>'
+        f'<div style="font-size:12px;color:#94a3b8;margin-bottom:10px;line-height:1.5;">{desc}</div>'
+        f'<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">'
+        f'<span style="font-size:13px;color:#34d399;font-weight:600;">💰 {sal_display}</span>'
+        f'{posted_html}'
+        f'</div>'
+        f'</div>'
+        f'<a href="{apply_url}" target="_blank" style="{btn_style};color:white;font-weight:700;'
+        f'font-size:13px;padding:11px 22px;border-radius:10px;text-decoration:none;white-space:nowrap;'
+        f'box-shadow:0 4px 15px rgba(13,148,136,0.35);display:inline-block;align-self:center;">{apply_label}</a>'
+        f'</div>'
+        f'</div>'
+    )
+    st.markdown(card_html, unsafe_allow_html=True)
+
 # ── Database & Fallback Query Helper ──────────────────────────────────────────
 def run_query(sql, params=None):
     if HAS_DB:
@@ -752,7 +776,6 @@ elif menu == "💰 Salary Predictor":
                     desc     = str(job.get("Description", ""))[:200].replace("<", "&lt;").replace(">", "&gt;") + "..."
                     apply_url = str(job.get("Apply URL", "")).strip()
 
-                    # Generate fallback search URLs if direct apply link missing
                     if not apply_url or apply_url == "nan":
                         q = quote_plus(f'{title} {company}')
                         apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
@@ -763,47 +786,7 @@ elif menu == "💰 Salary Predictor":
                         btn_style = "background:linear-gradient(135deg,#0d9488,#0891b2)"
 
                     sal_display = sal if sal != "0 - 0" else "Salary Undisclosed"
-                    posted_html = f'<span style="color:#64748b;font-size:11px;">🗓 {posted}</span>' if posted and posted != "N/A" else ""
-
-                    st.markdown(f"""
-                    <div style="
-                        background:linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.95));
-                        border:1px solid rgba(14,165,233,0.12);
-                        border-left:3px solid #0d9488;
-                        border-radius:14px;
-                        padding:18px 22px;
-                        margin-bottom:14px;
-                        position:relative;
-                        transition:all 0.2s;
-                    ">
-                        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
-                            <div style="flex:1;min-width:200px;">
-                                <div style="font-size:16px;font-weight:700;color:#f1f5f9;margin-bottom:4px;">{title}</div>
-                                <div style="font-size:13px;color:#94a3b8;margin-bottom:6px;">
-                                    🏢 <strong style='color:#cbd5e1;'>{company}</strong> &nbsp;&middot;&nbsp; 📍 {location}
-                                </div>
-                                <div style="font-size:12px;color:#64748b;margin-bottom:8px;">{desc}</div>
-                                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-                                    <span style="font-size:13px;color:#34d399;font-weight:600;">💰 {sal_display}</span>
-                                    {posted_html}
-                                </div>
-                            </div>
-                            <a href="{apply_url}" target="_blank" style="
-                                {btn_style};
-                                color:white;
-                                font-weight:700;
-                                font-size:13px;
-                                padding:10px 20px;
-                                border-radius:9px;
-                                text-decoration:none;
-                                white-space:nowrap;
-                                box-shadow:0 4px 15px rgba(13,148,136,0.35);
-                                display:inline-block;
-                                align-self:center;
-                            ">{apply_label}</a>
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 4: APPLY FOR JOBS PORTAL
@@ -874,46 +857,7 @@ elif menu == "💼 Apply for Jobs":
                     btn_style = "background:linear-gradient(135deg,#0d9488,#0891b2)"
 
                 sal_display = sal if sal != "0 - 0" else "Salary Undisclosed"
-                posted_html = f'<span style="color:#64748b;font-size:11px;">🗓 {posted}</span>' if posted and posted != "N/A" else ""
-
-                st.markdown(f"""
-                <div style="
-                    background:linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.95));
-                    border:1px solid rgba(14,165,233,0.12);
-                    border-left:3px solid #0d9488;
-                    border-radius:14px;
-                    padding:20px 24px;
-                    margin-bottom:16px;
-                    box-shadow:0 4px 20px rgba(0,0,0,0.3);
-                ">
-                    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
-                        <div style="flex:1;min-width:240px;">
-                            <div style="font-size:17px;font-weight:700;color:#f1f5f9;margin-bottom:6px;">{title}</div>
-                            <div style="font-size:13px;color:#94a3b8;margin-bottom:8px;">
-                                🏢 <strong style='color:#e2e8f0;'>{company}</strong> &nbsp;&middot;&nbsp; 📍 {location}
-                            </div>
-                            <div style="font-size:12px;color:#64748b;margin-bottom:10px;line-height:1.5;">{desc}</div>
-                            <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
-                                <span style="font-size:13px;color:#34d399;font-weight:600;">💰 {sal_display}</span>
-                                {posted_html}
-                            </div>
-                        </div>
-                        <a href="{apply_url}" target="_blank" style="
-                            {btn_style};
-                            color:white;
-                            font-weight:700;
-                            font-size:13px;
-                            padding:11px 22px;
-                            border-radius:10px;
-                            text-decoration:none;
-                            white-space:nowrap;
-                            box-shadow:0 4px 15px rgba(13,148,136,0.35);
-                            display:inline-block;
-                            align-self:center;
-                        ">{apply_label}</a>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 5: MODEL DIAGNOSTICS & HISTORY
