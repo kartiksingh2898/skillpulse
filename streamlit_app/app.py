@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 import streamlit as st
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
+import urllib.parse
 from urllib.parse import quote_plus
 
 # ── Page config ───────────────────────────────────────────────────────────────
@@ -753,7 +754,7 @@ elif menu == "💰 Salary Predictor":
 
                     # Generate fallback search URLs if direct apply link missing
                     if not apply_url or apply_url == "nan":
-                        q = urllib.parse.quote_plus(f'{title} {company}')
+                        q = quote_plus(f'{title} {company}')
                         apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
                         apply_label = "Search on LinkedIn"
                         btn_style = "background:linear-gradient(135deg,#0077b5,#005582)"
@@ -864,7 +865,7 @@ elif menu == "💼 Apply for Jobs":
                 apply_url = str(job.get("Apply URL", "")).strip()
 
                 if not apply_url or apply_url == "nan":
-                    q = urllib.parse.quote_plus(f'{title} {company}')
+                    q = quote_plus(f'{title} {company}')
                     apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
                     apply_label = "Search on LinkedIn"
                     btn_style = "background:linear-gradient(135deg,#0077b5,#005582)"
