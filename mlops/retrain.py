@@ -170,7 +170,14 @@ def retrain(engine):
     print(f"  Model     : {model_path}")
     print("="*60 + "\n")
 
-    return {"mae": mae, "rmse": rmse, "r2": r2, "raw_mae_usd": raw_mae}
+    return {
+        "mae": mae,
+        "rmse": rmse,
+        "r2": r2,
+        "raw_mae_usd": raw_mae,
+        "best_params": best_params,
+        "trained_at": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
 
 
 # ─────────────────────────────────────────────────────────────────
