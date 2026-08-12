@@ -153,9 +153,12 @@ def retrain(engine):
     joblib.dump(model, model_path)
     log.info("Model saved → %s", model_path)
 
-    # Log to MySQL
-    log_run(engine, mae, rmse, r2, raw_mae, best_params)
-    log.info("Run logged to MySQL model_runs table ✓")
+    # Log to MySQL if available
+    try:
+        log_run(engine, mae, rmse, r2, raw_mae, best_params)
+        log.info("Run logged to MySQL model_runs table ✓")
+    except Exception as e:
+        log.warning("MySQL DB logging skipped (cloud/offline mode): %s", e)
 
     print("\n" + "="*60)
     print("  SkillPulse — Auto-Retrain Complete")

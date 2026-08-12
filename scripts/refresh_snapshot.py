@@ -65,29 +65,34 @@ def get_url(raw):
         return ""
 
 print(f"[{datetime.now():%H:%M:%S}] Refreshing job listings with apply URLs...")
-new_jobs = {}
-for country in ["us", "gb", "in"]:
-    df = pd.read_sql(
-        """
-        SELECT jp.id, jp.title AS Title, jp.company AS Company, jp.location AS Location,
-               CONCAT(IFNULL(jp.salary_min,0),' - ',IFNULL(jp.salary_max,0)) AS salary_range,
-               jp.description AS Description, jp.posted_date, jp.raw_json
-        FROM job_postings jp
-        WHERE jp.country = %s
-        ORDER BY jp.id DESC
-        LIMIT 500
-        """,
-        engine, params=(country,)
-    )
-    df["Apply URL"] = df["raw_json"].apply(get_url)
-    df["Posted"]    = pd.to_datetime(df["posted_date"], errors="coerce").dt.strftime("%Y-%m-%d").fillna("N/A")
-    df = df.drop(columns=["raw_json", "posted_date", "id"], errors="ignore")
-    df = df.drop_duplicates(subset=["Title", "Company"]).head(250)
-    new_jobs[country] = df.to_dict(orient="records")
-    with_url = df["Apply URL"].astype(bool).sum()
-    print(f"  [{country.upper()}] {len(df)} jobs | {with_url} with direct apply URL")
+try:
+    new_jobs = {}
+    for country in ["us", "gb", "in"]:
+        df = pd.read_sql(
+            """
+            SELECT jp.id, jp.title AS Title, jp.company AS Company, jp.location AS Location,
+                   CONCAT(IFNULL(jp.salary_min,0),' - ',IFNULL(jp.salary_max,0)) AS salary_range,
+                   jp.description AS Description, jp.posted_date, jp.raw_json
+            FROM job_postings jp
+            WHERE jp.country = %s
+            ORDER BY jp.id DESC
+            LIMIT 500
+            """,
+            engine, params=(country,)
+        )
+        df["Apply URL"] = df["raw_json"].apply(get_url)
+        df["Posted"]    = pd.to_datetime(df["posted_date"], errors="coerce").dt.strftime("%Y-%m-%d").fillna("N/A")
+        df = df.drop(columns=["raw_json", "posted_date", "id"], errors="ignore")
+        df = df.drop_duplicates(subset=["Title", "Company"]).head(250)
+        new_jobs[country] = df.to_dict(orient="records")
+        with_url = df["Apply URL"].astype(bool).sum()
+        print(f"  [{country.upper()}] {len(df)} jobs | {with_url} with direct apply URL")
+    
+    if new_jobs:
+        snap["matching_jobs"] = new_jobs
+except Exception as e:
+    print(f"[{datetime.now():%H:%M:%S}] ⚠️ Local MySQL DB offline ({e}) — preserving snapshot jobs & updating refresh timestamp.")
 
-snap["matching_jobs"] = new_jobs
 snap["last_refreshed"] = datetime.now().strftime("%Y-%m-%d %H:%M")
 
 with open(SNAP_PATH, "w", encoding="utf-8") as f:

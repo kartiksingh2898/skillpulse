@@ -29,7 +29,7 @@ jobs:
 
       - name: 🤖 Retrain XGBoost Model & Refresh Telemetry
         run: |
-          python mlops/retrain.py --force
+          python scripts/refresh_snapshot.py
 
       - name: 🚀 Commit & Push updated model and snapshot to GitHub
         run: |
