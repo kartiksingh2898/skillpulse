@@ -356,12 +356,18 @@ except Exception:
 
 model, FEATURE_NAMES = get_prediction_model()
 
-@st.cache_data
-def load_db_snapshot():
-    if os.path.exists("data_exports/db_snapshot.json"):
-        with open("data_exports/db_snapshot.json", "r", encoding="utf-8") as f:
+@st.cache_data(ttl=60)
+def load_db_snapshot(file_mtime=0):
+    filepath = "data_exports/db_snapshot.json"
+    if os.path.exists(filepath):
+        with open(filepath, "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
+
+def get_snapshot():
+    filepath = "data_exports/db_snapshot.json"
+    mtime = os.path.getmtime(filepath) if os.path.exists(filepath) else 0
+    return load_db_snapshot(mtime)
 
 def format_salary(salary_raw, country_code="us"):
     if not salary_raw or str(salary_raw).strip() in ["", "None", "nan", "0 - 0", "0.0 - 0.0", "0.0"]:
@@ -426,7 +432,7 @@ def run_query(sql, params=None):
             pass
     
     # Fallback when database is unavailable (e.g. Streamlit Cloud)
-    snap = load_db_snapshot()
+    snap = get_snapshot()
     sql_lower = sql.strip().lower()
     model_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
     
@@ -475,13 +481,29 @@ def run_query(sql, params=None):
             {"Title": "Data Scientist", "Company": "Analytics AI", "Location": "New York, US", "Salary Range": "$130,000 - $160,000", "Description": "Python, SQL, AWS, and MLOps."}
         ])
     elif "model_runs" in sql_lower:
-        df_r = pd.DataFrame(snap.get("model_runs", []))
-        if not df_r.empty:
-            df_r = df_r.rename(columns={"trained_at": "Trained At", "log_mae": "Log MAE", "log_rmse": "Log RMSE"})
+        runs_list = snap.get("model_runs", [])
+        if runs_list:
+            df_r = pd.DataFrame(runs_list)
+            # Standardize all columns for SQL alias compatibility
+            df_r["id"] = df_r["RunID"] if "RunID" in df_r.columns else df_r.get("id", 1)
+            df_r["RunID"] = df_r["id"]
+            
+            df_r["trained_at"] = df_r["trained_at"] if "trained_at" in df_r.columns else df_r.get("Trained At", "")
+            df_r["Trained At"] = df_r["trained_at"]
+            
+            df_r["model_type"] = df_r["Type"] if "Type" in df_r.columns else df_r.get("model_type", "xgboost")
+            df_r["Type"] = df_r["model_type"]
+            
+            df_r["mae"] = df_r["log_mae"] if "log_mae" in df_r.columns else df_r.get("mae", 0.3)
+            df_r["Log MAE"] = df_r["mae"]
+            
+            df_r["rmse"] = df_r["log_rmse"] if "log_rmse" in df_r.columns else df_r.get("rmse", 0.6)
+            df_r["Log RMSE"] = df_r["rmse"]
+            
             return df_r
         return pd.DataFrame([{
-            "RunID": 18, "Trained At": "2026-07-23 16:07:11", "Type": "xgboost",
-            "Log MAE": 0.2999, "Log RMSE": 0.5998,
+            "id": 18, "RunID": 18, "trained_at": "2026-07-23 16:07:11", "Trained At": "2026-07-23 16:07:11",
+            "model_type": "xgboost", "Type": "xgboost", "mae": 0.2999, "Log MAE": 0.2999, "rmse": 0.5998, "Log RMSE": 0.5998,
             "notes": json.dumps({"best_params": {"n_estimators": 85, "max_depth": 7}, "r2": 0.1941, "raw_mae_usd": 30424.14})
         }])
     
@@ -497,7 +519,7 @@ def get_last_refreshed_time():
         except Exception:
             pass
 
-    snap_meta = load_db_snapshot()
+    snap_meta = get_snapshot()
     if snap_meta and snap_meta.get("last_refreshed"):
         lr = str(snap_meta.get("last_refreshed"))
         return lr if "IST" in lr else lr + " IST"
@@ -915,7 +937,7 @@ elif menu == "💼 Apply for Jobs":
     c_code = "in" if "India" in sel_country else ("us" if "United States" in sel_country else "gb")
     country_label = "India" if c_code == "in" else ("United States" if c_code == "us" else "United Kingdom")
 
-    snap = load_db_snapshot()
+    snap = get_snapshot()
     jobs_map = snap.get("matching_jobs", {})
     job_list = jobs_map.get(c_code, [])
     df_all_jobs = pd.DataFrame(job_list)
