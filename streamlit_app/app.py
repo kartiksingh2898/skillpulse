@@ -791,28 +791,31 @@ elif menu == "💰 Salary Predictor":
             pred_usd = float(np.expm1(pred_log))
 
             if country_key == "in":
-                pred_local = pred_usd * 86.5
+                # Market benchmark calibration for India (DB Mean: ₹14.3 Lakhs, Median: ₹12.5 Lakhs)
+                pred_local = (pred_usd / 135000.0) * 1430000.0
                 local_symbol = "₹"
                 local_suffix = "INR"
-                val_text = f"₹{pred_local/100000:.2f} Lakhs INR" if pred_local >= 100000 else f"₹{pred_local:,.2f} INR"
-                gauge_max = 4500000
+                val_text = f"₹{pred_local/100000.0:.2f} Lakhs INR"
+                gauge_max = 3500000
                 gauge_steps = [
-                    {"range": [300000, 1200000], "color": "#1f2937"},
-                    {"range": [1200000, 2500000], "color": "#111827"},
-                    {"range": [2500000, 4500000], "color": "#032b26"}
+                    {"range": [300000, 1000000], "color": "#1f2937"},
+                    {"range": [1000000, 2000000], "color": "#111827"},
+                    {"range": [2000000, 3500000], "color": "#032b26"}
                 ]
             elif country_key == "gb":
-                pred_local = pred_usd / 1.27
+                # Market benchmark calibration for UK (DB Mean: £67.5k, Median: £61.9k)
+                pred_local = (pred_usd / 135000.0) * 62500.0
                 local_symbol = "£"
                 local_suffix = "GBP"
                 val_text = f"£{pred_local:,.2f} GBP"
-                gauge_max = 180000
+                gauge_max = 140000
                 gauge_steps = [
-                    {"range": [25000, 70000], "color": "#1f2937"},
-                    {"range": [70000, 120000], "color": "#111827"},
-                    {"range": [120000, 180000], "color": "#032b26"}
+                    {"range": [25000, 55000], "color": "#1f2937"},
+                    {"range": [55000, 95000], "color": "#111827"},
+                    {"range": [95000, 140000], "color": "#032b26"}
                 ]
             else:
+                # Market benchmark calibration for US (DB Mean: $142.6k, Median: $135.4k)
                 pred_local = pred_usd
                 local_symbol = "$"
                 local_suffix = "USD"
