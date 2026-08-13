@@ -28,7 +28,7 @@
 }
 
 /* Dark Theme: "Midnight Glass" */
-[data-theme="dark"], .theme-dark {
+.theme-dark-override {
     --bg-color: #0B1120;
     --panel-bg: #111827;
     --text-primary: #f8fafc;
@@ -280,4 +280,24 @@ div.row-widget.stRadio > div {
     padding: 6px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
+}
+
+
+/* Hide or transparent header to avoid black bars */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
+/* Radio Button active color overrides */
+.stRadio div[data-testid="stMarkdownContainer"] p {
+    color: var(--text-primary);
+}
+div[role="radiogroup"] label > div:first-child {
+    background-color: var(--panel-bg);
+}
+div[role="radiogroup"] label[data-checked="true"] > div:first-child {
+    background-color: var(--accent-primary) !important;
+}
+div[role="radiogroup"] label[data-checked="true"] > div:first-child > div {
+    background-color: #ffffff !important;
 }

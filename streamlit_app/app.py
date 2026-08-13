@@ -29,7 +29,7 @@ try:
         css_content = f.read()
         
     if st.session_state.theme == 'dark':
-        css_content = css_content.replace('[data-theme="dark"], .theme-dark {', ':root {')
+        css_content = css_content.replace('.theme-dark-override {', ':root {')
         
     st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
 except Exception as e:
