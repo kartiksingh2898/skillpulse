@@ -232,15 +232,9 @@ def render_job_card(title, company, location, salary_str, posted, description, a
 
 # ── Sidebar Navigation ────────────────────────────────────────────────────────
 with st.sidebar:
-    theme_choice = st.radio("🌓 App Theme", ["Light (Airy)", "Dark (Midnight Glass)"], index=0 if st.session_state.theme == 'light' else 1, horizontal=True)
-    new_theme = "dark" if "Dark" in theme_choice else "light"
-    if new_theme != st.session_state.theme:
-        st.session_state.theme = new_theme
-        st.rerun()
-        
     st.markdown("""
         <div class="sidebar-brand">
-            <div class="brand-title">⚡ SkillPulse</div>
+            <div class="brand-title">SkillPulse Analytics</div>
             <div class="brand-sub">Job Market & MLOps Portal</div>
         </div>
     """, unsafe_allow_html=True)
@@ -267,6 +261,13 @@ with st.sidebar:
             <span class="stack-pill">GitHub Actions</span>
         </div>
     """, unsafe_allow_html=True)
+
+    st.markdown("---")
+    theme_choice = st.radio("🌓 App Theme", ["Light (Airy)", "Dark (Midnight Glass)"], index=0 if st.session_state.theme == 'light' else 1, horizontal=True)
+    new_theme = "dark" if "Dark" in theme_choice else "light"
+    if new_theme != st.session_state.theme:
+        st.session_state.theme = new_theme
+        st.rerun()
 
     # Dynamic last refreshed timestamp
     last_ref = get_last_refreshed_time()

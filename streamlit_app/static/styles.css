@@ -292,12 +292,17 @@ header[data-testid="stHeader"] {
 .stRadio div[data-testid="stMarkdownContainer"] p {
     color: var(--text-primary);
 }
+/* Unselected radio button dot (inner and outer ring) */
 div[role="radiogroup"] label > div:first-child {
     background-color: var(--panel-bg);
+    border-color: #94a3b8 !important; /* Gray outline when unselected */
 }
+/* Selected radio button outer ring */
 div[role="radiogroup"] label[data-checked="true"] > div:first-child {
-    background-color: var(--accent-primary) !important;
+    background-color: #4CC2FF !important;
+    border-color: #4CC2FF !important;
 }
+/* Selected radio button inner dot */
 div[role="radiogroup"] label[data-checked="true"] > div:first-child > div {
     background-color: #ffffff !important;
 }
