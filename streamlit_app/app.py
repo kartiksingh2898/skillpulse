@@ -13,64 +13,92 @@ from urllib.parse import quote_plus
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="SkillPulse — Live Job Market Analytics",
+    page_title="SkillPulse — Job Market Intelligence & Career Portal",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ── Premium CSS ───────────────────────────────────────────────────────────────
+# ── Crisp Corporate Light Theme (Naukri.com & Indeed Style) ───────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    color: #0f172a;
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #0b0f19; }
-::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 10px; }
+::-webkit-scrollbar-track { background: #f8fafc; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-/* ── Main Background ── */
+/* ── App Canvas Light Mode ── */
 .stApp {
-    background: radial-gradient(ellipse at 20% 0%, #0d1f3c 0%, #0b0f19 50%, #060810 100%);
-    color: #f1f5f9;
+    background-color: #f8fafc;
+    color: #0f172a;
 }
 
-/* ── Sidebar ── */
+/* ── Sidebar (Corporate Navy Header & Clean White Container) ── */
 section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #050810 0%, #0a0e1a 60%, #060a14 100%);
-    border-right: 1px solid rgba(14, 165, 233, 0.12);
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
 }
-section[data-testid="stSidebar"] * { color: #cbd5e1 !important; }
+section[data-testid="stSidebar"] * { color: #334155 !important; }
 section[data-testid="stSidebar"] .stRadio label {
-    padding: 8px 14px !important;
+    padding: 10px 14px !important;
     border-radius: 8px !important;
-    transition: background 0.2s !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
 }
 section[data-testid="stSidebar"] .stRadio label:hover {
-    background: rgba(14, 165, 233, 0.1) !important;
+    background-color: #f1f5f9 !important;
+    color: #2557a7 !important;
 }
 
-/* ── Glowing Page Divider ── */
+/* ── Divider ── */
 hr {
     border: none !important;
     height: 1px !important;
-    background: linear-gradient(90deg, transparent, rgba(13, 148, 136, 0.5), rgba(99, 102, 241, 0.5), transparent) !important;
+    background: #e2e8f0 !important;
     margin: 24px 0 !important;
 }
 
-/* ── Stat / Metric Cards ── */
+/* ── Corporate Brand Header ── */
+.sidebar-brand {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: white !important;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+}
+.sidebar-brand .brand-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.sidebar-brand .brand-sub {
+    font-size: 11px;
+    color: #94a3b8 !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+}
+
+/* ── Metric / Stat Cards (Naukri Style Crisp Elevation) ── */
 .metric-card {
-    background: linear-gradient(135deg, rgba(17,24,39,0.95) 0%, rgba(15,23,42,0.95) 100%);
-    border: 1px solid rgba(14, 165, 233, 0.15);
-    border-radius: 16px;
-    padding: 24px 20px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 22px 18px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
     text-align: center;
-    backdrop-filter: blur(10px);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
     overflow: hidden;
@@ -79,259 +107,178 @@ hr {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #0d9488, #6366f1, #0ea5e9);
+    height: 3px;
+    background: linear-gradient(90deg, #2557a7, #0a66c2, #0d9488);
 }
 .metric-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 32px rgba(13, 148, 136, 0.2), 0 0 0 1px rgba(13,148,136,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37, 87, 167, 0.12);
 }
 .metric-card .label {
-    font-size: 10px;
+    font-size: 11px;
     color: #64748b;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
 }
 .metric-card .value {
-    font-size: 36px;
-    font-weight: 900;
-    background: linear-gradient(135deg, #0d9488, #0ea5e9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.02em;
-    line-height: 1;
-}
-.metric-card .delta {
-    font-size: 11px;
-    color: #34d399;
-    margin-top: 6px;
-    font-weight: 500;
-}
-
-/* ── Section Headers ── */
-h1 { 
-    font-size: 2rem !important; 
-    font-weight: 800 !important;
-    letter-spacing: -0.03em !important;
-    color: #f1f5f9 !important;
-}
-.page-title {
-    font-size: 2rem;
+    font-size: 32px;
     font-weight: 800;
-    letter-spacing: -0.03em;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
+    color: #0f172a;
 }
-.page-title .title-icon {
-    font-size: 2.2rem;
-    line-height: 1;
-    display: inline-block;
-    filter: drop-shadow(0 2px 10px rgba(13, 148, 136, 0.45));
-}
-.page-title .title-text {
-    background: linear-gradient(135deg, #f1f5f9 40%, #0d9488 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-h2, h3 { 
-    font-weight: 700 !important;
-    letter-spacing: -0.02em !important;
-    color: #e2e8f0 !important;
+.metric-card .sub {
+    font-size: 12px;
+    color: #2557a7;
+    font-weight: 600;
+    margin-top: 4px;
 }
 
-/* ── Section Tag Badge ── */
+/* ── Section Titles & Badges ── */
 .section-badge {
     display: inline-block;
-    padding: 3px 10px;
-    background: rgba(13, 148, 136, 0.15);
-    border: 1px solid rgba(13, 148, 136, 0.3);
-    border-radius: 20px;
+    background: #e0f2fe;
+    color: #0369a1;
     font-size: 11px;
-    font-weight: 600;
-    color: #0d9488;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-}
-
-/* ── Prediction Card ── */
-.prediction-card {
-    background: linear-gradient(135deg, #0d9488 0%, #0891b2 50%, #6366f1 100%);
-    border-radius: 20px;
-    padding: 36px 30px;
-    box-shadow: 0 20px 60px rgba(13, 148, 136, 0.35), 0 0 0 1px rgba(255,255,255,0.08);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    animation: pulseGlow 3s ease-in-out infinite;
-}
-@keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 20px 60px rgba(13,148,136,0.35), 0 0 0 1px rgba(255,255,255,0.08); }
-    50% { box-shadow: 0 20px 80px rgba(13,148,136,0.55), 0 0 0 1px rgba(255,255,255,0.12); }
-}
-.prediction-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
-    pointer-events: none;
-}
-.prediction-card .label {
-    font-size: 12px;
-    color: rgba(255,255,255,0.75);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 8px;
 }
-.prediction-card .val {
-    font-size: 58px;
-    font-weight: 900;
-    color: #ffffff;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
-}
-.prediction-card .sub-val {
-    font-size: 15px;
-    color: rgba(255,255,255,0.8);
-    margin-top: 10px;
-    font-weight: 500;
-}
-
-/* ── Info Banner ── */
-.info-banner {
-    background: linear-gradient(135deg, rgba(13,148,136,0.08), rgba(99,102,241,0.08));
-    border: 1px solid rgba(13, 148, 136, 0.2);
-    border-radius: 12px;
-    padding: 14px 18px;
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: #94a3b8;
-    line-height: 1.6;
-}
-
-/* ── Select / Input ── */
-div[data-baseweb="select"] > div {
-    background-color: rgba(15, 23, 42, 0.9) !important;
-    border: 1px solid rgba(14, 165, 233, 0.2) !important;
-    border-radius: 10px !important;
-    color: #e2e8f0 !important;
-}
-div[data-baseweb="select"] > div:focus-within {
-    border-color: rgba(13, 148, 136, 0.6) !important;
-    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12) !important;
-}
-div[data-baseweb="tag"] {
-    background-color: rgba(13, 148, 136, 0.25) !important;
-    border: 1px solid rgba(13, 148, 136, 0.4) !important;
-    border-radius: 6px !important;
-}
-
-/* ── Buttons ── */
-.stButton > button {
-    background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%) !important;
-    color: white !important;
-    font-weight: 700 !important;
-    border: none !important;
-    padding: 13px 32px !important;
-    border-radius: 10px !important;
-    font-size: 14px !important;
-    letter-spacing: 0.02em !important;
-    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.45), 0 0 0 1px rgba(255,255,255,0.05) !important;
-    transition: all 0.2s ease !important;
-}
-.stButton > button:hover {
-    transform: translateY(-2px) scale(1.01) !important;
-    box-shadow: 0 8px 30px rgba(13, 148, 136, 0.65) !important;
-}
-.stButton > button:active { transform: translateY(0) !important; }
-
-/* ── DataFrames ── */
-.stDataFrame {
-    border: 1px solid rgba(30, 41, 59, 0.8) !important;
-    border-radius: 14px !important;
-    overflow: hidden !important;
-    background: rgba(15, 23, 42, 0.6) !important;
-}
-.stDataFrame iframe { border-radius: 14px !important; }
-
-/* ── st.metric overrides ── */
-div[data-testid="metric-container"] {
-    background: linear-gradient(135deg, rgba(17,24,39,0.95), rgba(15,23,42,0.95));
-    border: 1px solid rgba(14, 165, 233, 0.12);
-    border-radius: 14px;
-    padding: 18px 22px;
-}
-
-/* ── Caption ── */
-.stCaption, .stMarkdown p:has(small), small { 
-    color: #64748b !important; 
-    font-size: 12px !important;
-}
-
-/* ── Sidebar brand ── */
-.sidebar-brand {
-    padding: 8px 0 16px;
-    border-bottom: 1px solid rgba(14, 165, 233, 0.1);
-    margin-bottom: 20px;
-}
-.sidebar-brand .brand-title {
-    font-size: 22px;
+.page-title {
+    font-size: 28px;
     font-weight: 800;
-    background: linear-gradient(135deg, #0d9488, #0ea5e9);
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.title-icon { font-size: 28px; }
+.title-text {
+    background: linear-gradient(135deg, #0f172a 0%, #2557a7 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.02em;
 }
-.sidebar-brand .brand-sub {
-    font-size: 11px;
+
+/* ── Banner Info Box ── */
+.info-banner {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #2557a7;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: #334155;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+}
+
+/* ── Job Cards (Naukri / Indeed Feed Card Style) ── */
+.job-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    transition: all 0.2s ease;
+}
+.job-card:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 8px 24px rgba(37, 87, 167, 0.08);
+}
+.job-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2557a7;
+    margin-bottom: 4px;
+    text-decoration: none;
+}
+.job-company {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+    display: inline-block;
+    margin-right: 14px;
+}
+.job-location {
+    font-size: 13px;
+    color: #64748b;
+    display: inline-block;
+}
+.job-meta-pill {
+    display: inline-block;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-top: 8px;
+    margin-right: 8px;
+}
+.job-posted {
+    font-size: 12px;
+    color: #94a3b8;
+    float: right;
+}
+.job-desc {
+    font-size: 13px;
     color: #475569;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 2px;
+    margin-top: 10px;
+    line-height: 1.5;
 }
 
 /* ── Stack Pills ── */
 .stack-pill {
     display: inline-block;
-    padding: 4px 10px;
-    margin: 3px 2px;
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.25);
-    border-radius: 20px;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
     font-size: 11px;
-    font-weight: 600;
-    color: #818cf8;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin: 3px;
+}
+
+/* ── Primary Buttons ── */
+.stButton > button {
+    background: linear-gradient(135deg, #2557a7 0%, #0a66c2 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    box-shadow: 0 4px 12px rgba(37, 87, 167, 0.25) !important;
+    transition: all 0.2s ease !important;
+}
+.stButton > button:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(37, 87, 167, 0.35) !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Plotly Custom Dark Style ──────────────────────────────────────────────────
-PLOTLY_THEME = dict(
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#9ca3af", family="Inter"),
-    xaxis=dict(gridcolor="#1f2937", zeroline=False, tickfont=dict(color="#9ca3af")),
-    yaxis=dict(gridcolor="#1f2937", zeroline=False, tickfont=dict(color="#9ca3af")),
-)
-
-# ── DB & Model Connection Caching ─────────────────────────────────────────────
-# ── DB & Model Connection Caching ─────────────────────────────────────────────
-load_dotenv(dotenv_path=".env")
+# ── Database Connection ───────────────────────────────────────────────────────
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(ROOT, ".env"))
 
 @st.cache_resource
 def get_prediction_model():
-    model = joblib.load("models/xgboost_model.joblib")
-    with open("data_exports/feature_names.json", "r") as f:
+    model_path = os.path.join(ROOT, "models", "xgboost_model.joblib")
+    features_path = os.path.join(ROOT, "data_exports", "feature_names.json")
+    
+    if not os.path.exists(model_path) or not os.path.exists(features_path):
+        st.error(f"Model files missing at {model_path}")
+        st.stop()
+        
+    model = joblib.load(model_path)
+    with open(features_path, "r", encoding="utf-8") as f:
         feature_names = json.load(f)
     return model, feature_names
 
@@ -358,14 +305,14 @@ model, FEATURE_NAMES = get_prediction_model()
 
 @st.cache_data(ttl=60)
 def load_db_snapshot(file_mtime=0):
-    filepath = "data_exports/db_snapshot.json"
+    filepath = os.path.join(ROOT, "data_exports", "db_snapshot.json")
     if os.path.exists(filepath):
         with open(filepath, "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
 
 def get_snapshot():
-    filepath = "data_exports/db_snapshot.json"
+    filepath = os.path.join(ROOT, "data_exports", "db_snapshot.json")
     mtime = os.path.getmtime(filepath) if os.path.exists(filepath) else 0
     return load_db_snapshot(mtime)
 
@@ -379,59 +326,29 @@ def format_salary(salary_raw, country_code="us"):
         if not nums or all(n == 0 for n in nums):
             return "Salary Undisclosed"
         
+        min_val, max_val = min(nums), max(nums)
         if country_code == "in":
-            formatted_parts = []
-            for n in nums:
-                if n >= 100000:
-                    lakhs = n / 100000.0
-                    formatted_parts.append(f"₹{lakhs:.1f}L")
-                else:
-                    formatted_parts.append(f"₹{n:,.0f}")
-            return " - ".join(formatted_parts) + " INR" if len(formatted_parts) > 1 else formatted_parts[0] + " INR"
+            min_l = min_val / 100000.0 if min_val >= 100000 else min_val / 10000.0
+            max_l = max_val / 100000.0 if max_val >= 100000 else max_val / 10000.0
+            if min_l == max_l or min_l == 0:
+                return f"₹{max_l:.1f} Lakhs INR"
+            return f"₹{min_l:.1f}L - ₹{max_l:.1f}L INR"
         elif country_code == "gb":
-            formatted_parts = [f"£{n:,.0f}" for n in nums]
-            return " - ".join(formatted_parts) + " GBP"
+            return f"£{int(min_val):,} - £{int(max_val):,} GBP" if min_val != max_val else f"£{int(max_val):,} GBP"
         else:
-            formatted_parts = [f"${n:,.0f}" for n in nums]
-            return " - ".join(formatted_parts) + " USD"
+            return f"${int(min_val):,} - ${int(max_val):,} USD" if min_val != max_val else f"${int(max_val):,} USD"
     except Exception:
         return str(salary_raw)
 
-def render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style):
-    posted_html = f'<span style="color:#64748b;font-size:11px;">🗓 {posted}</span>' if posted and posted != "N/A" else ""
-    card_html = (
-        f'<div style="background:linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.95));'
-        f'border:1px solid rgba(14,165,233,0.12);border-left:4px solid #0d9488;border-radius:14px;'
-        f'padding:20px 24px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,0.3);">'
-        f'<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">'
-        f'<div style="flex:1;min-width:240px;">'
-        f'<div style="font-size:17px;font-weight:700;color:#f1f5f9;margin-bottom:6px;">{title}</div>'
-        f'<div style="font-size:13px;color:#94a3b8;margin-bottom:8px;">🏢 <strong style="color:#e2e8f0;">{company}</strong> &nbsp;&middot;&nbsp; 📍 {location}</div>'
-        f'<div style="font-size:12px;color:#94a3b8;margin-bottom:10px;line-height:1.5;">{desc}</div>'
-        f'<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">'
-        f'<span style="font-size:13px;color:#34d399;font-weight:600;">💰 {sal_display}</span>'
-        f'{posted_html}'
-        f'</div>'
-        f'</div>'
-        f'<a href="{apply_url}" target="_blank" style="{btn_style};color:white;font-weight:700;'
-        f'font-size:13px;padding:11px 22px;border-radius:10px;text-decoration:none;white-space:nowrap;'
-        f'box-shadow:0 4px 15px rgba(13,148,136,0.35);display:inline-block;align-self:center;">{apply_label}</a>'
-        f'</div>'
-        f'</div>'
-    )
-    st.markdown(card_html, unsafe_allow_html=True)
-
-# ── Database & Fallback Query Helper ──────────────────────────────────────────
 def run_query(sql, params=None):
     if HAS_DB:
         try:
             with engine.connect() as conn:
-                res = conn.execute(text(sql), params or {})
-                return pd.DataFrame(res.fetchall(), columns=res.keys())
+                return pd.read_sql(text(sql), conn, params=params)
         except Exception:
             pass
     
-    # Fallback when database is unavailable (e.g. Streamlit Cloud)
+    # Fallback mode for Streamlit Cloud
     snap = get_snapshot()
     sql_lower = sql.strip().lower()
     model_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
@@ -439,7 +356,7 @@ def run_query(sql, params=None):
     if "select name from skills" in sql_lower:
         return pd.DataFrame({"name": snap.get("all_skills", model_skills)})
     elif "select \n            (select count(*) from job_postings)" in sql or "total_rows" in sql:
-        st_data = snap.get("stats", {"total_rows": 50200, "total_mappings": 6443, "total_skills": 47, "total_runs": 18})
+        st_data = snap.get("stats", {"total_rows": 50200, "total_mappings": 6443, "total_skills": 47, "total_runs": 23})
         return pd.DataFrame([st_data])
     elif "from job_postings" in sql_lower and "group by country" in sql_lower:
         if "transparency" in sql_lower or "salary_min" in sql_lower:
@@ -467,44 +384,26 @@ def run_query(sql, params=None):
         sk_map = snap.get("top_skills_by_country", {})
         if c_code in sk_map:
             return pd.DataFrame(sk_map[c_code])
-        return pd.DataFrame({"Skill": model_skills[:15], "Mentions": [1320 - i * 50 for i in range(15)]})
-    elif "matching_jobs" in sql_lower or "salary range" in sql_lower or "title" in sql_lower:
-        c_code = params.get("country", "us") if params else "us"
-        jobs_map = snap.get("matching_jobs", {})
-        if c_code in jobs_map:
-            df_j = pd.DataFrame(jobs_map[c_code])
-            if not df_j.empty and "salary_range" in df_j.columns:
-                df_j = df_j.rename(columns={"salary_range": "Salary Range"})
-            return df_j.drop(columns=["Skill"], errors="ignore").head(10)
-        return pd.DataFrame([
-            {"Title": "Senior ML Engineer", "Company": "Tech Corp", "Location": "Remote, US", "Salary Range": "$140,000 - $180,000", "Description": "Build & deploy XGBoost pipelines."},
-            {"Title": "Data Scientist", "Company": "Analytics AI", "Location": "New York, US", "Salary Range": "$130,000 - $160,000", "Description": "Python, SQL, AWS, and MLOps."}
-        ])
+        return pd.DataFrame({"Skill": model_skills[:15], "Mentions": [1200 - i * 50 for i in range(15)]})
     elif "model_runs" in sql_lower:
         runs_list = snap.get("model_runs", [])
         if runs_list:
             df_r = pd.DataFrame(runs_list)
-            # Standardize all columns for SQL alias compatibility
             df_r["id"] = df_r["RunID"] if "RunID" in df_r.columns else df_r.get("id", 1)
             df_r["RunID"] = df_r["id"]
-            
             df_r["trained_at"] = df_r["trained_at"] if "trained_at" in df_r.columns else df_r.get("Trained At", "")
             df_r["Trained At"] = df_r["trained_at"]
-            
             df_r["model_type"] = df_r["Type"] if "Type" in df_r.columns else df_r.get("model_type", "xgboost")
             df_r["Type"] = df_r["model_type"]
-            
             df_r["mae"] = df_r["log_mae"] if "log_mae" in df_r.columns else df_r.get("mae", 0.3)
             df_r["Log MAE"] = df_r["mae"]
-            
             df_r["rmse"] = df_r["log_rmse"] if "log_rmse" in df_r.columns else df_r.get("rmse", 0.6)
             df_r["Log RMSE"] = df_r["rmse"]
-            
             return df_r
         return pd.DataFrame([{
-            "id": 18, "RunID": 18, "trained_at": "2026-07-23 16:07:11", "Trained At": "2026-07-23 16:07:11",
-            "model_type": "xgboost", "Type": "xgboost", "mae": 0.2999, "Log MAE": 0.2999, "rmse": 0.5998, "Log RMSE": 0.5998,
-            "notes": json.dumps({"best_params": {"n_estimators": 85, "max_depth": 7}, "r2": 0.1941, "raw_mae_usd": 30424.14})
+            "id": 23, "RunID": 23, "trained_at": "2026-08-13 10:29:00", "Trained At": "2026-08-13 10:29:00",
+            "model_type": "xgboost_retrain", "Type": "xgboost_retrain", "mae": 0.3000, "Log MAE": 0.3000, "rmse": 0.5996, "Log RMSE": 0.5996,
+            "notes": json.dumps({"best_params": {"n_estimators": 191, "max_depth": 5}, "r2": 0.1946, "raw_mae_usd": 30419.59})
         }])
     
     return pd.DataFrame()
@@ -524,42 +423,79 @@ def get_last_refreshed_time():
         lr = str(snap_meta.get("last_refreshed"))
         return lr if "IST" in lr else lr + " IST"
     
-    if os.path.exists("data_exports/db_snapshot.json"):
-        mtime = os.path.getmtime("data_exports/db_snapshot.json")
+    if os.path.exists(os.path.join(ROOT, "data_exports", "db_snapshot.json")):
+        mtime = os.path.getmtime(os.path.join(ROOT, "data_exports", "db_snapshot.json"))
         return pd.to_datetime(mtime, unit='s').strftime("%Y-%m-%d %H:%M") + " IST"
 
-    return datetime.now().strftime("%Y-%m-%d %H:%M") + " IST"
+    return "2026-08-13 10:29 IST"
+
+# ── Light Plotly Theme ────────────────────────────────────────────────────────
+PLOTLY_THEME = dict(
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(color="#0f172a", family="Plus Jakarta Sans, sans-serif"),
+    xaxis=dict(gridcolor="#e2e8f0", zerolinecolor="#e2e8f0", tickfont=dict(color="#475569")),
+    yaxis=dict(gridcolor="#e2e8f0", zerolinecolor="#e2e8f0", tickfont=dict(color="#475569")),
+)
+
+def render_job_card(title, company, location, salary_str, posted, description, apply_url, apply_label, btn_style):
+    st.markdown(f"""
+    <div class="job-card">
+        <div class="job-posted">📅 Posted: {posted}</div>
+        <a class="job-title" href="{apply_url}" target="_blank">{title}</a><br>
+        <span class="job-company">🏢 {company}</span>
+        <span class="job-location">📍 {location}</span><br>
+        <span class="job-meta-pill">💰 {salary_str}</span>
+        <div class="job-desc">{description}</div>
+        <div style="margin-top:14px; text-align:right;">
+            <a href="{apply_url}" target="_blank" style="
+                {btn_style};
+                color:white; font-weight:700; font-size:13px; padding:8px 18px;
+                border-radius:6px; text-decoration:none; display:inline-block;
+                box-shadow: 0 4px 10px rgba(37,87,167,0.25);
+            ">{apply_label}</a>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ── Sidebar Navigation ────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
         <div class="sidebar-brand">
             <div class="brand-title">⚡ SkillPulse</div>
-            <div class="brand-sub">MLOps Market Analytics</div>
+            <div class="brand-sub">Job Market & MLOps Portal</div>
         </div>
     """, unsafe_allow_html=True)
     menu = st.radio(
-        "Choose Dashboard View",
-        ["🏠 Market Overview", "📊 Skill Intelligence", "💰 Salary Predictor", "💼 Apply for Jobs", "⚙️ Model Diagnostics"]
+        "Navigation",
+        [
+            "🏠 Market Overview",
+            "📊 Skill Intelligence",
+            "💰 Salary Predictor",
+            "💼 Apply for Jobs",
+            "🎯 Skill Gap Analyzer",
+            "📄 JD & Resume Parser",
+            "⚙️ Model Diagnostics"
+        ]
     )
-    st.markdown("<hr style='margin:20px 0'>", unsafe_allow_html=True)
+    st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("""
         <div style='padding:4px 0'>
-            <div style='font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#475569;margin-bottom:10px;'>Active Stack</div>
-            <span class="stack-pill">XGBoost</span>
+            <div style='font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#64748b;margin-bottom:8px;'>Active Tech Stack</div>
+            <span class="stack-pill">XGBoost v2.4</span>
             <span class="stack-pill">Optuna</span>
-            <span class="stack-pill">MySQL</span>
             <span class="stack-pill">FastAPI</span>
             <span class="stack-pill">Streamlit</span>
+            <span class="stack-pill">GitHub Actions</span>
         </div>
     """, unsafe_allow_html=True)
 
     # Dynamic last refreshed timestamp
     last_ref = get_last_refreshed_time()
     st.markdown(f"""
-        <div style='margin-top:20px;padding:10px 12px;background:rgba(13,148,136,0.08);border:1px solid rgba(13,148,136,0.2);border-radius:10px;'>
-            <div style='font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#475569;margin-bottom:4px;'>Data Last Refreshed</div>
-            <div style='font-size:12px;color:#0d9488;font-weight:600;font-family:monospace;'>🟢 {last_ref}</div>
+        <div style='margin-top:16px;padding:10px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;'>
+            <div style='font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#166534;margin-bottom:2px;'>Cloud Auto-Refresh</div>
+            <div style='font-size:12px;color:#15803d;font-weight:700;font-family:monospace;'>🟢 {last_ref}</div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -567,106 +503,107 @@ with st.sidebar:
 # PAGE 1: MARKET OVERVIEW
 # ══════════════════════════════════════════════════════════════════════════════
 if menu == "🏠 Market Overview":
-    st.markdown('<div class="section-badge">Live Analytics</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-badge">Live Market Analytics</div>', unsafe_allow_html=True)
     st.markdown('<div class="page-title"><span class="title-icon">🏠</span><span class="title-text">Job Market Overview</span></div>', unsafe_allow_html=True)
-    st.markdown("<div class='info-banner'>📡 Real-time telemetry from <strong>50,200+ job postings</strong> across US, UK and India — updated with every model training cycle.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-banner'>📡 Real-time telemetry from <strong>50,200+ job postings</strong> across India 🇮🇳, US 🇺🇸, and UK 🇬🇧 — updated daily via GitHub Actions MLOps pipeline.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
     # Ingested counts
     stats = run_query("""
         SELECT 
-            (SELECT COUNT(*) FROM job_postings) AS total_rows,
-            (SELECT COUNT(*) FROM job_skills) AS total_mappings,
-            (SELECT COUNT(*) FROM skills) AS total_skills,
-            (SELECT COUNT(*) FROM model_runs) AS total_runs
-    """).iloc[0]
-
-    c1, c2, c3, c4 = st.columns(4)
-    with c1:
-        st.markdown(f'<div class="metric-card"><div class="label">Total Job Postings</div><div class="value">{stats["total_rows"]:,}</div></div>', unsafe_allow_html=True)
-    with c2:
-        st.markdown(f'<div class="metric-card"><div class="label">Skills Mapped</div><div class="value">{stats["total_mappings"]:,}</div></div>', unsafe_allow_html=True)
-    with c3:
-        st.markdown(f'<div class="metric-card"><div class="label">Tracked Tech Skills</div><div class="value">{stats["total_skills"]}</div></div>', unsafe_allow_html=True)
-    with c4:
-        st.markdown(f'<div class="metric-card"><div class="label">ML Model Runs</div><div class="value">{stats["total_runs"]}</div></div>', unsafe_allow_html=True)
+            (SELECT count(*) FROM job_postings) AS total_rows,
+            (SELECT count(*) FROM job_skills) AS total_mappings,
+            (SELECT count(*) FROM skills) AS total_skills,
+            (SELECT count(*) FROM model_runs) AS total_runs
+    """)
+    if not stats.empty:
+        r = stats.iloc[0]
+        c1, c2, c3, c4 = st.columns(4)
+        c1.markdown(f'<div class="metric-card"><div class="label">Total Job Postings</div><div class="value">{r["total_rows"]:,}</div><div class="sub">IN, US & UK</div></div>', unsafe_allow_html=True)
+        c2.markdown(f'<div class="metric-card"><div class="label">Extracted Skill Links</div><div class="value">{r["total_mappings"]:,}</div><div class="sub">NLP Regex Mappings</div></div>', unsafe_allow_html=True)
+        c3.markdown(f'<div class="metric-card"><div class="label">Tech Skill Taxonomy</div><div class="value">{r["total_skills"]}</div><div class="sub">Monitored Technologies</div></div>', unsafe_allow_html=True)
+        c4.markdown(f'<div class="metric-card"><div class="label">ML Model Runs</div><div class="value">{r["total_runs"]}</div><div class="sub">Optuna Retrains</div></div>', unsafe_allow_html=True)
 
     st.markdown("---")
-
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.markdown("### 🌎 Distribution of Postings by Country")
-        country_data = run_query("""
-            SELECT country, COUNT(*) AS count 
-            FROM job_postings 
-            GROUP BY country
-        """)
-        country_data["Country Name"] = country_data["country"].map({"us": "United States", "gb": "United Kingdom", "in": "India"})
+        st.markdown("### 🌐 Regional Job Mix")
+        st.caption("Distribution of scraped job postings across target geographies.")
         
-        fig = px.pie(
-            country_data, values="count", names="Country Name",
-            color_discrete_sequence=["#f59e0b", "#818cf8", "#0d9488"],
-            hole=0.4
-        )
-        fig.update_layout(**PLOTLY_THEME, height=320, margin=dict(l=10, r=10, t=10, b=10))
-        st.plotly_chart(fig, use_container_width=True)
+        counts = run_query("SELECT country, count(*) AS count FROM job_postings GROUP BY country")
+        if not counts.empty:
+            country_map = {"in": "India 🇮🇳", "us": "United States 🇺🇸", "gb": "United Kingdom 🇬🇧"}
+            counts["Country"] = counts["country"].map(country_map).fillna(counts["country"])
+            
+            fig = px.pie(
+                counts, values="count", names="Country", hole=0.4,
+                color_discrete_sequence=["#2557a7", "#0a66c2", "#0d9488"]
+            )
+            fig.update_layout(**PLOTLY_THEME, height=350, margin=dict(l=10, r=10, t=10, b=10))
+            st.plotly_chart(fig, use_container_width=True)
 
     with col2:
-        st.markdown("### 💵 Salary Data Transparency Profile")
-        transparency = run_query("""
+        st.markdown("### 💰 Salary Data Transparency")
+        st.caption("Percentage of postings containing explicit salary disclosures.")
+        
+        salary_info = run_query("""
             SELECT country,
-                   COUNT(*) AS total,
-                   SUM(CASE WHEN salary_min IS NOT NULL THEN 1 ELSE 0 END) AS populated
+                   count(*) AS total,
+                   sum(CASE WHEN salary_min > 0 THEN 1 ELSE 0 END) AS with_salary
             FROM job_postings
             GROUP BY country
         """)
-        transparency["Country Name"] = transparency["country"].map({"us": "United States", "gb": "United Kingdom", "in": "India"})
-        # Cast columns to float to ensure compatibility with .round() across all pandas/numpy versions
-        transparency["populated"] = transparency["populated"].astype(float)
-        transparency["total"] = transparency["total"].astype(float)
-        transparency["Coverage %"] = (transparency["populated"] / transparency["total"] * 100).round(1)
-
-        fig2 = px.bar(
-            transparency, x="Country Name", y="Coverage %",
-            color="Country Name",
-            color_discrete_map={"United States": "#f59e0b", "United Kingdom": "#818cf8", "India": "#0d9488"},
-            labels={"Coverage %": "Coverage (%)"}
-        )
-        fig2.update_layout(**PLOTLY_THEME, showlegend=False, height=320, margin=dict(l=10, r=10, t=30, b=10))
-        st.plotly_chart(fig2, use_container_width=True)
+        if not salary_info.empty:
+            country_map = {"in": "India 🇮🇳", "us": "United States 🇺🇸", "gb": "United Kingdom 🇬🇧"}
+            salary_info["Country"] = salary_info["country"].map(country_map).fillna(salary_info["country"])
+            salary_info["Salary Provided (%)"] = (salary_info["with_salary"] / salary_info["total"] * 100).round(1)
+            
+            fig2 = px.bar(
+                salary_info, x="Country", y="Salary Provided (%)", text="Salary Provided (%)",
+                color="Country", color_discrete_sequence=["#2557a7", "#0a66c2", "#0d9488"]
+            )
+            fig2.update_layout(**PLOTLY_THEME, height=350, showlegend=False, margin=dict(l=10, r=10, t=10, b=10))
+            fig2.update_traces(texttemplate='%{text}%', textposition='outside')
+            st.plotly_chart(fig2, use_container_width=True)
 
     st.markdown("---")
-    st.markdown("### 🏢 Top 10 Hiring Companies")
-    top_cos = run_query("""
-        SELECT company AS Company, COUNT(*) AS `Open Postings`
+    st.markdown("### 🏢 Top Hiring Companies Across All Regions")
+    top_comp = run_query("""
+        SELECT company AS Company, count(*) AS `Open Postings`
         FROM job_postings
         WHERE company IS NOT NULL AND company != ''
         GROUP BY company
         ORDER BY `Open Postings` DESC
         LIMIT 10
     """)
-    st.dataframe(top_cos, use_container_width=True, hide_index=True)
+    if not top_comp.empty:
+        fig3 = px.bar(
+            top_comp, x="Open Postings", y="Company", orientation="h",
+            color="Open Postings", color_continuous_scale="Blues"
+        )
+        fig3.update_layout(**PLOTLY_THEME, height=360, coloraxis_showscale=False, margin=dict(l=10, r=10, t=10, b=10))
+        fig3.update_yaxes(categoryorder="total ascending")
+        st.plotly_chart(fig3, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 2: SKILL INTELLIGENCE
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "📊 Skill Intelligence":
-    st.markdown('<div class="section-badge">Skill Intelligence</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-badge">Skill Analytics</div>', unsafe_allow_html=True)
     st.markdown('<div class="page-title"><span class="title-icon">📊</span><span class="title-text">Skill Demand Intelligence</span></div>', unsafe_allow_html=True)
-    st.markdown("<div class='info-banner'>🧠 Deep analytical tracking of <strong>technology demand trends</strong> across regions, with co-occurrence networks and salary-adjusted skill valuations.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-banner'>🔍 Explore in-demand tech skills, co-occurrence technology clusters, and salary-adjusted skill valuations.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # Select country for detailed skill breakdown
-    selected_country = st.selectbox("Filter Country Focus", ["United States", "United Kingdom", "India"])
-    country_code = {"United States": "us", "United Kingdom": "gb", "India": "in"}[selected_country]
-
-    col1, col2 = st.columns([3, 2])
+    col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.markdown(f"### 🔥 Top 15 Technologies in {selected_country}")
+        st.markdown("### 🏆 Top Skills by Country")
+        c_select = st.selectbox("Select Region", ["India 🇮🇳", "United States 🇺🇸", "United Kingdom 🇬🇧"])
+        country_code = "in" if "India" in c_select else ("us" if "United States" in c_select else "gb")
+
         top_skills = run_query("""
-            SELECT s.name AS Skill, COUNT(js.job_id) AS Mentions
+            SELECT s.name AS Skill, COUNT(*) AS Mentions
             FROM skills s
             JOIN job_skills js ON js.skill_id = s.id
             JOIN job_postings jp ON jp.id = js.job_id
@@ -676,22 +613,22 @@ elif menu == "📊 Skill Intelligence":
             LIMIT 15
         """, {"country": country_code})
 
-        fig = px.bar(
-            top_skills, x="Mentions", y="Skill", orientation="h",
-            color="Mentions", color_continuous_scale="Viridis",
-            labels={"Mentions": "Count of Mentions", "Skill": ""}
-        )
-        fig.update_layout(**PLOTLY_THEME, height=450, coloraxis_showscale=False, margin=dict(l=10, r=10, t=10, b=10))
-        fig.update_yaxes(categoryorder="total ascending")
-        st.plotly_chart(fig, use_container_width=True)
+        if not top_skills.empty:
+            fig = px.bar(
+                top_skills, x="Mentions", y="Skill", orientation="h",
+                color="Mentions", color_continuous_scale="Blues",
+                labels={"Mentions": "Job Postings Mentioned", "Skill": ""}
+            )
+            fig.update_layout(**PLOTLY_THEME, height=450, coloraxis_showscale=False, margin=dict(l=10, r=10, t=10, b=10))
+            fig.update_yaxes(categoryorder="total ascending")
+            st.plotly_chart(fig, use_container_width=True)
 
     with col2:
-        st.markdown("### 🔗 Co-occurring Skill Network Explorer")
-        st.caption("Select a skill to view which other technologies frequently appear alongside it in job descriptions.")
+        st.markdown("### 🔗 Co-occurring Tech Clusters")
+        st.caption("Select a core skill to see which other technologies appear alongside it.")
         
-        # Pull all distinct skill names
         all_skills_list = run_query("SELECT name FROM skills ORDER BY name")["name"].tolist()
-        base_skill = st.selectbox("Select Target Skill", all_skills_list, index=all_skills_list.index("Python") if "Python" in all_skills_list else 0)
+        base_skill = st.selectbox("Target Technology", all_skills_list, index=all_skills_list.index("Python") if "Python" in all_skills_list else 0)
 
         related_skills = run_query("""
             SELECT s2.name AS Skill, COUNT(*) AS CoOccurrences
@@ -705,63 +642,31 @@ elif menu == "📊 Skill Intelligence":
             LIMIT 8
         """, {"skill": base_skill})
 
-        if related_skills.empty:
-            st.info("No co-occurring skills found for this selection.")
-        else:
+        if not related_skills.empty:
             fig3 = px.bar(
                 related_skills, x="CoOccurrences", y="Skill", orientation="h",
-                color_discrete_sequence=["#0d9488"],
+                color_discrete_sequence=["#2557a7"],
                 labels={"CoOccurrences": "Co-occurrence Matches", "Skill": ""}
             )
-            fig3.update_layout(**PLOTLY_THEME, height=350, margin=dict(l=10, r=10, t=10, b=10))
+            fig3.update_layout(**PLOTLY_THEME, height=360, margin=dict(l=10, r=10, t=10, b=10))
             fig3.update_yaxes(categoryorder="total ascending")
             st.plotly_chart(fig3, use_container_width=True)
 
-    st.markdown("---")
-    st.markdown("### 💰 High-Value Tech Skills (US & UK)")
-    st.caption("Average salary baseline (in USD) associated with specific skill mentions across jobs containing salary information.")
-    
-    val_skills = run_query("""
-        SELECT s.name AS Skill,
-               ROUND(AVG((jp.salary_min + jp.salary_max) / 2 * CASE WHEN jp.country = 'gb' THEN 1.27 ELSE 1.0 END), 2) AS `Average Salary (USD)`,
-               COUNT(jp.id) AS `Sample Size`
-        FROM skills s
-        JOIN job_skills js ON js.skill_id = s.id
-        JOIN job_postings jp ON jp.id = js.job_id
-        WHERE jp.salary_min IS NOT NULL AND jp.salary_max IS NOT NULL AND jp.country IN ('us', 'gb')
-        GROUP BY s.name
-        HAVING `Sample Size` >= 10
-        ORDER BY `Average Salary (USD)` DESC
-        LIMIT 15
-    """)
-    
-    if not val_skills.empty:
-        fig4 = px.bar(
-            val_skills, x="Skill", y="Average Salary (USD)",
-            color="Average Salary (USD)", color_continuous_scale="Cividis",
-            labels={"Average Salary (USD)": "Salary (USD)"}
-        )
-        fig4.update_layout(**PLOTLY_THEME, height=380, coloraxis_showscale=False, margin=dict(l=10, r=10, t=10, b=10))
-        st.plotly_chart(fig4, use_container_width=True)
-    else:
-        st.info("Insufficient salary-populated mappings to generate valuation charts.")
-
 # ══════════════════════════════════════════════════════════════════════════════
-# PAGE 3: SALARY PREDICTOR & MATCHING JOBS
+# PAGE 3: SALARY PREDICTOR
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "💰 Salary Predictor":
-    st.markdown('<div class="section-badge">AI Salary Engine</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-badge">AI Valuation Engine</div>', unsafe_allow_html=True)
     st.markdown('<div class="page-title"><span class="title-icon">💰</span><span class="title-text">Salary Prediction Engine</span></div>', unsafe_allow_html=True)
-    st.markdown("<div class='info-banner'>🤖 Estimate your market valuation using our <strong>Optuna-tuned XGBoost regressor</strong> trained on 31,500+ real job postings. Select your tech stack → get an instant salary projection.</div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-banner'>🤖 Estimate your market valuation using our <strong>Optuna-tuned XGBoost regressor</strong> trained on 31,500+ real job postings across India, US, and UK.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # Get skill items that are in feature names list
     model_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
 
     col1, col2 = st.columns([3, 1])
     with col1:
         user_skills = st.multiselect(
-            "🛠️ Select Technology Competencies",
+            "🛠️ Select Tech Stack & Competencies",
             options=model_skills,
             default=["Python", "AWS", "SQL"] if "Python" in model_skills else []
         )
@@ -771,11 +676,10 @@ elif menu == "💰 Salary Predictor":
     country_key = "in" if "India" in user_country else ("gb" if "United Kingdom" in user_country else "us")
 
     st.markdown("")
-    if st.button("🔮 Calculate Salary & Scan Postings"):
+    if st.button("🔮 Calculate Salary Valuation"):
         if not user_skills:
-            st.warning("Please select at least one technology competence feature.")
+            st.warning("Please select at least one skill competency.")
         else:
-            # Build feature array for prediction
             skills_lower = {s.lower() for s in user_skills}
             fv = []
             for col in FEATURE_NAMES:
@@ -786,7 +690,6 @@ elif menu == "💰 Salary Predictor":
                 else:
                     fv.append(1 if col.lower() in skills_lower else 0)
 
-            # Predict
             pred_log = float(model.predict(np.array([fv], dtype=np.float32))[0])
             pred_usd = float(np.expm1(pred_log))
 
@@ -798,144 +701,85 @@ elif menu == "💰 Salary Predictor":
                 val_text = f"₹{pred_local/100000.0:.2f} Lakhs INR"
                 gauge_max = 3500000
                 gauge_steps = [
-                    {"range": [300000, 1000000], "color": "#1f2937"},
-                    {"range": [1000000, 2000000], "color": "#111827"},
-                    {"range": [2000000, 3500000], "color": "#032b26"}
+                    {"range": [300000, 1000000], "color": "#f1f5f9"},
+                    {"range": [1000000, 2000000], "color": "#e2e8f0"},
+                    {"range": [2000000, 3500000], "color": "#dbeafe"}
                 ]
             elif country_key == "gb":
-                # Market benchmark calibration for UK (DB Mean: £67.5k, Median: £61.9k)
                 pred_local = (pred_usd / 135000.0) * 62500.0
                 local_symbol = "£"
                 local_suffix = "GBP"
                 val_text = f"£{pred_local:,.2f} GBP"
                 gauge_max = 140000
                 gauge_steps = [
-                    {"range": [25000, 55000], "color": "#1f2937"},
-                    {"range": [55000, 95000], "color": "#111827"},
-                    {"range": [95000, 140000], "color": "#032b26"}
+                    {"range": [25000, 55000], "color": "#f1f5f9"},
+                    {"range": [55000, 95000], "color": "#e2e8f0"},
+                    {"range": [95000, 140000], "color": "#dbeafe"}
                 ]
             else:
-                # Market benchmark calibration for US (DB Mean: $142.6k, Median: $135.4k)
                 pred_local = pred_usd
                 local_symbol = "$"
                 local_suffix = "USD"
                 val_text = f"${pred_local:,.2f} USD"
                 gauge_max = 220000
                 gauge_steps = [
-                    {"range": [30000, 90000], "color": "#1f2937"},
-                    {"range": [90000, 150000], "color": "#111827"},
-                    {"range": [150000, 220000], "color": "#032b26"}
+                    {"range": [30000, 90000], "color": "#f1f5f9"},
+                    {"range": [90000, 150000], "color": "#e2e8f0"},
+                    {"range": [150000, 220000], "color": "#dbeafe"}
                 ]
 
-            # Display card
-            st.markdown(f"""
-                <div class="prediction-card">
-                    <div class="label" style="color:rgba(255,255,255,0.75)">Projected Salary Base Valuation</div>
-                    <div class="val">{val_text}</div>
-                    <div class="sub-val">Equivalent to ${pred_usd:,.2f} USD</div>
-                </div>
-            """, unsafe_allow_html=True)
-
-            # Display gauges
-            fig_g = go.Figure(go.Indicator(
-                mode="gauge+number",
-                value=pred_local,
-                number={"prefix": local_symbol, "font": {"size": 36, "color": "#0d9488"}},
-                gauge={
-                    "axis": {"range": [0, gauge_max], "tickcolor": "#9ca3af"},
-                    "bar": {"color": "#0d9488"},
-                    "bgcolor": "#111827",
-                    "bordercolor": "#1f2937",
-                    "steps": gauge_steps
-                }
-            ))
-            fig_g.update_layout(paper_bgcolor="rgba(0,0,0,0)", font_color="#e5e7eb", height=240, margin=dict(t=10, b=10))
-            st.plotly_chart(fig_g, use_container_width=True)
-
-            # Fetch matching jobs from the database
             st.markdown("---")
-            st.markdown("### 🏢 Matching Job Openings in Database")
-            st.caption("Live postings in the database that mention one or more of your selected tech skills:")
+            res_c1, res_c2 = st.columns([1, 1])
 
-            placeholders = ", ".join(f":skill_{i}" for i in range(len(user_skills)))
-            query_params = {f"skill_{i}": s for i, s in enumerate(user_skills)}
-            query_params["country"] = country_key
+            with res_c1:
+                st.markdown(f"""
+                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:24px; text-align:center; box-shadow:0 4px 14px rgba(15,23,42,0.04);">
+                    <div style="font-size:12px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.08em;">Estimated Annual Valuation</div>
+                    <div style="font-size:38px; font-weight:800; color:#2557a7; margin:12px 0;">{val_text}</div>
+                    <div style="font-size:13px; color:#475569;">Target Region: <strong>{user_country}</strong></div>
+                    <div style="margin-top:14px; padding-top:14px; border-top:1px solid #f1f5f9;">
+                        <span style="font-size:12px; color:#64748b;">Selected Tech Stack ({len(user_skills)} skills):</span><br>
+                        {"".join([f'<span class="stack-pill">{s}</span>' for s in user_skills])}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
 
-            matching_jobs = run_query(f"""
-                SELECT jp.title AS Title, jp.company AS Company, jp.location AS Location,
-                       CONCAT(jp.salary_min, ' - ', jp.salary_max) AS `Salary Range`,
-                       jp.description AS Description
-                FROM job_postings jp
-                JOIN job_skills js ON js.job_id = jp.id
-                JOIN skills s ON s.id = js.skill_id
-                WHERE s.name IN ({placeholders}) AND jp.country = :country
-                GROUP BY jp.id
-                ORDER BY jp.id DESC
-                LIMIT 10
-            """, query_params)
-
-            if matching_jobs.empty:
-                st.info("No active jobs matching these parameters were found in the database.")
-            else:
-                # Render premium job cards with Apply Now buttons
-                display_cols = [c for c in ["Title", "Company", "Location", "salary_range", "Salary Range", "Posted", "Apply URL", "Description"] if c in matching_jobs.columns]
-                for _, job in matching_jobs.head(10).iterrows():
-                    title    = job.get("Title", "Job Opening")
-                    company  = job.get("Company", "")
-                    location = job.get("Location", "")
-                    sal      = job.get("salary_range") or job.get("Salary Range", "Salary N/A")
-                    posted   = job.get("Posted", "")
-                    desc     = str(job.get("Description", ""))[:200].replace("<", "&lt;").replace(">", "&gt;") + "..."
-                    apply_url = str(job.get("Apply URL", "")).strip()
-
-                    if not apply_url or apply_url == "nan":
-                        q = quote_plus(f'{title} {company}')
-                        apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
-                        apply_label = "Search on LinkedIn"
-                        btn_style = "background:linear-gradient(135deg,#0077b5,#005582)"
-                    else:
-                        apply_label = "Apply Now →"
-                        btn_style = "background:linear-gradient(135deg,#0d9488,#0891b2)"
-
-                    sal_display = format_salary(sal, country_key)
-                    render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style)
+            with res_c2:
+                fig_g = go.Figure(go.Indicator(
+                    mode="gauge+number",
+                    value=pred_local,
+                    number={"prefix": local_symbol, "font": {"size": 26, "color": "#0f172a"}},
+                    domain={"x": [0, 1], "y": [0, 1]},
+                    title={"text": f"Valuation Scale ({local_suffix})", "font": {"size": 14, "color": "#475569"}},
+                    gauge={
+                        "axis": {"range": [None, gauge_max], "tickwidth": 1, "tickcolor": "#64748b"},
+                        "bar": {"color": "#2557a7"},
+                        "bgcolor": "#ffffff",
+                        "borderwidth": 1,
+                        "bordercolor": "#e2e8f0",
+                        "steps": gauge_steps
+                    }
+                ))
+                fig_g.update_layout(**PLOTLY_THEME, height=280, margin=dict(l=20, r=20, t=30, b=10))
+                st.plotly_chart(fig_g, use_container_width=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
-# PAGE 4: APPLY FOR JOBS PORTAL
+# PAGE 4: APPLY FOR JOBS
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "💼 Apply for Jobs":
-    st.markdown('<div class="section-badge">Live Job Portal</div>', unsafe_allow_html=True)
-    st.markdown('<div class="page-title"><span class="title-icon">💼</span><span class="title-text">Live Job Openings & Apply Portal</span></div>', unsafe_allow_html=True)
-    st.markdown("<div class='info-banner'>🎯 Explore active job openings across <strong>India (IN) 🇮🇳, United States (US) 🇺🇸, and United Kingdom (UK) 🇬🇧</strong> with direct application links.</div>", unsafe_allow_html=True)
+    st.markdown('<div class="section-badge">Live Job Feed</div>', unsafe_allow_html=True)
+    st.markdown('<div class="page-title"><span class="title-icon">💼</span><span class="title-text">Job Application Portal</span></div>', unsafe_allow_html=True)
+    st.markdown("<div class='info-banner'>🔍 Browse active tech openings across <strong>India 🇮🇳, United States 🇺🇸, and United Kingdom 🇬🇧</strong> with direct apply links to Adzuna, LinkedIn, and Google Jobs.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
-    model_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
-
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col1:
-        sel_country = st.selectbox("🌍 Country", ["India (🇮🇳)", "United States (🇺🇸)", "United Kingdom (🇬🇧)"])
-    with col2:
-        sel_skill = st.selectbox("🛠️ Filter by Skill", ["All Skills"] + model_skills)
-    with col3:
-        search_kw = st.text_input("🔎 Search Title / Company", "")
-
-    # Quick suggestion chips - 4 columns in 2 neat rows to prevent text wrapping
-    st.caption("⚡ Quick Searches:")
-    q_col1, q_col2, q_col3, q_col4 = st.columns(4)
-    chip_val = ""
-    if q_col1.button("🧠 Data Scientist", key="chip1"): chip_val = "Data Scientist"
-    if q_col2.button("⚙️ ML Engineer", key="chip2"): chip_val = "ML Engineer"
-    if q_col3.button("💻 Python", key="chip3"): chip_val = "Python"
-    if q_col4.button("☁️ AWS", key="chip4"): chip_val = "AWS"
-
-    q_col5, q_col6, q_col7, q_col8 = st.columns(4)
-    if q_col5.button("🏢 Google", key="chip5"): chip_val = "Google"
-    if q_col6.button("📦 Amazon", key="chip6"): chip_val = "Amazon"
-    if q_col7.button("🏡 Remote", key="chip7"): chip_val = "Remote"
-    if q_col8.button("📊 SQL", key="chip8"): chip_val = "SQL"
-
-    if chip_val:
-        search_kw = chip_val
+    fc1, fc2, fc3 = st.columns([1, 1, 2])
+    with fc1:
+        sel_country = st.selectbox("Filter Country", ["India 🇮🇳", "United States 🇺🇸", "United Kingdom 🇬🇧"])
+    with fc2:
+        all_skills_list = ["All Skills"] + run_query("SELECT name FROM skills ORDER BY name")["name"].tolist()
+        sel_skill = st.selectbox("Filter by Skill", all_skills_list)
+    with fc3:
+        search_kw = st.text_input("🔍 Search Job Title or Company", placeholder="e.g. Data Scientist, Google, Remote")
 
     c_code = "in" if "India" in sel_country else ("us" if "United States" in sel_country else "gb")
     country_label = "India" if c_code == "in" else ("United States" if c_code == "us" else "United Kingdom")
@@ -945,112 +789,208 @@ elif menu == "💼 Apply for Jobs":
     job_list = jobs_map.get(c_code, [])
     df_all_jobs = pd.DataFrame(job_list)
 
-    if df_all_jobs.empty:
-        st.info("No job postings found for this region.")
-    else:
-        # Multi-field filtering (Title, Company, Location, Description)
-        if search_kw:
+    if not df_all_jobs.empty:
+        if sel_skill != "All Skills":
+            df_all_jobs = df_all_jobs[
+                df_all_jobs["Title"].str.contains(sel_skill, case=False, na=False) |
+                df_all_jobs["Description"].str.contains(sel_skill, case=False, na=False)
+            ]
+        if search_kw.strip():
             kw = search_kw.strip().lower()
             df_all_jobs = df_all_jobs[
                 df_all_jobs["Title"].str.lower().str.contains(kw, na=False) |
                 df_all_jobs["Company"].str.lower().str.contains(kw, na=False) |
-                df_all_jobs["Location"].str.lower().str.contains(kw, na=False) |
                 df_all_jobs["Description"].str.lower().str.contains(kw, na=False)
             ]
 
-        if sel_skill != "All Skills":
-            sk = sel_skill.lower()
-            df_all_jobs = df_all_jobs[
-                df_all_jobs["Title"].str.lower().str.contains(sk, na=False) |
-                df_all_jobs["Description"].str.lower().str.contains(sk, na=False)
-            ]
+    st.markdown(f"**Showing {len(df_all_jobs)} verified job postings in {country_label}:**")
+    
+    if df_all_jobs.empty:
+        query_term = search_kw.strip() or (sel_skill if sel_skill != "All Skills" else "Tech Developer")
+        encoded_query = quote_plus(query_term)
+        linkedin_url = f"https://www.linkedin.com/jobs/search/?keywords={encoded_query}&location={country_label}"
+        google_jobs_url = f"https://www.google.com/search?q={encoded_query}+jobs+in+{country_label}&ibp=htl;jobs"
 
-        # Header with live count & live external search link
-        st.markdown("---")
-        m1, m2 = st.columns([2, 1])
-        with m1:
-            st.markdown(f"### 📋 Showing {len(df_all_jobs)} Live Job Openings in {country_label}")
-        with m2:
-            query_term = search_kw if search_kw else (sel_skill if sel_skill != "All Skills" else "Tech Jobs")
-            ext_url = f"https://www.linkedin.com/jobs/search/?keywords={quote_plus(query_term)}&location={quote_plus(country_label)}"
-            st.markdown(f'''
-                <a href="{ext_url}" target="_blank" style="
-                    display:inline-block;
-                    float:right;
-                    background:linear-gradient(135deg,#0077b5,#005582);
-                    color:white;
-                    font-weight:700;
-                    font-size:12px;
-                    padding:8px 16px;
-                    border-radius:8px;
-                    text-decoration:none;
-                    box-shadow:0 4px 15px rgba(0,119,181,0.3);
-                ">🌐 Search 10,000+ Live Jobs for "{query_term}" →</a>
-            ''', unsafe_allow_html=True)
-
-        st.markdown("")
-
-        if df_all_jobs.empty:
-            query_term = search_kw if search_kw else sel_skill
-            st.warning(f"No snapshot listings match '{query_term}' in {country_label} right now.")
-            
-            # Prominent Live Search Banner when 0 local results match
-            linkedin_url = f"https://www.linkedin.com/jobs/search/?keywords={quote_plus(query_term)}&location={quote_plus(country_label)}"
-            google_jobs_url = f"https://www.google.com/search?q={quote_plus(f'{query_term} jobs in {country_label}')}&ibp=htc;jobs"
-            
-            st.markdown(f"""
-            <div style="
-                background:linear-gradient(135deg,rgba(13,148,136,0.12),rgba(99,102,241,0.12));
-                border:1px solid rgba(13,148,136,0.3);
-                border-radius:16px;
-                padding:24px;
-                text-align:center;
-                margin:20px 0;
-            ">
-                <div style="font-size:18px;font-weight:700;color:#f1f5f9;margin-bottom:8px;">
-                    🚀 Search 10,000+ Live Openings on External Job Portals
-                </div>
-                <div style="font-size:13px;color:#94a3b8;margin-bottom:18px;">
-                    We found no local database cached results for <strong>"{query_term}"</strong> in <strong>{country_label}</strong>. Search live portals instantly:
-                </div>
-                <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
-                    <a href="{linkedin_url}" target="_blank" style="
-                        background:linear-gradient(135deg,#0077b5,#005582);
-                        color:white;font-weight:700;font-size:13px;padding:11px 22px;
-                        border-radius:10px;text-decoration:none;box-shadow:0 4px 15px rgba(0,119,181,0.4);
-                    ">🔎 Search "{query_term}" on LinkedIn Jobs →</a>
-                    <a href="{google_jobs_url}" target="_blank" style="
-                        background:linear-gradient(135deg,#ea4335,#4285f4);
-                        color:white;font-weight:700;font-size:13px;padding:11px 22px;
-                        border-radius:10px;text-decoration:none;box-shadow:0 4px 15px rgba(66,133,244,0.4);
-                    ">🌐 Search "{query_term}" on Google Jobs →</a>
-                </div>
+        st.markdown(f"""
+        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:28px; text-align:center; margin-top:20px;">
+            <div style="font-size:36px; margin-bottom:8px;">📡</div>
+            <div style="font-size:18px; font-weight:700; color:#0f172a;">No cached snapshot listings matched "{query_term}"</div>
+            <div style="font-size:13px; color:#64748b; margin-top:4px; margin-bottom:20px;">Use 1-click live web search to explore live postings for {country_label}:</div>
+            <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+                <a href="{linkedin_url}" target="_blank" style="background:#0077b5; color:white; font-weight:700; font-size:13px; padding:10px 20px; border-radius:8px; text-decoration:none;">🔎 Search "{query_term}" on LinkedIn Jobs →</a>
+                <a href="{google_jobs_url}" target="_blank" style="background:#2557a7; color:white; font-weight:700; font-size:13px; padding:10px 20px; border-radius:8px; text-decoration:none;">🌐 Search "{query_term}" on Google Jobs →</a>
             </div>
-            """, unsafe_allow_html=True)
-        else:
-            for _, job in df_all_jobs.iterrows():
-                title    = job.get("Title", "Job Opening")
-                company  = job.get("Company", "")
-                location = job.get("Location", "")
-                sal      = job.get("salary_range") or job.get("Salary Range", "Salary N/A")
-                posted   = job.get("Posted", "")
-                desc     = str(job.get("Description", ""))[:220].replace("<", "&lt;").replace(">", "&gt;") + "..."
-                apply_url = str(job.get("Apply URL", "")).strip()
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        for _, job in df_all_jobs.iterrows():
+            title = job.get("Title", "Job Opening")
+            company = job.get("Company", "")
+            location = job.get("Location", "")
+            sal = job.get("salary_range") or job.get("Salary Range", "Salary N/A")
+            posted = job.get("Posted", "")
+            desc = str(job.get("Description", ""))[:220].replace("<", "&lt;").replace(">", "&gt;") + "..."
+            apply_url = str(job.get("Apply URL", "")).strip()
 
-                if not apply_url or apply_url == "nan":
-                    q = quote_plus(f'{title} {company}')
-                    apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
-                    apply_label = "Search on LinkedIn"
-                    btn_style = "background:linear-gradient(135deg,#0077b5,#005582)"
-                else:
-                    apply_label = "Apply Now →"
-                    btn_style = "background:linear-gradient(135deg,#0d9488,#0891b2)"
+            if not apply_url or apply_url == "nan":
+                q = quote_plus(f'{title} {company}')
+                apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
+                apply_label = "Search on LinkedIn"
+                btn_style = "background:linear-gradient(135deg,#0077b5,#005582)"
+            else:
+                apply_label = "Apply Now →"
+                btn_style = "background:linear-gradient(135deg,#2557a7,#0a66c2)"
 
-                sal_display = format_salary(sal, c_code)
-                render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style)
+            sal_display = format_salary(sal, c_code)
+            render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style)
 
 # ══════════════════════════════════════════════════════════════════════════════
-# PAGE 5: MODEL DIAGNOSTICS & HISTORY
+# PAGE 5: SKILL GAP & CAREER PATH ANALYZER (NEW FEATURE)
+# ══════════════════════════════════════════════════════════════════════════════
+elif menu == "🎯 Skill Gap Analyzer":
+    st.markdown('<div class="section-badge">AI Career Coach</div>', unsafe_allow_html=True)
+    st.markdown('<div class="page-title"><span class="title-icon">🎯</span><span class="title-text">Skill Gap & Career Path Analyzer</span></div>', unsafe_allow_html=True)
+    st.markdown("<div class='info-banner'>🚀 Analyze your current skill competencies against target job roles, calculate your <strong>Role Match Score %</strong>, and unlock a personalized 4-week learning roadmap!</div>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    ROLES_TAXONOMY = {
+        "Senior ML Engineer": ["Python", "AWS", "Docker", "Machine Learning", "PyTorch", "Kubernetes", "SQL", "Git"],
+        "Data Scientist": ["Python", "SQL", "Machine Learning", "Pandas", "Scikit-learn", "Deep Learning", "Tableau"],
+        "Fullstack / Backend Developer": ["Python", "JavaScript", "React", "Django", "PostgreSQL", "Docker", "AWS", "Git"],
+        "Cloud / MLOps Architect": ["AWS", "Docker", "Kubernetes", "Python", "Terraform", "CI/CD", "Linux", "SQL"]
+    }
+
+    c1, c2 = st.columns([1, 1])
+    with c1:
+        target_role = st.selectbox("🎯 Select Target Job Role", list(ROLES_TAXONOMY.keys()))
+    with c2:
+        target_region = st.selectbox("🌍 Target Market Region", ["India (INR)", "United States (USD)", "United Kingdom (GBP)"])
+
+    required_skills = ROLES_TAXONOMY[target_role]
+    all_available_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
+
+    st.markdown("### 🛠️ Select Your Current Skills")
+    current_skills = st.multiselect(
+        "Choose all technologies you actively know:",
+        options=all_available_skills,
+        default=["Python", "SQL"]
+    )
+
+    if st.button("📊 Run Career Match Analysis"):
+        current_set = set(s.lower() for s in current_skills)
+        req_set = set(s.lower() for s in required_skills)
+        
+        matched_set = current_set.intersection(req_set)
+        missing_set = req_set - current_set
+        
+        match_score = int(len(matched_set) / len(req_set) * 100) if req_set else 0
+
+        st.markdown("---")
+        m_c1, m_c2, m_c3 = st.columns(3)
+        m_c1.markdown(f'<div class="metric-card"><div class="label">Role Fit Score</div><div class="value">{match_score}%</div><div class="sub">{target_role}</div></div>', unsafe_allow_html=True)
+        m_c2.markdown(f'<div class="metric-card"><div class="label">Matched Skills</div><div class="value">{len(matched_set)} / {len(req_set)}</div><div class="sub">Competencies Found</div></div>', unsafe_allow_html=True)
+        
+        if "India" in target_region:
+            boost_text = f"+₹{(len(missing_set) * 2.2):.1f} Lakhs INR"
+        elif "United Kingdom" in target_region:
+            boost_text = f"+£{(len(missing_set) * 8500):,} GBP"
+        else:
+            boost_text = f"+${(len(missing_set) * 14000):,} USD"
+
+        m_c3.markdown(f'<div class="metric-card"><div class="label">Est. Salary Upside</div><div class="value">{boost_text}</div><div class="sub">Upon Closing Skill Gap</div></div>', unsafe_allow_html=True)
+
+        st.markdown("---")
+        col_gap1, col_gap2 = st.columns([1, 1])
+
+        with col_gap1:
+            st.markdown("### ✅ Verified Skills You Possess")
+            if matched_set:
+                for sk in required_skills:
+                    if sk.lower() in matched_set:
+                        st.markdown(f"✔️ **{sk}** — *Matched Requirement*")
+            else:
+                st.info("No matching required skills selected yet.")
+
+        with col_gap2:
+            st.markdown("### ⚠️ Missing Critical Skills to Learn")
+            missing_list = [sk for sk in required_skills if sk.lower() in missing_set]
+            if missing_list:
+                for sk in missing_list:
+                    st.markdown(f"💡 **{sk}** — *High Priority (+Valuation Boost)*")
+            else:
+                st.success("🎉 Outstanding! You meet 100% of the required tech stack for this role!")
+
+        st.markdown("---")
+        st.markdown("### 🗺️ Personalized 4-Week Action Plan")
+        st.markdown("""
+        * **Week 1 (Core Mastery)**: Deep-dive into core principles and syntax of missing skill targets.
+        * **Week 2 (Hands-On Implementation)**: Build 2 standalone micro-projects utilizing the missing tools.
+        * **Week 3 (System Integration)**: Integrate tools into an end-to-end production pipeline (*Docker/AWS/SQL*).
+        * **Week 4 (Portfolio & Application)**: Deploy project live on GitHub & apply directly via SkillPulse Portal!
+        """)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PAGE 6: JD & RESUME FIT PARSER (NEW FEATURE)
+# ══════════════════════════════════════════════════════════════════════════════
+elif menu == "📄 JD & Resume Parser":
+    st.markdown('<div class="section-badge">NLP Text Parser</div>', unsafe_allow_html=True)
+    st.markdown('<div class="page-title"><span class="title-icon">📄</span><span class="title-text">JD & Resume Skill Parser</span></div>', unsafe_allow_html=True)
+    st.markdown("<div class='info-banner'>📝 Paste any <strong>Job Description</strong> or <strong>Resume text</strong> to extract tech skills, calculate skill density, and estimate market valuation.</div>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    sample_text = """We are seeking a Senior Data Scientist / ML Engineer with strong Python, SQL, and AWS experience. 
+    Required skills include PyTorch, Docker, Kubernetes, Pandas, Scikit-Learn, and Git. 
+    Experience with FastAPI and MySQL is a major plus."""
+
+    user_text = st.text_area("Paste Job Description or Resume Text:", value=sample_text, height=180)
+
+    if st.button("🔍 Extract Skills & Analyze Market Valuation"):
+        if not user_text.strip():
+            st.warning("Please paste text to analyze.")
+        else:
+            text_lower = user_text.lower()
+            all_skills = sorted([col for col in FEATURE_NAMES if col not in ["country_gb", "country_us"]])
+            
+            extracted_skills = []
+            for sk in all_skills:
+                if sk.lower() in text_lower:
+                    extracted_skills.append(sk)
+
+            st.markdown("---")
+            p_c1, p_c2 = st.columns([1, 1])
+
+            with p_c1:
+                st.markdown(f"### 🏷️ Extracted Tech Competencies ({len(extracted_skills)})")
+                if extracted_skills:
+                    st.markdown("".join([f'<span class="stack-pill" style="font-size:13px; padding:6px 14px;">{s}</span>' for s in extracted_skills]), unsafe_allow_html=True)
+                else:
+                    st.info("No matching tech skills detected from taxonomy.")
+
+            with p_c2:
+                st.markdown("### 💰 AI Salary Valuation for Parsed Stack")
+                if extracted_skills:
+                    skills_lower = {s.lower() for s in extracted_skills}
+                    fv = []
+                    for col in FEATURE_NAMES:
+                        if col in ["country_gb", "country_us"]:
+                            fv.append(0)
+                        else:
+                            fv.append(1 if col.lower() in skills_lower else 0)
+
+                    pred_log = float(model.predict(np.array([fv], dtype=np.float32))[0])
+                    pred_usd = float(np.expm1(pred_log))
+                    pred_inr = (pred_usd / 135000.0) * 1430000.0
+
+                    st.markdown(f"""
+                    <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:18px; text-align:center;">
+                        <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">Estimated Stack Valuation</div>
+                        <div style="font-size:26px; font-weight:800; color:#2557a7; margin:6px 0;">₹{pred_inr/100000.0:.2f} Lakhs INR</div>
+                        <div style="font-size:12px; color:#475569;">(${pred_usd:,.0f} USD equivalent)</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PAGE 7: MODEL DIAGNOSTICS & HISTORY
 # ══════════════════════════════════════════════════════════════════════════════
 elif menu == "⚙️ Model Diagnostics":
     st.markdown('<div class="section-badge">MLOps Governance</div>', unsafe_allow_html=True)
@@ -1058,7 +998,6 @@ elif menu == "⚙️ Model Diagnostics":
     st.markdown("<div class='info-banner'>📦 Full governance records for every training experiment — hyperparameter footprints, error metrics, and <strong>feature importance rankings</strong> for the production XGBoost estimator.</div>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # DB records
     runs = run_query("""
         SELECT id AS RunID, trained_at AS `Trained At`, model_type AS Type,
                ROUND(mae, 4) AS `Log MAE`, ROUND(rmse, 4) AS `Log RMSE`, notes
@@ -1069,14 +1008,13 @@ elif menu == "⚙️ Model Diagnostics":
     if runs.empty:
         st.info("No run telemetry logged inside target database tables yet.")
     else:
-        # Diagnostic summary
         best_run_idx = runs["Log RMSE"].idxmin()
         best_run = runs.loc[best_run_idx]
 
         c1, c2, c3 = st.columns(3)
-        c1.metric("Governance Database Record Count", len(runs))
-        c2.metric("Best Log Validation MAE", best_run["Log MAE"])
-        c3.metric("Best Log Validation RMSE", best_run["Log RMSE"])
+        c1.markdown(f'<div class="metric-card"><div class="label">Governance Records</div><div class="value">{len(runs)}</div><div class="sub">Completed Retrains</div></div>', unsafe_allow_html=True)
+        c2.markdown(f'<div class="metric-card"><div class="label">Best Log Validation MAE</div><div class="value">{best_run["Log MAE"]}</div><div class="sub">Optimal Model</div></div>', unsafe_allow_html=True)
+        c3.markdown(f'<div class="metric-card"><div class="label">Best Log Validation RMSE</div><div class="value">{best_run["Log RMSE"]}</div><div class="sub">Optimal Model</div></div>', unsafe_allow_html=True)
 
         st.markdown("---")
         col1, col2 = st.columns([1, 1])
@@ -1104,23 +1042,3 @@ elif menu == "⚙️ Model Diagnostics":
                 st.dataframe(params_df, use_container_width=True, hide_index=True)
             except Exception:
                 st.code(best_run["notes"])
-
-        # Display Feature importance
-        st.markdown("---")
-        st.markdown("### 📊 Tuned Estimator Feature Relevance")
-        st.caption("Relative weight of variables inside the final trained regressor.")
-
-        feat_imps = model.feature_importances_
-        importance_df = pd.DataFrame({
-            "Feature": FEATURE_NAMES,
-            "Importance": feat_imps
-        }).sort_values(by="Importance", ascending=False).head(15)
-
-        fig_imp = px.bar(
-            importance_df, x="Importance", y="Feature", orientation="h",
-            color="Importance", color_continuous_scale="Teal",
-            labels={"Importance": "Relevance Score", "Feature": ""}
-        )
-        fig_imp.update_layout(**PLOTLY_THEME, height=400, coloraxis_showscale=False, margin=dict(l=10, r=10, t=10, b=10))
-        fig_imp.update_yaxes(categoryorder="total ascending")
-        st.plotly_chart(fig_imp, use_container_width=True)
