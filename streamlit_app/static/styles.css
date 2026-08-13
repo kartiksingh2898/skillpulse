@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   THEME VARIABLES
+   ========================================================================== */
+
+/* Light Theme: "Airy" */
+:root {
+    --bg-color: #f8fafc;
+    --panel-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --accent-primary: #2557a7; /* Darker blue for contrast */
+    --accent-secondary: #059669; /* Emerald */
+    --border-color: rgba(15, 23, 42, 0.08);
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.03);
+    --shadow-hover: 0 8px 24px rgba(37, 87, 167, 0.08);
+    --gradient-text: linear-gradient(135deg, #0f172a 0%, #2557a7 100%);
+    --pill-bg: #f1f5f9;
+    --pill-border: #cbd5e1;
+    --info-banner-bg: #ffffff;
+    --info-banner-border: #2557a7;
+    --success-bg: #dcfce7;
+    --success-text: #15803d;
+}
+
+/* Dark Theme: "Midnight Glass" */
+[data-theme="dark"], .theme-dark {
+    --bg-color: #0B1120;
+    --panel-bg: #111827;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-primary: #3B82F6; /* Cyber Blue */
+    --accent-secondary: #10B981; /* Neon Emerald */
+    --border-color: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(17, 24, 39, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 8px 24px rgba(59, 130, 246, 0.15);
+    --gradient-text: linear-gradient(135deg, #f8fafc 0%, #3B82F6 100%);
+    --pill-bg: rgba(255, 255, 255, 0.05);
+    --pill-border: rgba(255, 255, 255, 0.1);
+    --info-banner-bg: #111827;
+    --info-banner-border: #3B82F6;
+    --success-bg: rgba(16, 185, 129, 0.1);
+    --success-text: #10B981;
+}
+
+/* ==========================================================================
+   GLOBAL STYLES
+   ========================================================================== */
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+}
+
+.stApp {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 10px; }
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: var(--panel-bg);
+    border-right: 1px solid var(--border-color);
+}
+section[data-testid="stSidebar"] * {
+    color: var(--text-primary) !important;
+}
+
+/* Headings (Outfit font) */
+h1, h2, h3, .page-title {
+    font-family: 'Outfit', sans-serif;
+}
+
+.gradient-text {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   COMPONENTS (GLASSMORPHISM)
+   ========================================================================== */
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Metric Cards */
+.metric-card {
+    padding: 24px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    opacity: 0.8;
+}
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+.metric-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+}
+.metric-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+.metric-sub {
+    font-size: 13px;
+    color: var(--accent-primary);
+    font-weight: 600;
+    margin-top: 6px;
+}
+
+/* Job Cards */
+.job-card {
+    padding: 24px;
+    margin-bottom: 16px;
+}
+.job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent-primary);
+}
+.job-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin-bottom: 6px;
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.15s ease;
+}
+.job-title:hover {
+    color: var(--accent-secondary);
+}
+.job-company {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-right: 14px;
+}
+.job-location {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+.job-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 12px;
+    line-height: 1.6;
+}
+
+/* Badges & Pills */
+.stack-pill {
+    display: inline-block;
+    background: var(--pill-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--pill-border);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 8px;
+    margin: 4px;
+    transition: background 0.15s ease;
+}
+.stack-pill:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--accent-primary);
+}
+
+.success-pill {
+    display: inline-block;
+    background: var(--success-bg);
+    color: var(--success-text);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+/* Info Banner */
+.info-banner {
+    background: var(--info-banner-bg);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--info-banner-border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Primary Button Override */
+.stButton > button {
+    background: var(--accent-primary) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+    transition: all 0.2s ease !important;
+}
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3) !important;
+    background: var(--accent-secondary) !important;
+}
