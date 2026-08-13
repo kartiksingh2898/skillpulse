@@ -6,21 +6,21 @@
 
 /* Light Theme: "Airy" */
 :root {
-    --bg-color: #f8fafc;
+    --bg-color: #F6F4EB;
     --panel-bg: #ffffff;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #64748b;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --text-muted: #6b7280;
     --accent-primary: #2557a7; /* Darker blue for contrast */
     --accent-secondary: #059669; /* Emerald */
-    --border-color: rgba(15, 23, 42, 0.08);
+    --border-color: #d1d5db;
     --glass-bg: rgba(255, 255, 255, 0.85);
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.03);
-    --shadow-hover: 0 8px 24px rgba(37, 87, 167, 0.08);
-    --gradient-text: linear-gradient(135deg, #0f172a 0%, #2557a7 100%);
-    --pill-bg: #f1f5f9;
-    --pill-border: #cbd5e1;
+    --glass-border: #e5e7eb;
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --gradient-text: linear-gradient(135deg, #1f2937 0%, #2557a7 100%);
+    --pill-bg: #f3f4f6;
+    --pill-border: #d1d5db;
     --info-banner-bg: #ffffff;
     --info-banner-border: #2557a7;
     --success-bg: #dcfce7;
