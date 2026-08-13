@@ -23,15 +23,10 @@ st.set_page_config(
 if 'theme' not in st.session_state:
     st.session_state.theme = 'light'
 
-# Inject Custom CSS
+# Inject Custom CSS (theme handled via CSS custom properties + prefers-color-scheme)
 try:
     with open("streamlit_app/static/styles.css", "r", encoding="utf-8") as f:
-        css_content = f.read()
-        
-    if st.session_state.theme == 'dark':
-        css_content = css_content.replace('.theme-dark-override {', ':root {')
-        
-    st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 except Exception as e:
     print(f"Could not load CSS: {e}")
 
@@ -201,14 +196,27 @@ def get_last_refreshed_time():
 
     return "2026-08-13 10:29 IST"
 
-# ── Light Plotly Theme ────────────────────────────────────────────────────────
-PLOTLY_THEME = dict(
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#0f172a", family="Plus Jakarta Sans, sans-serif"),
-    xaxis=dict(gridcolor="#e2e8f0", zerolinecolor="#e2e8f0", tickfont=dict(color="#475569")),
-    yaxis=dict(gridcolor="#e2e8f0", zerolinecolor="#e2e8f0", tickfont=dict(color="#475569")),
-)
+# ── Theme-Aware Plotly Helper ────────────────────────────────────────
+CHART_PALETTE = ["#4F6FFF", "#00B37E", "#F59E0B", "#8B5CF6", "#06B6D4", "#EC4899"]
+
+def get_plotly_theme():
+    is_dark = st.session_state.get('theme', 'light') == 'dark'
+    font_color     = "#E6EDF3" if is_dark else "#1A1D23"
+    muted_color    = "#8B949E" if is_dark else "#8A92A3"
+    grid_color     = "#30363D" if is_dark else "#E8E6DF"
+    zeroline_color = "#484F58" if is_dark else "#C9C6BC"
+    return dict(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color=font_color, family="Inter, sans-serif", size=12),
+        xaxis=dict(gridcolor=grid_color, zerolinecolor=zeroline_color,
+                   tickfont=dict(color=muted_color, size=11), linecolor=grid_color),
+        yaxis=dict(gridcolor=grid_color, zerolinecolor=zeroline_color,
+                   tickfont=dict(color=muted_color, size=11), linecolor=grid_color),
+        legend=dict(font=dict(color=font_color, size=11)),
+    )
+
+PLOTLY_THEME = get_plotly_theme()
 
 def render_job_card(title, company, location, salary_str, posted, description, apply_url, apply_label, btn_style):
     st.markdown(f"""
@@ -272,9 +280,9 @@ with st.sidebar:
     # Dynamic last refreshed timestamp
     last_ref = get_last_refreshed_time()
     st.markdown(f"""
-        <div style='margin-top:16px;padding:10px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;'>
-            <div style='font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#166534;margin-bottom:2px;'>Cloud Auto-Refresh</div>
-            <div style='font-size:12px;color:#15803d;font-weight:700;font-family:monospace;'>🟢 {last_ref}</div>
+        <div class="refresh-box">
+            <div class="refresh-label">🟢 Auto-Refresh</div>
+            <div class="refresh-time">{last_ref}</div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -616,11 +624,11 @@ elif menu == "💼 Apply for Jobs":
             if not apply_url or apply_url == "nan":
                 q = quote_plus(f'{title} {company}')
                 apply_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
-                apply_label = "Search on LinkedIn"
-                btn_style = "background:linear-gradient(135deg,#0077b5,#005582)"
+                apply_label = "Search on LinkedIn →"
+                btn_style = "background:#0A66C2"
             else:
                 apply_label = "Apply Now →"
-                btn_style = "background:linear-gradient(135deg,#2557a7,#0a66c2)"
+                btn_style = "background:#4F6FFF"
 
             sal_display = format_salary(sal, c_code)
             render_job_card(title, company, location, sal_display, posted, desc, apply_url, apply_label, btn_style)
