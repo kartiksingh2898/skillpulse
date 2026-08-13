@@ -775,3 +775,260 @@ div[role="radiogroup"] label[data-checked="true"] > div:first-child > div {
   padding: 2px 9px;
   border-radius: var(--sp-radius-pill);
 }
+
+/* =========================================================
+   SIDEBAR BRAND MARK — logo icon + wordmark
+   ========================================================= */
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px 18px;
+  border-bottom: 1px solid var(--sp-border-subtle);
+  margin-bottom: 4px;
+}
+.brand-mark {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  background: var(--sp-accent);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  box-shadow: 0 2px 8px rgba(79, 111, 255, 0.35);
+  user-select: none;
+}
+.brand-text { display: flex; flex-direction: column; gap: 1px; }
+.brand-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--sp-text-primary) !important;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+.brand-sub {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--sp-text-muted) !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   TEXTAREA CONTRAST FIX — WCAG AA in both themes
+   ========================================================= */
+.stTextArea > div > div > textarea {
+  background: var(--sp-bg-input) !important;
+  color: var(--sp-text-primary) !important;
+  border: 1.5px solid var(--sp-border-subtle) !important;
+  border-radius: var(--sp-radius-md) !important;
+  font-size: 13.5px !important;
+  line-height: 1.65 !important;
+  font-family: 'Inter', sans-serif !important;
+  padding: 12px 14px !important;
+  resize: vertical !important;
+  caret-color: var(--sp-accent) !important;
+  transition: border-color 0.15s, box-shadow 0.15s !important;
+}
+.stTextArea > div > div > textarea::placeholder {
+  color: var(--sp-text-muted) !important;
+  opacity: 1 !important;
+}
+.stTextArea > div > div > textarea:focus {
+  border-color: var(--sp-accent) !important;
+  box-shadow: 0 0 0 3px var(--sp-accent-subtle) !important;
+  outline: none !important;
+}
+/* Dark-mode textarea override */
+[data-theme="dark"] .stTextArea > div > div > textarea {
+  background: #1C2333 !important;
+  color: #E6EDF3 !important;
+  border-color: #30363D !important;
+}
+[data-theme="dark"] .stTextArea > div > div > textarea::placeholder {
+  color: #6E7681 !important;
+}
+
+/* =========================================================
+   INPUT CARD WRAPPER — unified form card
+   ========================================================= */
+.input-card {
+  background: var(--sp-bg-card);
+  border: 1px solid var(--sp-border-subtle);
+  border-radius: var(--sp-radius-xl);
+  box-shadow: var(--sp-shadow-sm);
+  padding: 24px 24px 20px;
+  margin-bottom: 24px;
+}
+
+/* OR divider */
+.or-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 18px 0;
+}
+.or-divider::before, .or-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--sp-border-subtle);
+}
+.or-divider-text {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--sp-text-muted);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   FILE UPLOAD DROPZONE
+   ========================================================= */
+.stFileUploader > div {
+  background: var(--sp-bg-app) !important;
+  border: 2px dashed var(--sp-border-strong) !important;
+  border-radius: var(--sp-radius-lg) !important;
+  transition: border-color 0.15s, background 0.15s !important;
+}
+.stFileUploader > div:hover,
+.stFileUploader > div:focus-within {
+  border-color: var(--sp-accent) !important;
+  background: var(--sp-accent-subtle) !important;
+}
+.stFileUploader [data-testid="stFileUploaderDropzoneInstructions"] span {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--sp-text-secondary) !important;
+}
+.stFileUploader small {
+  font-size: 11px !important;
+  color: var(--sp-text-muted) !important;
+}
+
+/* =========================================================
+   THEME SEGMENTED RADIO (sidebar bottom)
+   ========================================================= */
+div[data-testid="stSidebar"] div[data-testid="stRadio"]:last-of-type > div {
+  display: flex !important;
+  gap: 0 !important;
+  background: var(--sp-bg-badge) !important;
+  border: 1px solid var(--sp-border-subtle) !important;
+  border-radius: var(--sp-radius-md) !important;
+  padding: 3px !important;
+  overflow: hidden;
+}
+div[data-testid="stSidebar"] div[data-testid="stRadio"]:last-of-type label {
+  flex: 1 !important;
+  text-align: center !important;
+  padding: 6px 8px !important;
+  border-radius: 7px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: var(--sp-text-muted) !important;
+  background: transparent !important;
+  border: none !important;
+  transition: all 0.15s !important;
+}
+div[data-testid="stSidebar"] div[data-testid="stRadio"]:last-of-type label:hover {
+  color: var(--sp-text-secondary) !important;
+  background: var(--sp-bg-hover) !important;
+}
+div[data-testid="stSidebar"] div[data-testid="stRadio"]:last-of-type label[data-checked="true"] {
+  background: var(--sp-bg-card) !important;
+  color: var(--sp-text-primary) !important;
+  font-weight: 700 !important;
+  box-shadow: var(--sp-shadow-xs) !important;
+}
+div[data-testid="stSidebar"] div[data-testid="stRadio"]:last-of-type label > div:first-child,
+div[data-testid="stSidebar"] div[data-testid="stRadio"]:last-of-type label[data-checked="true"]::before {
+  display: none !important;
+}
+
+/* =========================================================
+   SIDEBAR AUTO-REFRESH STATUS CARD
+   ========================================================= */
+.refresh-box {
+  margin: 12px 4px 4px;
+  padding: 10px 12px;
+  background: var(--sp-success-bg);
+  border: 1px solid var(--sp-success-border);
+  border-radius: var(--sp-radius-md);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.refresh-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sp-success);
+  flex-shrink: 0;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+.refresh-info { display: flex; flex-direction: column; gap: 1px; }
+.refresh-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--sp-success) !important;
+}
+.refresh-time {
+  font-size: 11px;
+  color: var(--sp-success) !important;
+  font-weight: 600;
+  font-family: 'Manrope', monospace;
+}
+
+/* =========================================================
+   VALUATION RESULT CARD (theme-aware, replaces inline style)
+   ========================================================= */
+.valuation-card {
+  background: var(--sp-bg-card);
+  border: 1px solid var(--sp-border-subtle);
+  border-radius: var(--sp-radius-lg);
+  padding: 20px;
+  text-align: center;
+  box-shadow: var(--sp-shadow-sm);
+}
+.valuation-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--sp-text-muted); margin-bottom: 8px;
+}
+.valuation-value {
+  font-family: 'Manrope', sans-serif;
+  font-size: 26px; font-weight: 800; color: var(--sp-accent); margin: 4px 0;
+}
+.valuation-sub { font-size: 12px; color: var(--sp-text-secondary); }
+
+/* =========================================================
+   SIDEBAR TECH STACK LABEL (use token, not hardcoded gray)
+   ========================================================= */
+.sidebar-stack-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--sp-text-muted); margin-bottom: 8px;
+  display: block;
+}
+
+/* =========================================================
+   FOCUS ACCESSIBILITY — global visible ring
+   ========================================================= */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--sp-accent) !important;
+  outline-offset: 2px !important;
+}

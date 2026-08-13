@@ -242,8 +242,11 @@ def render_job_card(title, company, location, salary_str, posted, description, a
 with st.sidebar:
     st.markdown("""
         <div class="sidebar-brand">
-            <div class="brand-title">SkillPulse Analytics</div>
-            <div class="brand-sub">Job Market & MLOps Portal</div>
+            <div class="brand-mark">SP</div>
+            <div class="brand-text">
+                <div class="brand-title">SkillPulse Analytics</div>
+                <div class="brand-sub">Job Market &amp; MLOps Portal</div>
+            </div>
         </div>
     """, unsafe_allow_html=True)
     menu = st.radio(
@@ -261,7 +264,7 @@ with st.sidebar:
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("""
         <div style='padding:4px 0'>
-            <div style='font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#64748b;margin-bottom:8px;'>Active Tech Stack</div>
+            <div class='sidebar-stack-label'>Active Tech Stack</div>
             <span class="stack-pill">XGBoost v2.4</span>
             <span class="stack-pill">Optuna</span>
             <span class="stack-pill">FastAPI</span>
@@ -281,8 +284,11 @@ with st.sidebar:
     last_ref = get_last_refreshed_time()
     st.markdown(f"""
         <div class="refresh-box">
-            <div class="refresh-label">🟢 Auto-Refresh</div>
-            <div class="refresh-time">{last_ref}</div>
+            <div class="refresh-dot"></div>
+            <div class="refresh-info">
+                <div class="refresh-label">Auto-Refresh</div>
+                <div class="refresh-time">{last_ref}</div>
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -465,7 +471,7 @@ elif menu == "💰 Salary Predictor":
     country_key = "in" if "India" in user_country else ("gb" if "United Kingdom" in user_country else "us")
 
     st.markdown("")
-    if st.button("🔮 Calculate Salary Valuation"):
+    if st.button("🔮 Calculate Salary Valuation", use_container_width=True):
         if not user_skills:
             st.warning("Please select at least one skill competency.")
         else:
@@ -665,7 +671,7 @@ elif menu == "🎯 Skill Gap Analyzer":
         default=["Python", "SQL"]
     )
 
-    if st.button("📊 Run Career Match Analysis"):
+    if st.button("📊 Run Career Match Analysis", use_container_width=True):
         current_set = set(s.lower() for s in current_skills)
         req_set = set(s.lower() for s in required_skills)
         
@@ -731,9 +737,11 @@ elif menu == "📄 JD & Resume Parser":
     Required skills include PyTorch, Docker, Kubernetes, Pandas, Scikit-Learn, and Git. 
     Experience with FastAPI and MySQL is a major plus."""
 
+    st.markdown('<div class="input-card">', unsafe_allow_html=True)
+    st.markdown('<div class="input-card-section-label">Paste Text</div>', unsafe_allow_html=True)
     user_text = st.text_area("Paste Job Description or Resume Text:", value=sample_text, height=180)
-
-    uploaded_file = st.file_uploader("Or Upload Resume PDF", type=["pdf"])
+    st.markdown('<div class="or-divider"><span class="or-divider-text">or upload PDF</span></div>', unsafe_allow_html=True)
+    uploaded_file = st.file_uploader("Upload Resume PDF", type=["pdf"])
     if uploaded_file is not None:
         try:
             import PyPDF2
@@ -747,7 +755,8 @@ elif menu == "📄 JD & Resume Parser":
         except Exception as e:
             st.error(f"Error parsing PDF: {e}")
 
-    if st.button("🔍 Extract Skills & Analyze Market Valuation"):
+    st.markdown('</div>', unsafe_allow_html=True)
+    if st.button("🔍 Extract Skills & Analyze Market Valuation", use_container_width=True):
         if not user_text.strip():
             st.warning("Please paste text to analyze.")
         else:
@@ -817,10 +826,10 @@ elif menu == "📄 JD & Resume Parser":
                     pred_gbp = pred_usd * 0.79
 
                     st.markdown(f"""
-                    <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:18px; text-align:center;">
-                        <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">Estimated Stack Valuation</div>
-                        <div style="font-size:26px; font-weight:800; color:#2557a7; margin:6px 0;">₹{pred_inr/100000.0:.2f} Lakhs INR</div>
-                        <div style="font-size:12px; color:#475569;">(${pred_usd:,.0f} USD equivalent)</div>
+                    <div class="valuation-card">
+                        <div class="valuation-label">Estimated Stack Valuation</div>
+                        <div class="valuation-value">₹{pred_inr/100000.0:.2f} Lakhs INR</div>
+                        <div class="valuation-sub">(${pred_usd:,.0f} USD equivalent)</div>
                     </div>
                     """, unsafe_allow_html=True)
                     
