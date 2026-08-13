@@ -19,256 +19,22 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Theme State Initialization
+if 'theme' not in st.session_state:
+    st.session_state.theme = 'light'
+
 # Inject Custom CSS
 try:
     with open("streamlit_app/static/styles.css", "r", encoding="utf-8") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-except: pass
+        css_content = f.read()
+        
+    if st.session_state.theme == 'dark':
+        css_content = css_content.replace('[data-theme="dark"], .theme-dark {', ':root {')
+        
+    st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
+except Exception as e:
+    print(f"Could not load CSS: {e}")
 
-# ── Crisp Corporate Light Theme (Naukri.com & Indeed Style) ───────────────────
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-html, body, [class*="css"] {
-    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    color: #0f172a;
-}
-
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #f8fafc; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-
-/* ── App Canvas Light Mode ── */
-.stApp {
-    background-color: #f8fafc;
-    color: #0f172a;
-}
-
-/* ── Sidebar (Corporate Navy Header & Clean White Container) ── */
-section[data-testid="stSidebar"] {
-    background-color: #ffffff;
-    border-right: 1px solid #e2e8f0;
-}
-section[data-testid="stSidebar"] * { color: #334155 !important; }
-section[data-testid="stSidebar"] .stRadio label {
-    padding: 10px 14px !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    transition: all 0.2s ease !important;
-}
-section[data-testid="stSidebar"] .stRadio label:hover {
-    background-color: #f1f5f9 !important;
-    color: #2557a7 !important;
-}
-
-/* ── Divider ── */
-hr {
-    border: none !important;
-    height: 1px !important;
-    background: #e2e8f0 !important;
-    margin: 24px 0 !important;
-}
-
-/* ── Corporate Brand Header ── */
-.sidebar-brand {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    padding: 18px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    color: white !important;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
-}
-.sidebar-brand .brand-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #ffffff !important;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.sidebar-brand .brand-sub {
-    font-size: 11px;
-    color: #94a3b8 !important;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-top: 4px;
-}
-
-/* ── Metric / Stat Cards (Naukri Style Crisp Elevation) ── */
-.metric-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 22px 18px;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    position: relative;
-    overflow: hidden;
-}
-.metric-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #2557a7, #0a66c2, #0d9488);
-}
-.metric-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(37, 87, 167, 0.12);
-}
-.metric-card .label {
-    font-size: 11px;
-    color: #64748b;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 8px;
-}
-.metric-card .value {
-    font-size: 32px;
-    font-weight: 800;
-    color: #0f172a;
-}
-.metric-card .sub {
-    font-size: 12px;
-    color: #2557a7;
-    font-weight: 600;
-    margin-top: 4px;
-}
-
-/* ── Section Titles & Badges ── */
-.section-badge {
-    display: inline-block;
-    background: #e0f2fe;
-    color: #0369a1;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-bottom: 8px;
-}
-.page-title {
-    font-size: 28px;
-    font-weight: 800;
-    color: #0f172a;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 6px;
-}
-.title-icon { font-size: 28px; }
-.title-text {
-    background: linear-gradient(135deg, #0f172a 0%, #2557a7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* ── Banner Info Box ── */
-.info-banner {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-left: 4px solid #2557a7;
-    border-radius: 8px;
-    padding: 14px 18px;
-    font-size: 14px;
-    color: #334155;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
-}
-
-/* ── Job Cards (Naukri / Indeed Feed Card Style) ── */
-.job-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 20px 24px;
-    margin-bottom: 16px;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-    transition: all 0.2s ease;
-}
-.job-card:hover {
-    border-color: #93c5fd;
-    box-shadow: 0 8px 24px rgba(37, 87, 167, 0.08);
-}
-.job-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #2557a7;
-    margin-bottom: 4px;
-    text-decoration: none;
-}
-.job-company {
-    font-size: 14px;
-    font-weight: 600;
-    color: #334155;
-    display: inline-block;
-    margin-right: 14px;
-}
-.job-location {
-    font-size: 13px;
-    color: #64748b;
-    display: inline-block;
-}
-.job-meta-pill {
-    display: inline-block;
-    background: #dcfce7;
-    color: #15803d;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 6px;
-    margin-top: 8px;
-    margin-right: 8px;
-}
-.job-posted {
-    font-size: 12px;
-    color: #94a3b8;
-    float: right;
-}
-.job-desc {
-    font-size: 13px;
-    color: #475569;
-    margin-top: 10px;
-    line-height: 1.5;
-}
-
-/* ── Stack Pills ── */
-.stack-pill {
-    display: inline-block;
-    background: #f1f5f9;
-    color: #334155;
-    border: 1px solid #cbd5e1;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 6px;
-    margin: 3px;
-}
-
-/* ── Primary Buttons ── */
-.stButton > button {
-    background: linear-gradient(135deg, #2557a7 0%, #0a66c2 100%) !important;
-    color: white !important;
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 10px 24px !important;
-    box-shadow: 0 4px 12px rgba(37, 87, 167, 0.25) !important;
-    transition: all 0.2s ease !important;
-}
-.stButton > button:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 6px 18px rgba(37, 87, 167, 0.35) !important;
-}
-</style>
-""", unsafe_allow_html=True)
 
 # ── Database Connection ───────────────────────────────────────────────────────
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -466,6 +232,12 @@ def render_job_card(title, company, location, salary_str, posted, description, a
 
 # ── Sidebar Navigation ────────────────────────────────────────────────────────
 with st.sidebar:
+    theme_choice = st.radio("🌓 App Theme", ["Light (Airy)", "Dark (Midnight Glass)"], index=0 if st.session_state.theme == 'light' else 1, horizontal=True)
+    new_theme = "dark" if "Dark" in theme_choice else "light"
+    if new_theme != st.session_state.theme:
+        st.session_state.theme = new_theme
+        st.rerun()
+        
     st.markdown("""
         <div class="sidebar-brand">
             <div class="brand-title">⚡ SkillPulse</div>
@@ -561,6 +333,8 @@ if menu == "🏠 Market Overview":
             GROUP BY country
         """)
         if not salary_info.empty:
+            if "populated" in salary_info.columns and "with_salary" not in salary_info.columns:
+                salary_info["with_salary"] = salary_info["populated"]
             country_map = {"in": "India 🇮🇳", "us": "United States 🇺🇸", "gb": "United Kingdom 🇬🇧"}
             salary_info["Country"] = salary_info["country"].map(country_map).fillna(salary_info["country"])
             salary_info["Salary Provided (%)"] = (salary_info["with_salary"] / salary_info["total"] * 100).round(1)

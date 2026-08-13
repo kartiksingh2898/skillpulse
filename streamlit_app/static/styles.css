@@ -245,3 +245,39 @@ h1, h2, h3, .page-title {
     box-shadow: 0 6px 18px rgba(0,0,0,0.3) !important;
     background: var(--accent-secondary) !important;
 }
+
+
+/* Symmetrical Alignment and Curved Edges */
+.stApp {
+    padding: 10px;
+}
+.block-container {
+    padding: 2rem 3rem !important;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+div[data-testid="stVerticalBlock"] > div {
+    padding-bottom: 0.5rem;
+}
+/* Inputs & DataFrames curved edges */
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div > div {
+    border-radius: 12px !important;
+}
+div[data-testid="stDataFrame"] > div {
+    border-radius: 12px !important;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+section[data-testid="stSidebar"] {
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+/* Toggles & Radio */
+div.row-widget.stRadio > div {
+    background: var(--pill-bg);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
