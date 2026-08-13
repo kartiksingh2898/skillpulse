@@ -24,25 +24,19 @@ if 'theme' not in st.session_state:
     st.session_state.theme = 'light'
 
 # ── CSS Injection ─────────────────────────────────────────────────────────────
-# Streamlit runs injected <style> inside a sandboxed iframe, so [data-theme]
-# and prefers-color-scheme selectors never fire from injected CSS.
-# Solution: inject the base stylesheet, then if dark, inject a second block
-# that overrides :root with dark tokens directly.
-try:
-    with open("streamlit_app/static/styles.css", "r", encoding="utf-8") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-except Exception as e:
-    print(f"Could not load CSS: {e}")
+# Streamlit Cloud runs injected <style> in a sandboxed iframe.
+# [data-theme] / prefers-color-scheme selectors NEVER fire from injected CSS.
+# Fix: always inject base stylesheet, then inject the CORRECT :root token block
+# for the selected theme so variables are always explicitly set.
 
-if st.session_state.theme == 'dark':
-    st.markdown("""<style>
+DARK_TOKENS = """<style>
 :root {
-  --sp-bg-app:       #0D1117;
-  --sp-bg-sidebar:   #161B22;
-  --sp-bg-card:      #1C2333;
-  --sp-bg-input:     #1C2333;
-  --sp-bg-badge:     #21262D;
-  --sp-bg-hover:     #21262D;
+  --sp-bg-app:         #0D1117;
+  --sp-bg-sidebar:     #161B22;
+  --sp-bg-card:        #1C2333;
+  --sp-bg-input:       #1C2333;
+  --sp-bg-badge:       #21262D;
+  --sp-bg-hover:       #21262D;
   --sp-border-subtle:  #30363D;
   --sp-border-strong:  #484F58;
   --sp-border-focus:   #6986FF;
@@ -51,34 +45,87 @@ if st.session_state.theme == 'dark':
   --sp-text-muted:     #6E7681;
   --sp-accent:         #6986FF;
   --sp-accent-hover:   #7B95FF;
-  --sp-accent-subtle:  rgba(105, 134, 255, 0.12);
-  --sp-accent-light:   rgba(105, 134, 255, 0.18);
+  --sp-accent-subtle:  rgba(105,134,255,0.12);
+  --sp-accent-light:   rgba(105,134,255,0.18);
   --sp-success:        #3FB950;
-  --sp-success-bg:     rgba(63, 185, 80, 0.08);
-  --sp-success-border: rgba(63, 185, 80, 0.2);
+  --sp-success-bg:     rgba(63,185,80,0.08);
+  --sp-success-border: rgba(63,185,80,0.2);
   --sp-warning:        #D29922;
-  --sp-warning-bg:     rgba(210, 153, 34, 0.08);
+  --sp-warning-bg:     rgba(210,153,34,0.08);
   --sp-danger:         #F85149;
-  --sp-danger-bg:      rgba(248, 81, 73, 0.08);
+  --sp-danger-bg:      rgba(248,81,73,0.08);
   --sp-info:           #6986FF;
-  --sp-info-bg:        rgba(105, 134, 255, 0.08);
-  --sp-info-border:    rgba(105, 134, 255, 0.2);
-  --sp-chart-1: #6986FF;
-  --sp-chart-2: #3FB950;
-  --sp-chart-3: #D29922;
-  --sp-chart-4: #A78BFA;
-  --sp-chart-5: #22D3EE;
-  --sp-chart-6: #F472B6;
-  --sp-shadow-xs:  0 1px 3px rgba(0,0,0,0.4);
-  --sp-shadow-sm:  0 2px 8px rgba(0,0,0,0.5);
-  --sp-shadow-md:  0 4px 16px rgba(0,0,0,0.6);
-  --sp-shadow-lg:  0 8px 32px rgba(0,0,0,0.7);
-  --sp-shadow-accent: 0 4px 16px rgba(105,134,255,0.25);
+  --sp-info-bg:        rgba(105,134,255,0.08);
+  --sp-info-border:    rgba(105,134,255,0.2);
+  --sp-shadow-xs:      0 1px 3px rgba(0,0,0,0.4);
+  --sp-shadow-sm:      0 2px 8px rgba(0,0,0,0.5);
+  --sp-shadow-md:      0 4px 16px rgba(0,0,0,0.6);
+  --sp-shadow-lg:      0 8px 32px rgba(0,0,0,0.7);
+  --sp-shadow-accent:  0 4px 16px rgba(105,134,255,0.25);
 }
-/* Force Streamlit's own background variables to match */
-.stApp { background-color: #0D1117 !important; }
+.stApp { background-color: #0D1117 !important; color: #E6EDF3 !important; }
 section[data-testid="stSidebar"] { background-color: #161B22 !important; }
-</style>""", unsafe_allow_html=True)
+section[data-testid="stSidebar"] * { color: #E6EDF3 !important; }
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div > div { background: #1C2333 !important; color: #E6EDF3 !important; border-color: #30363D !important; }
+.stTextArea > div > div > textarea::placeholder { color: #6E7681 !important; }
+</style>"""
+
+LIGHT_TOKENS = """<style>
+:root {
+  --sp-bg-app:         #F7F6F2;
+  --sp-bg-sidebar:     #FFFFFF;
+  --sp-bg-card:        #FFFFFF;
+  --sp-bg-input:       #FFFFFF;
+  --sp-bg-badge:       #F0EFEA;
+  --sp-bg-hover:       #F0EFEA;
+  --sp-border-subtle:  #E8E6DF;
+  --sp-border-strong:  #C9C6BC;
+  --sp-border-focus:   #4F6FFF;
+  --sp-text-primary:   #1A1D23;
+  --sp-text-secondary: #4A5160;
+  --sp-text-muted:     #8A92A3;
+  --sp-accent:         #4F6FFF;
+  --sp-accent-hover:   #3D5AE8;
+  --sp-accent-subtle:  rgba(79,111,255,0.08);
+  --sp-accent-light:   rgba(79,111,255,0.12);
+  --sp-success:        #00B37E;
+  --sp-success-bg:     rgba(0,179,126,0.08);
+  --sp-success-border: rgba(0,179,126,0.2);
+  --sp-warning:        #F59E0B;
+  --sp-warning-bg:     rgba(245,158,11,0.08);
+  --sp-danger:         #EF4444;
+  --sp-danger-bg:      rgba(239,68,68,0.08);
+  --sp-info:           #4F6FFF;
+  --sp-info-bg:        rgba(79,111,255,0.07);
+  --sp-info-border:    rgba(79,111,255,0.2);
+  --sp-shadow-xs:      0 1px 3px rgba(0,0,0,0.05);
+  --sp-shadow-sm:      0 2px 8px rgba(0,0,0,0.06);
+  --sp-shadow-md:      0 4px 16px rgba(0,0,0,0.08);
+  --sp-shadow-lg:      0 8px 32px rgba(0,0,0,0.10);
+  --sp-shadow-accent:  0 4px 16px rgba(79,111,255,0.20);
+}
+.stApp { background-color: #F7F6F2 !important; color: #1A1D23 !important; }
+section[data-testid="stSidebar"] { background-color: #FFFFFF !important; }
+section[data-testid="stSidebar"] * { color: #1A1D23 !important; }
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div > div { background: #FFFFFF !important; color: #1A1D23 !important; border-color: #E8E6DF !important; }
+.stTextArea > div > div > textarea::placeholder { color: #8A92A3 !important; }
+</style>"""
+
+try:
+    with open("streamlit_app/static/styles.css", "r", encoding="utf-8") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+except Exception as e:
+    print(f"Could not load CSS: {e}")
+
+# Always inject the correct token set for the current theme
+if st.session_state.theme == 'dark':
+    st.markdown(DARK_TOKENS, unsafe_allow_html=True)
+else:
+    st.markdown(LIGHT_TOKENS, unsafe_allow_html=True)
 
 
 # ── Database Connection ───────────────────────────────────────────────────────
