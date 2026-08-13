@@ -23,12 +23,62 @@ st.set_page_config(
 if 'theme' not in st.session_state:
     st.session_state.theme = 'light'
 
-# Inject Custom CSS (theme handled via CSS custom properties + prefers-color-scheme)
+# ── CSS Injection ─────────────────────────────────────────────────────────────
+# Streamlit runs injected <style> inside a sandboxed iframe, so [data-theme]
+# and prefers-color-scheme selectors never fire from injected CSS.
+# Solution: inject the base stylesheet, then if dark, inject a second block
+# that overrides :root with dark tokens directly.
 try:
     with open("streamlit_app/static/styles.css", "r", encoding="utf-8") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 except Exception as e:
     print(f"Could not load CSS: {e}")
+
+if st.session_state.theme == 'dark':
+    st.markdown("""<style>
+:root {
+  --sp-bg-app:       #0D1117;
+  --sp-bg-sidebar:   #161B22;
+  --sp-bg-card:      #1C2333;
+  --sp-bg-input:     #1C2333;
+  --sp-bg-badge:     #21262D;
+  --sp-bg-hover:     #21262D;
+  --sp-border-subtle:  #30363D;
+  --sp-border-strong:  #484F58;
+  --sp-border-focus:   #6986FF;
+  --sp-text-primary:   #E6EDF3;
+  --sp-text-secondary: #8B949E;
+  --sp-text-muted:     #6E7681;
+  --sp-accent:         #6986FF;
+  --sp-accent-hover:   #7B95FF;
+  --sp-accent-subtle:  rgba(105, 134, 255, 0.12);
+  --sp-accent-light:   rgba(105, 134, 255, 0.18);
+  --sp-success:        #3FB950;
+  --sp-success-bg:     rgba(63, 185, 80, 0.08);
+  --sp-success-border: rgba(63, 185, 80, 0.2);
+  --sp-warning:        #D29922;
+  --sp-warning-bg:     rgba(210, 153, 34, 0.08);
+  --sp-danger:         #F85149;
+  --sp-danger-bg:      rgba(248, 81, 73, 0.08);
+  --sp-info:           #6986FF;
+  --sp-info-bg:        rgba(105, 134, 255, 0.08);
+  --sp-info-border:    rgba(105, 134, 255, 0.2);
+  --sp-chart-1: #6986FF;
+  --sp-chart-2: #3FB950;
+  --sp-chart-3: #D29922;
+  --sp-chart-4: #A78BFA;
+  --sp-chart-5: #22D3EE;
+  --sp-chart-6: #F472B6;
+  --sp-shadow-xs:  0 1px 3px rgba(0,0,0,0.4);
+  --sp-shadow-sm:  0 2px 8px rgba(0,0,0,0.5);
+  --sp-shadow-md:  0 4px 16px rgba(0,0,0,0.6);
+  --sp-shadow-lg:  0 8px 32px rgba(0,0,0,0.7);
+  --sp-shadow-accent: 0 4px 16px rgba(105,134,255,0.25);
+}
+/* Force Streamlit's own background variables to match */
+.stApp { background-color: #0D1117 !important; }
+section[data-testid="stSidebar"] { background-color: #161B22 !important; }
+</style>""", unsafe_allow_html=True)
 
 
 # ── Database Connection ───────────────────────────────────────────────────────
