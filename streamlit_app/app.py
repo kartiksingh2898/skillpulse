@@ -355,10 +355,14 @@ def render_job_card(title, company, location, salary_str, posted, description, a
 with st.sidebar:
     st.markdown("""
         <div class="sidebar-brand">
-            <div class="brand-mark">SP</div>
+            <div class="brand-mark">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+            </div>
             <div class="brand-text">
-                <div class="brand-title">SkillPulse Analytics</div>
-                <div class="brand-sub">Job Market &amp; MLOps Portal</div>
+                <div class="brand-title">SkillPulse<span style="color:var(--sp-accent)">.</span></div>
+                <div class="brand-sub">Job Market &amp; MLOps</div>
             </div>
         </div>
     """, unsafe_allow_html=True)
