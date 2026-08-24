@@ -715,10 +715,25 @@ a {
 a:hover { color: var(--sp-accent-hover); text-decoration: underline; }
 
 /* =========================================================
-   PLOTLY CHART CONTAINER
+   PLOTLY CHART CONTAINER & CLEAN HOVER
    ========================================================= */
 .js-plotly-plot .plotly {
   border-radius: var(--sp-radius-md);
+}
+
+/* Completely remove the floating hover zoom/pan modebar for sleek professional look */
+.modebar-container,
+.modebar,
+.js-plotly-plot .plotly .modebar,
+.js-plotly-plot .plotly .modebar-container,
+.js-plotly-plot .plotly .modebar--hover,
+div[data-testid="stPlotlyChart"] .modebar-container,
+div[data-testid="stPlotlyChart"] .modebar,
+div[data-testid="stPlotlyChart"] svg.modebar-btn {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 
 /* =========================================================

@@ -300,6 +300,16 @@ def get_last_refreshed_time():
 # ── Theme-Aware Plotly Helper ────────────────────────────────────────
 CHART_PALETTE = ["#4F6FFF", "#00B37E", "#F59E0B", "#8B5CF6", "#06B6D4", "#EC4899"]
 
+PLOTLY_CONFIG = {
+    "displayModeBar": False,
+    "displaylogo": False,
+    "scrollZoom": False,
+    "showAxisDragHandles": False,
+    "showAxisRangeEntryBoxes": False,
+    "staticPlot": False,
+    "responsive": True
+}
+
 def get_plotly_theme():
     is_dark = st.session_state.get('theme', 'light') == 'dark'
     font_color     = "#E6EDF3" if is_dark else "#1A1D23"
@@ -309,10 +319,12 @@ def get_plotly_theme():
     return dict(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        dragmode=False,
+        hovermode="closest",
         font=dict(color=font_color, family="Inter, sans-serif", size=12),
-        xaxis=dict(gridcolor=grid_color, zerolinecolor=zeroline_color,
+        xaxis=dict(gridcolor=grid_color, zerolinecolor=zeroline_color, fixedrange=True,
                    tickfont=dict(color=muted_color, size=11), linecolor=grid_color),
-        yaxis=dict(gridcolor=grid_color, zerolinecolor=zeroline_color,
+        yaxis=dict(gridcolor=grid_color, zerolinecolor=zeroline_color, fixedrange=True,
                    tickfont=dict(color=muted_color, size=11), linecolor=grid_color),
         legend=dict(font=dict(color=font_color, size=11)),
     )
@@ -435,7 +447,7 @@ if menu == "🏠 Market Overview":
                 color_discrete_sequence=["#2557a7", "#0a66c2", "#0d9488"]
             )
             fig.update_layout(**PLOTLY_THEME, height=350, margin=dict(l=10, r=10, t=10, b=10))
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     with col2:
         st.markdown("### 💰 Salary Data Transparency")
@@ -461,7 +473,7 @@ if menu == "🏠 Market Overview":
             )
             fig2.update_layout(**PLOTLY_THEME, height=350, showlegend=False, margin=dict(l=10, r=10, t=10, b=10))
             fig2.update_traces(texttemplate='%{text}%', textposition='outside')
-            st.plotly_chart(fig2, use_container_width=True)
+            st.plotly_chart(fig2, use_container_width=True, config=PLOTLY_CONFIG)
 
     st.markdown("---")
     st.markdown("### 🏢 Top Hiring Companies by Region")
@@ -523,7 +535,7 @@ if menu == "🏠 Market Overview":
             fig3.update_layout(**PLOTLY_THEME, height=420, coloraxis_showscale=False, margin=dict(l=10, r=10, t=10, b=10))
             fig3.update_traces(textposition='outside')
             fig3.update_yaxes(categoryorder="total ascending")
-            st.plotly_chart(fig3, use_container_width=True)
+            st.plotly_chart(fig3, use_container_width=True, config=PLOTLY_CONFIG)
 
         with ch_c2:
             st.markdown(f"#### 🏆 Top Employers in {country_display}")
@@ -586,7 +598,7 @@ elif menu == "📊 Skill Intelligence":
             )
             fig.update_layout(**PLOTLY_THEME, height=450, coloraxis_showscale=False, margin=dict(l=10, r=10, t=10, b=10))
             fig.update_yaxes(categoryorder="total ascending")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
     with col2:
         st.markdown("### 🔗 Co-occurring Tech Clusters")
@@ -615,7 +627,7 @@ elif menu == "📊 Skill Intelligence":
             )
             fig3.update_layout(**PLOTLY_THEME, height=360, margin=dict(l=10, r=10, t=10, b=10))
             fig3.update_yaxes(categoryorder="total ascending")
-            st.plotly_chart(fig3, use_container_width=True)
+            st.plotly_chart(fig3, use_container_width=True, config=PLOTLY_CONFIG)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 3: SALARY PREDICTOR
@@ -726,7 +738,7 @@ elif menu == "💰 Salary Predictor":
                     }
                 ))
                 fig_g.update_layout(**PLOTLY_THEME, height=280, margin=dict(l=20, r=20, t=30, b=10))
-                st.plotly_chart(fig_g, use_container_width=True)
+                st.plotly_chart(fig_g, use_container_width=True, config=PLOTLY_CONFIG)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 4: APPLY FOR JOBS
