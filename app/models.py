@@ -18,6 +18,17 @@ class TopSkillsResponse(BaseModel):
     skills: List[SkillItem]
 
 
+class CompanyItem(BaseModel):
+    company: str
+    open_postings: int
+
+
+class TopCompaniesResponse(BaseModel):
+    total_returned: int
+    country: Optional[str] = "all"
+    companies: List[CompanyItem]
+
+
 class PredictRequest(BaseModel):
     skills: List[str] = Field(
         ...,

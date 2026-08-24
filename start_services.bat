@@ -42,19 +42,21 @@ echo   [2] Start Docker Stack     (Production Containers - Docker Compose)
 echo   [3] Run Drift Monitor      (Evidently AI - saves HTML report)
 echo   [4] Run Auto-Retrain       (Retrain if drift detected)
 echo   [5] Force Retrain          (Retrain unconditionally)
-echo   [6] Reinstall Dependencies (pip install -r requirements.txt)
-echo   [7] Exit
+echo   [6] Refresh Live Jobs      (Scrape Adzuna & Update Snapshot)
+echo   [7] Reinstall Dependencies (pip install -r requirements.txt)
+echo   [8] Exit
 echo.
 echo ============================================================
-set /p choice="  Enter your choice [1-7]: "
+set /p choice="  Enter your choice [1-8]: "
 
 if "%choice%"=="1" goto start_services
 if "%choice%"=="2" goto start_docker
 if "%choice%"=="3" goto drift_check
 if "%choice%"=="4" goto auto_retrain
 if "%choice%"=="5" goto force_retrain
-if "%choice%"=="6" goto install_deps
-if "%choice%"=="7" goto end
+if "%choice%"=="6" goto refresh_jobs
+if "%choice%"=="7" goto install_deps
+if "%choice%"=="8" goto end
 
 echo.
 echo   Invalid choice. Please try again.
@@ -200,6 +202,20 @@ echo.
 echo ============================================================
 pause
 goto end
+
+:refresh_jobs
+cls
+echo ============================================================
+echo           SkillPulse - Live Job Ingestion & Refresh
+echo ============================================================
+echo.
+echo  Fetching live Adzuna jobs, extracting skills & updating snapshot...
+echo.
+"%~dp0.venv\Scripts\python.exe" "%~dp0scripts\refresh_snapshot.py"
+echo.
+echo ============================================================
+pause
+goto menu
 
 :install_deps
 cls

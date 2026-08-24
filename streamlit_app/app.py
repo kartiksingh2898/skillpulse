@@ -227,7 +227,11 @@ def run_query(sql, params=None):
             return pd.DataFrame(snap.get("transparency", []))
         return pd.DataFrame(snap.get("country_counts", []))
     elif "from company" in sql_lower or "company" in sql_lower:
-        df_c = pd.DataFrame(snap.get("top_companies", []))
+        c_code = params.get("country", "") if params else ""
+        if c_code and c_code in snap.get("top_companies_by_country", {}):
+            df_c = pd.DataFrame(snap.get("top_companies_by_country", {}).get(c_code, []))
+        else:
+            df_c = pd.DataFrame(snap.get("top_companies", []))
         if not df_c.empty and "open_postings" in df_c.columns:
             df_c = df_c.rename(columns={"open_postings": "Open Postings"})
         return df_c
@@ -460,23 +464,92 @@ if menu == "🏠 Market Overview":
             st.plotly_chart(fig2, use_container_width=True)
 
     st.markdown("---")
-    st.markdown("### 🏢 Top Hiring Companies Across All Regions")
-    top_comp = run_query("""
-        SELECT company AS Company, count(*) AS `Open Postings`
-        FROM job_postings
-        WHERE company IS NOT NULL AND company != ''
-        GROUP BY company
-        ORDER BY `Open Postings` DESC
-        LIMIT 10
-    """)
-    if not top_comp.empty:
-        fig3 = px.bar(
-            top_comp, x="Open Postings", y="Company", orientation="h",
-            color="Open Postings", color_continuous_scale="Blues"
+    st.markdown("### 🏢 Top Hiring Companies by Region")
+    st.caption("Identify leading tech employers aggressively recruiting in your target market geography.")
+
+    comp_c1, comp_c2 = st.columns([1, 2])
+    with comp_c1:
+        comp_country_sel = st.selectbox(
+            "Filter Hiring Employers by Geography:",
+            ["🌍 All Regions (Global)", "🇮🇳 India", "🇺🇸 United States", "🇬🇧 United Kingdom"],
+            index=0
         )
-        fig3.update_layout(**PLOTLY_THEME, height=360, coloraxis_showscale=False, margin=dict(l=10, r=10, t=10, b=10))
-        fig3.update_yaxes(categoryorder="total ascending")
-        st.plotly_chart(fig3, use_container_width=True)
+    
+    if "India" in comp_country_sel:
+        sel_c_code = "in"
+        country_display = "India 🇮🇳"
+        chart_color_scale = "Tealgrn"
+    elif "United States" in comp_country_sel:
+        sel_c_code = "us"
+        country_display = "United States 🇺🇸"
+        chart_color_scale = "Blues"
+    elif "United Kingdom" in comp_country_sel:
+        sel_c_code = "gb"
+        country_display = "United Kingdom 🇬🇧"
+        chart_color_scale = "Purp"
+    else:
+        sel_c_code = ""
+        country_display = "All Regions 🌍"
+        chart_color_scale = "Blues"
+
+    if sel_c_code:
+        top_comp = run_query("""
+            SELECT company AS Company, count(*) AS `Open Postings`
+            FROM job_postings
+            WHERE country = :country AND company IS NOT NULL AND TRIM(company) != ''
+            GROUP BY company
+            ORDER BY `Open Postings` DESC
+            LIMIT 12
+        """, {"country": sel_c_code})
+    else:
+        top_comp = run_query("""
+            SELECT company AS Company, count(*) AS `Open Postings`
+            FROM job_postings
+            WHERE company IS NOT NULL AND TRIM(company) != ''
+            GROUP BY company
+            ORDER BY `Open Postings` DESC
+            LIMIT 12
+        """)
+
+    if not top_comp.empty:
+        ch_c1, ch_c2 = st.columns([3, 2])
+        
+        with ch_c1:
+            fig3 = px.bar(
+                top_comp, x="Open Postings", y="Company", orientation="h",
+                color="Open Postings", color_continuous_scale=chart_color_scale,
+                text="Open Postings"
+            )
+            fig3.update_layout(**PLOTLY_THEME, height=420, coloraxis_showscale=False, margin=dict(l=10, r=10, t=10, b=10))
+            fig3.update_traces(textposition='outside')
+            fig3.update_yaxes(categoryorder="total ascending")
+            st.plotly_chart(fig3, use_container_width=True)
+
+        with ch_c2:
+            st.markdown(f"#### 🏆 Top Employers in {country_display}")
+            for idx, (_, row) in enumerate(top_comp.head(6).iterrows()):
+                comp_name = row['Company']
+                open_cnt = int(row['Open Postings'])
+                q = quote_plus(f"{comp_name} tech developer jobs {country_display.split()[0]}")
+                job_search_url = f"https://www.linkedin.com/jobs/search/?keywords={q}"
+                
+                rank_badge = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣"][idx] if idx < 6 else f"#{idx+1}"
+                
+                st.markdown(f"""
+                <div style="background:var(--sp-bg-card); border:1px solid var(--sp-border-subtle); border-radius:10px; padding:10px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:18px;">{rank_badge}</span>
+                        <div>
+                            <div style="font-weight:700; font-size:13px; color:var(--sp-text-primary);">{comp_name}</div>
+                            <div style="font-size:11px; color:var(--sp-text-muted);">🏢 <strong>{open_cnt:,}</strong> open postings recorded</div>
+                        </div>
+                    </div>
+                    <a href="{job_search_url}" target="_blank" style="
+                        background:var(--sp-accent-subtle); color:var(--sp-accent); font-weight:600; font-size:11px;
+                        padding:5px 10px; border-radius:6px; text-decoration:none; border:1px solid var(--sp-border-focus);
+                    ">View Roles →</a>
+                </div>
+                """, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 2: SKILL INTELLIGENCE

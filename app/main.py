@@ -9,7 +9,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
-from app.models import PredictRequest, PredictResponse, TopSkillsResponse, SkillItem, HealthResponse
+from app.models import PredictRequest, PredictResponse, TopSkillsResponse, SkillItem, HealthResponse, TopCompaniesResponse, CompanyItem
 from app.db import get_db
 
 # ── Load env ──────────────────────────────────────────────────────────────────
@@ -83,6 +83,43 @@ def top_skills_by_country(country: str, limit: int = 12, db: Session = Depends(g
     rows = db.execute(query, {"country": country, "limit": limit}).fetchall()
     skills = [SkillItem(skill=row[0], job_count=row[1]) for row in rows]
     return TopSkillsResponse(total_returned=len(skills), skills=skills)
+
+
+# ── Top Hiring Companies (global) ─────────────────────────────────────────────
+@app.get("/companies/top", response_model=TopCompaniesResponse, tags=["Companies"])
+def top_companies(limit: int = 15, db: Session = Depends(get_db)):
+    """Returns top hiring companies across all monitored regions."""
+    query = text("""
+        SELECT company, count(*) AS open_postings
+        FROM job_postings
+        WHERE company IS NOT NULL AND TRIM(company) != ''
+        GROUP BY company
+        ORDER BY open_postings DESC
+        LIMIT :limit
+    """)
+    rows = db.execute(query, {"limit": limit}).fetchall()
+    companies = [CompanyItem(company=row[0], open_postings=row[1]) for row in rows]
+    return TopCompaniesResponse(total_returned=len(companies), country="all", companies=companies)
+
+
+# ── Top Hiring Companies by Country ───────────────────────────────────────────
+@app.get("/companies/top/{country}", response_model=TopCompaniesResponse, tags=["Companies"])
+def top_companies_by_country(country: str, limit: int = 15, db: Session = Depends(get_db)):
+    """Returns top hiring companies for a specific country (gb, us, in)."""
+    country = country.lower()
+    if country not in ("gb", "us", "in"):
+        raise HTTPException(status_code=400, detail="Country must be one of: gb, us, in")
+    query = text("""
+        SELECT company, count(*) AS open_postings
+        FROM job_postings
+        WHERE country = :country AND company IS NOT NULL AND TRIM(company) != ''
+        GROUP BY company
+        ORDER BY open_postings DESC
+        LIMIT :limit
+    """)
+    rows = db.execute(query, {"country": country, "limit": limit}).fetchall()
+    companies = [CompanyItem(company=row[0], open_postings=row[1]) for row in rows]
+    return TopCompaniesResponse(total_returned=len(companies), country=country, companies=companies)
 
 
 # ── Salary Prediction ─────────────────────────────────────────────────────────
