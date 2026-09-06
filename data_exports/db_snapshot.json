@@ -368,12 +368,108 @@
   ],
   "model_runs": [
     {
-      "RunID": 26,
-      "trained_at": "2026-09-06 11:56:03",
+      "RunID": 38,
+      "trained_at": "2026-09-05 09:40:52",
       "Type": "xgboost_retrain",
-      "log_mae": 0.3108,
-      "log_rmse": 0.646,
-      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1625, \"raw_mae_usd\": 30888.63}"
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 37,
+      "trained_at": "2026-09-04 10:12:10",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 36,
+      "trained_at": "2026-09-03 10:25:57",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 35,
+      "trained_at": "2026-09-02 10:13:45",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 34,
+      "trained_at": "2026-09-01 10:48:57",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 33,
+      "trained_at": "2026-08-31 12:12:23",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 32,
+      "trained_at": "2026-08-30 10:56:34",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 31,
+      "trained_at": "2026-08-29 11:59:56",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 30,
+      "trained_at": "2026-08-28 17:55:15",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 29,
+      "trained_at": "2026-08-27 17:08:02",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 28,
+      "trained_at": "2026-08-26 06:32:53",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 27,
+      "trained_at": "2026-08-25 06:30:36",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
+    },
+    {
+      "RunID": 26,
+      "trained_at": "2026-08-24 07:03:53",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3,
+      "log_rmse": 0.5996,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
     },
     {
       "RunID": 25,
@@ -7658,7 +7754,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-09-06 11:56 IST",
+  "last_refreshed": "2026-09-05 09:40 IST",
   "top_companies_by_country": {
     "in": [
       {
