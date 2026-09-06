@@ -246,11 +246,22 @@ logger.info("🚀 Step 6/6: Syncing updated snapshot and retrained model with Gi
 try:
     subprocess.run(["git", "add", "data_exports/db_snapshot.json", "models/xgboost_model.joblib"], cwd=ROOT, capture_output=True, text=True)
     subprocess.run(["git", "commit", "-m", f"Daily automation: jobs, companies & model updated {datetime.now():%Y-%m-%d}"], cwd=ROOT, capture_output=True, text=True)
+
+    # Pull remote changes first (prefer local snapshot/model on conflicts) before pushing
+    pull_res = subprocess.run(
+        ["git", "pull", "origin", "main", "--no-rebase", "-X", "ours"],
+        cwd=ROOT, capture_output=True, text=True
+    )
+    if pull_res.returncode != 0:
+        logger.warning(f"Git pull warning: {pull_res.stderr.strip()}")
+    else:
+        logger.info("Git pull complete. Pushing fresh snapshot to GitHub...")
+
     push_res = subprocess.run(["git", "push", "origin", "main"], cwd=ROOT, capture_output=True, text=True)
     if push_res.returncode == 0:
         logger.info("✅ GitHub push successful! Streamlit Cloud will refresh within 60 seconds.")
     else:
-        logger.info(f"Git push notice: {push_res.stderr.strip() or 'Local commits up to date.'}")
+        logger.warning(f"Git push failed: {push_res.stderr.strip()}")
 except Exception as e:
     logger.warning(f"Git sync notice: {e}")
 
