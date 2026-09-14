@@ -23,6 +23,11 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine, text, Table, MetaData
 from sqlalchemy.dialects.mysql import insert as mysql_insert
 
+# Ensure project root is on sys.path so app.db_utils can be imported
+# regardless of the working directory the script is launched from.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from app.db_utils import build_engine
+
 ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / ".env")
 
@@ -151,16 +156,8 @@ def fetch_adzuna_jobs(app_id: str, app_key: str, country: str = "in", keyword: s
 
 
 def get_db_engine():
-    """Builds SQLAlchemy engine from environment variables."""
-    u = os.getenv("DB_USER", "root")
-    pw = os.getenv("DB_PASSWORD", "")
-    h = os.getenv("DB_HOST", "localhost")
-    port = os.getenv("DB_PORT", "3306")
-    d = os.getenv("DB_NAME", "skillpulse")
-    return create_engine(
-        f"mysql+pymysql://{u}:{quote_plus(pw)}@{h}:{port}/{d}",
-        pool_pre_ping=True
-    )
+    """Builds SQLAlchemy engine from environment variables via the shared helper."""
+    return build_engine()
 
 
 def sync_skills_table(engine):

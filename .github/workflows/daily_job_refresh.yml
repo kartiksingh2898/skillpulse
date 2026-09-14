@@ -32,13 +32,18 @@ jobs:
 
       - name: 🔄 Execute Daily Snapshot Refresh & Retrain
         env:
+          # API credentials
           ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
           ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+          # Database credentials (GitHub Secrets)
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_NAME: ${{ secrets.DB_NAME }}
+          # SSL config — not secrets; CA cert is public and committed to repo
+          DB_SSL: "true"
+          DB_SSL_CA: "certs/isrgrootx1.pem"
         run: |
           python scripts/refresh_snapshot.py
 

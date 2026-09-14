@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import joblib
 import numpy as np
@@ -6,10 +7,16 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+from pathlib import Path
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 import urllib.parse
 from urllib.parse import quote_plus
+
+# Ensure project root is on sys.path so app.db_utils can be imported
+_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_ROOT))
+from app.db_utils import build_engine
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -150,15 +157,8 @@ HAS_DB = False
 try:
     db_user = os.getenv("DB_USER")
     db_pass = os.getenv("DB_PASSWORD")
-    db_host = os.getenv("DB_HOST", "localhost")
-    db_port = os.getenv("DB_PORT", "3306")
-    db_name = os.getenv("DB_NAME", "skillpulse")
-    
     if db_user and db_pass:
-        engine = create_engine(
-            f"mysql+pymysql://{db_user}:{quote_plus(db_pass)}@{db_host}:{db_port}/{db_name}",
-            pool_pre_ping=True
-        )
+        engine = build_engine()
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
         HAS_DB = True

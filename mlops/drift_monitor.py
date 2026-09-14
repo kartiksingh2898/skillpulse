@@ -46,6 +46,10 @@ Y_TRAIN_F        = DATA_DIR / "y_train.csv"
 FEATURE_DRIFT_THRESHOLD = 0.30   # Alert if >30% of features drift
 CURRENT_SAMPLE_SIZE     = 500    # How many recent DB jobs to pull as current
 
+# Ensure project root is on sys.path so app.db_utils can be imported
+sys.path.insert(0, str(BASE_DIR))
+from app.db_utils import build_engine
+
 load_dotenv(dotenv_path=str(BASE_DIR / ".env"))
 
 logging.basicConfig(
@@ -59,15 +63,8 @@ log = logging.getLogger("drift_monitor")
 # HELPERS
 # ─────────────────────────────────────────────────────────────────
 def get_engine():
-    user     = os.getenv("DB_USER")
-    password = quote_plus(os.getenv("DB_PASSWORD", ""))
-    host     = os.getenv("DB_HOST", "localhost")
-    port     = os.getenv("DB_PORT", "3306")
-    db       = os.getenv("DB_NAME")
-    return create_engine(
-        f"mysql+pymysql://{user}:{password}@{host}:{port}/{db}",
-        pool_pre_ping=True
-    )
+    """Returns a SQLAlchemy engine via the shared build_engine() helper."""
+    return build_engine()
 
 
 def build_feature_matrix(job_ids: pd.Series, feature_names: list,

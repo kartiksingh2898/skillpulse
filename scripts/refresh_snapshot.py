@@ -37,6 +37,10 @@ import pandas as pd
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 
+# Ensure project root is on sys.path for app.db_utils import
+sys.path.insert(0, str(ROOT))
+from app.db_utils import build_engine
+
 load_dotenv(ROOT / ".env")
 
 logging.basicConfig(
@@ -79,7 +83,7 @@ except Exception as e:
 logger.info(f"🔌 Step 2/6: Connecting to MySQL at {h}:{port}/{d}...")
 engine = None
 try:
-    engine = create_engine(f"mysql+pymysql://{u}:{p}@{h}:{port}/{d}", pool_pre_ping=True)
+    engine = build_engine()
     with engine.connect() as conn:
         conn.execute(text("SELECT 1"))
     logger.info("MySQL connection verified successfully.")

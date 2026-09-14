@@ -36,6 +36,10 @@ BASE_DIR   = Path(__file__).resolve().parent.parent
 DATA_DIR   = BASE_DIR / "data_exports"
 MODELS_DIR = BASE_DIR / "models"
 
+# Ensure project root is on sys.path so app.db_utils can be imported
+sys.path.insert(0, str(BASE_DIR))
+from app.db_utils import build_engine
+
 load_dotenv(dotenv_path=str(BASE_DIR / ".env"))
 
 logging.basicConfig(
@@ -50,16 +54,8 @@ log = logging.getLogger("retrain")
 # HELPERS
 # ─────────────────────────────────────────────────────────────────
 def get_engine():
-    return create_engine(
-        "mysql+pymysql://{}:{}@{}:{}/{}".format(
-            os.getenv("DB_USER"),
-            quote_plus(os.getenv("DB_PASSWORD", "")),
-            os.getenv("DB_HOST", "localhost"),
-            os.getenv("DB_PORT", "3306"),
-            os.getenv("DB_NAME"),
-        ),
-        pool_pre_ping=True,
-    )
+    """Returns a SQLAlchemy engine via the shared build_engine() helper."""
+    return build_engine()
 
 
 def drift_alert_pending(engine) -> bool:
