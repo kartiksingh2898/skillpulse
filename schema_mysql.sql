@@ -7,6 +7,7 @@ USE skillpulse;
 CREATE TABLE job_postings (
     id             INT AUTO_INCREMENT PRIMARY KEY,
     source         VARCHAR(50),          -- 'adzuna', 'remoteok', etc.
+    country        VARCHAR(10),          -- 'in', 'us', 'gb'
     title          VARCHAR(255),
     company        VARCHAR(255),
     location       VARCHAR(255),
