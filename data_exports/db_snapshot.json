@@ -3,13 +3,9 @@
     "total_rows": 60178,
     "total_mappings": 11068,
     "total_skills": 48,
-    "total_runs": 32
+    "total_runs": 33
   },
   "country_counts": [
-    {
-      "country": "gb",
-      "count": 20150
-    },
     {
       "country": "us",
       "count": 19662
@@ -17,6 +13,10 @@
     {
       "country": "in",
       "count": 20366
+    },
+    {
+      "country": "gb",
+      "count": 20150
     }
   ],
   "transparency": [
@@ -210,15 +210,15 @@
         "Mentions": 64
       },
       {
-        "Skill": "Kafka",
-        "Mentions": 50
-      },
-      {
         "Skill": "Node.js",
         "Mentions": 50
       },
       {
         "Skill": "React",
+        "Mentions": 50
+      },
+      {
+        "Skill": "Kafka",
         "Mentions": 50
       },
       {
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 50,
+      "trained_at": "2026-09-16 10:56:30",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 49,
       "trained_at": "2026-09-15 11:13:03",
@@ -7842,7 +7850,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-09-15 11:13 IST",
+  "last_refreshed": "2026-09-16 10:56 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -7882,11 +7890,11 @@
         "open_postings": 126
       },
       {
-        "Company": "Open Text Technologies India Private Limited",
+        "Company": "Benovymed Healthcare",
         "open_postings": 120
       },
       {
-        "Company": "Benovymed Healthcare",
+        "Company": "Open Text Technologies India Private Limited",
         "open_postings": 120
       },
       {
@@ -8006,11 +8014,11 @@
         "open_postings": 144
       },
       {
-        "Company": "Spotify",
+        "Company": "IBM",
         "open_postings": 141
       },
       {
-        "Company": "IBM",
+        "Company": "Spotify",
         "open_postings": 141
       },
       {
@@ -8022,7 +8030,7 @@
         "open_postings": 128
       },
       {
-        "Company": "Platform Recruitment",
+        "Company": "IT Online Learning",
         "open_postings": 120
       },
       {
