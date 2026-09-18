@@ -3,7 +3,7 @@
     "total_rows": 60178,
     "total_mappings": 11068,
     "total_skills": 48,
-    "total_runs": 34
+    "total_runs": 35
   },
   "country_counts": [
     {
@@ -11,12 +11,12 @@
       "count": 20150
     },
     {
-      "country": "in",
-      "count": 20366
-    },
-    {
       "country": "us",
       "count": 19662
+    },
+    {
+      "country": "in",
+      "count": 20366
     }
   ],
   "transparency": [
@@ -27,16 +27,16 @@
       "populated": 20087.0
     },
     {
-      "country": "in",
-      "total": 20366,
-      "with_salary": 7606.0,
-      "populated": 7606.0
-    },
-    {
       "country": "us",
       "total": 19662,
       "with_salary": 19658.0,
       "populated": 19658.0
+    },
+    {
+      "country": "in",
+      "total": 20366,
+      "with_salary": 7606.0,
+      "populated": 7606.0
     }
   ],
   "top_companies": [
@@ -210,11 +210,11 @@
         "Mentions": 64
       },
       {
-        "Skill": "Kafka",
+        "Skill": "Node.js",
         "Mentions": 50
       },
       {
-        "Skill": "Node.js",
+        "Skill": "Kafka",
         "Mentions": 50
       },
       {
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 52,
+      "trained_at": "2026-09-18 10:40:52",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 51,
       "trained_at": "2026-09-17 11:05:05",
@@ -766,14 +774,6 @@
       "log_mae": 0.3055,
       "log_rmse": 0.6027,
       "notes": "{\"best_params\": {\"n_estimators\": 371, \"max_depth\": 4, \"learning_rate\": 0.013102141172183241, \"subsample\": 0.8246437335823629, \"colsample_bytree\": 0.5944116682252756, \"min_child_weight\": 6, \"reg_alpha\": 0.0488794495406245, \"reg_lambda\": 0.8392426188800151}, \"r2\": 0.2183, \"raw_mae_usd\": 31072.93}"
-    },
-    {
-      "RunID": 1,
-      "trained_at": "2026-07-16 18:43:00",
-      "Type": "xgboost",
-      "log_mae": 0.3068,
-      "log_rmse": 0.6048,
-      "notes": "{\"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.05558702928894137, \"subsample\": 0.9521905359655494, \"colsample_bytree\": 0.9299158271391561, \"min_child_weight\": 5, \"reg_alpha\": 5.378308950854547, \"reg_lambda\": 5.529572830925001}, \"r2\": 0.213, \"raw_mae_usd\": 31188.97}"
     }
   ],
   "all_skills": [
@@ -7858,7 +7858,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-09-17 11:05 IST",
+  "last_refreshed": "2026-09-18 10:41 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -7898,11 +7898,11 @@
         "open_postings": 126
       },
       {
-        "Company": "Open Text Technologies India Private Limited",
+        "Company": "Benovymed Healthcare",
         "open_postings": 120
       },
       {
-        "Company": "Benovymed Healthcare",
+        "Company": "Open Text Technologies India Private Limited",
         "open_postings": 120
       },
       {
