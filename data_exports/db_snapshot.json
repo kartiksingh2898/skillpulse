@@ -3,7 +3,7 @@
     "total_rows": 60178,
     "total_mappings": 11068,
     "total_skills": 48,
-    "total_runs": 35
+    "total_runs": 36
   },
   "country_counts": [
     {
@@ -11,12 +11,12 @@
       "count": 20150
     },
     {
-      "country": "us",
-      "count": 19662
-    },
-    {
       "country": "in",
       "count": 20366
+    },
+    {
+      "country": "us",
+      "count": 19662
     }
   ],
   "transparency": [
@@ -27,16 +27,16 @@
       "populated": 20087.0
     },
     {
-      "country": "us",
-      "total": 19662,
-      "with_salary": 19658.0,
-      "populated": 19658.0
-    },
-    {
       "country": "in",
       "total": 20366,
       "with_salary": 7606.0,
       "populated": 7606.0
+    },
+    {
+      "country": "us",
+      "total": 19662,
+      "with_salary": 19658.0,
+      "populated": 19658.0
     }
   ],
   "top_companies": [
@@ -210,15 +210,15 @@
         "Mentions": 64
       },
       {
-        "Skill": "Node.js",
-        "Mentions": 50
-      },
-      {
         "Skill": "Kafka",
         "Mentions": 50
       },
       {
         "Skill": "React",
+        "Mentions": 50
+      },
+      {
+        "Skill": "Node.js",
         "Mentions": 50
       },
       {
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 53,
+      "trained_at": "2026-09-19 10:25:19",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 52,
       "trained_at": "2026-09-18 10:40:52",
@@ -766,14 +774,6 @@
       "log_mae": 0.3064,
       "log_rmse": 0.6046,
       "notes": "{\"best_params\": {\"n_estimators\": 211, \"max_depth\": 3, \"learning_rate\": 0.03368903645460552, \"subsample\": 0.8914861190542918, \"colsample_bytree\": 0.7937424042622389, \"min_child_weight\": 7, \"reg_alpha\": 3.3477074844580317, \"reg_lambda\": 8.444091709601791}, \"r2\": 0.2134, \"raw_mae_usd\": 31150.87}"
-    },
-    {
-      "RunID": 2,
-      "trained_at": "2026-07-16 18:46:53",
-      "Type": "xgboost",
-      "log_mae": 0.3055,
-      "log_rmse": 0.6027,
-      "notes": "{\"best_params\": {\"n_estimators\": 371, \"max_depth\": 4, \"learning_rate\": 0.013102141172183241, \"subsample\": 0.8246437335823629, \"colsample_bytree\": 0.5944116682252756, \"min_child_weight\": 6, \"reg_alpha\": 0.0488794495406245, \"reg_lambda\": 0.8392426188800151}, \"r2\": 0.2183, \"raw_mae_usd\": 31072.93}"
     }
   ],
   "all_skills": [
@@ -7858,7 +7858,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-09-18 10:41 IST",
+  "last_refreshed": "2026-09-19 10:25 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -8022,11 +8022,11 @@
         "open_postings": 144
       },
       {
-        "Company": "IBM",
+        "Company": "Spotify",
         "open_postings": 141
       },
       {
-        "Company": "Spotify",
+        "Company": "IBM",
         "open_postings": 141
       },
       {
@@ -8038,11 +8038,11 @@
         "open_postings": 128
       },
       {
-        "Company": "DWP Digital",
+        "Company": "IT Online Learning",
         "open_postings": 120
       },
       {
-        "Company": "IT Online Learning",
+        "Company": "Platform Recruitment",
         "open_postings": 120
       }
     ]
