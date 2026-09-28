@@ -3,7 +3,7 @@
     "total_rows": 60178,
     "total_mappings": 11068,
     "total_skills": 48,
-    "total_runs": 44
+    "total_runs": 45
   },
   "country_counts": [
     {
@@ -21,6 +21,12 @@
   ],
   "transparency": [
     {
+      "country": "us",
+      "total": 19662,
+      "with_salary": 19658.0,
+      "populated": 19658.0
+    },
+    {
       "country": "gb",
       "total": 20150,
       "with_salary": 20087.0,
@@ -31,12 +37,6 @@
       "total": 20366,
       "with_salary": 7606.0,
       "populated": 7606.0
-    },
-    {
-      "country": "us",
-      "total": 19662,
-      "with_salary": 19658.0,
-      "populated": 19658.0
     }
   ],
   "top_companies": [
@@ -210,7 +210,7 @@
         "Mentions": 64
       },
       {
-        "Skill": "Node.js",
+        "Skill": "Kafka",
         "Mentions": 50
       },
       {
@@ -218,7 +218,7 @@
         "Mentions": 50
       },
       {
-        "Skill": "Kafka",
+        "Skill": "Node.js",
         "Mentions": 50
       },
       {
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 62,
+      "trained_at": "2026-09-28 13:03:50",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 61,
       "trained_at": "2026-09-27 11:30:56",
@@ -766,14 +774,6 @@
       "log_mae": 0.3002,
       "log_rmse": 0.5998,
       "notes": "{\"best_params\": {\"n_estimators\": 258, \"max_depth\": 9, \"learning_rate\": 0.028978856646322736, \"subsample\": 0.528802606122749, \"colsample_bytree\": 0.5082835941143045, \"min_child_weight\": 1, \"reg_alpha\": 8.470700220901858, \"reg_lambda\": 1.9914123643682078}, \"r2\": 0.1941, \"raw_mae_usd\": 30441.76}"
-    },
-    {
-      "RunID": 11,
-      "trained_at": "2026-07-21 16:04:12",
-      "Type": "xgboost",
-      "log_mae": 0.2957,
-      "log_rmse": 0.5757,
-      "notes": "{\"best_params\": {\"n_estimators\": 317, \"max_depth\": 6, \"learning_rate\": 0.026760560458286505, \"subsample\": 0.5433234698409871, \"colsample_bytree\": 0.9428861178652322, \"min_child_weight\": 6, \"reg_alpha\": 0.0020815690278886897, \"reg_lambda\": 0.0036594344965650252}, \"r2\": 0.2075, \"raw_mae_usd\": 29980.43}"
     }
   ],
   "all_skills": [
@@ -7858,7 +7858,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-09-27 11:31 IST",
+  "last_refreshed": "2026-09-28 13:04 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -7898,11 +7898,11 @@
         "open_postings": 126
       },
       {
-        "Company": "Benovymed Healthcare",
+        "Company": "Open Text Technologies India Private Limited",
         "open_postings": 120
       },
       {
-        "Company": "Open Text Technologies India Private Limited",
+        "Company": "Benovymed Healthcare",
         "open_postings": 120
       },
       {
@@ -8022,11 +8022,11 @@
         "open_postings": 144
       },
       {
-        "Company": "Spotify",
+        "Company": "IBM",
         "open_postings": 141
       },
       {
-        "Company": "IBM",
+        "Company": "Spotify",
         "open_postings": 141
       },
       {
