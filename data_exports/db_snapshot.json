@@ -3,13 +3,9 @@
     "total_rows": 60178,
     "total_mappings": 11068,
     "total_skills": 48,
-    "total_runs": 48
+    "total_runs": 49
   },
   "country_counts": [
-    {
-      "country": "gb",
-      "count": 20150
-    },
     {
       "country": "in",
       "count": 20366
@@ -17,6 +13,10 @@
     {
       "country": "us",
       "count": 19662
+    },
+    {
+      "country": "gb",
+      "count": 20150
     }
   ],
   "transparency": [
@@ -210,11 +210,11 @@
         "Mentions": 64
       },
       {
-        "Skill": "Kafka",
+        "Skill": "React",
         "Mentions": 50
       },
       {
-        "Skill": "React",
+        "Skill": "Kafka",
         "Mentions": 50
       },
       {
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 66,
+      "trained_at": "2026-10-02 11:58:55",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 65,
       "trained_at": "2026-10-01 12:33:26",
@@ -766,14 +774,6 @@
       "log_mae": 0.3,
       "log_rmse": 0.5996,
       "notes": "{\"best_params\": {\"n_estimators\": 331, \"max_depth\": 3, \"learning_rate\": 0.01839747834099047, \"subsample\": 0.8698148467351361, \"colsample_bytree\": 0.9428282698195014, \"min_child_weight\": 8, \"reg_alpha\": 9.359153009769972, \"reg_lambda\": 1.367572691636791}, \"r2\": 0.1945, \"raw_mae_usd\": 30419.71}"
-    },
-    {
-      "RunID": 15,
-      "trained_at": "2026-07-21 17:03:34",
-      "Type": "xgboost",
-      "log_mae": 0.3002,
-      "log_rmse": 0.5997,
-      "notes": "{\"best_params\": {\"n_estimators\": 140, \"max_depth\": 6, \"learning_rate\": 0.056276139355429425, \"subsample\": 0.6985761392166909, \"colsample_bytree\": 0.5637597838016255, \"min_child_weight\": 8, \"reg_alpha\": 9.226214199013674, \"reg_lambda\": 9.876184885060184}, \"r2\": 0.1942, \"raw_mae_usd\": 30440.82}"
     }
   ],
   "all_skills": [
@@ -7858,7 +7858,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-10-01 12:34 IST",
+  "last_refreshed": "2026-10-02 11:59 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -7898,11 +7898,11 @@
         "open_postings": 126
       },
       {
-        "Company": "Benovymed Healthcare",
+        "Company": "Open Text Technologies India Private Limited",
         "open_postings": 120
       },
       {
-        "Company": "Open Text Technologies India Private Limited",
+        "Company": "Benovymed Healthcare",
         "open_postings": 120
       },
       {
@@ -8042,7 +8042,7 @@
         "open_postings": 120
       },
       {
-        "Company": "DWP Digital",
+        "Company": "Platform Recruitment",
         "open_postings": 120
       }
     ]
