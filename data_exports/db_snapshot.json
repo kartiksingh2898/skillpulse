@@ -3,7 +3,7 @@
     "total_rows": 60178,
     "total_mappings": 11068,
     "total_skills": 48,
-    "total_runs": 50
+    "total_runs": 51
   },
   "country_counts": [
     {
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 68,
+      "trained_at": "2026-10-04 11:52:02",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 67,
       "trained_at": "2026-10-03 11:12:21",
@@ -766,14 +774,6 @@
       "log_mae": 0.2999,
       "log_rmse": 0.5998,
       "notes": "{\"best_params\": {\"n_estimators\": 85, \"max_depth\": 7, \"learning_rate\": 0.06089258025544552, \"subsample\": 0.727765905409029, \"colsample_bytree\": 0.7281830684728713, \"min_child_weight\": 2, \"reg_alpha\": 9.600650047556808, \"reg_lambda\": 0.021991355484397422}, \"r2\": 0.1941, \"raw_mae_usd\": 30424.14}"
-    },
-    {
-      "RunID": 17,
-      "trained_at": "2026-07-21 19:06:14",
-      "Type": "xgboost",
-      "log_mae": 0.3002,
-      "log_rmse": 0.5998,
-      "notes": "{\"best_params\": {\"n_estimators\": 170, \"max_depth\": 5, \"learning_rate\": 0.05055175030934986, \"subsample\": 0.6003245835200534, \"colsample_bytree\": 0.50129062782511, \"min_child_weight\": 7, \"reg_alpha\": 9.984353095187013, \"reg_lambda\": 0.004209826949001351}, \"r2\": 0.1939, \"raw_mae_usd\": 30446.71}"
     }
   ],
   "all_skills": [
@@ -7858,7 +7858,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-10-03 11:12 IST",
+  "last_refreshed": "2026-10-04 11:52 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -8038,11 +8038,11 @@
         "open_postings": 128
       },
       {
-        "Company": "IT Online Learning",
+        "Company": "DWP Digital",
         "open_postings": 120
       },
       {
-        "Company": "DWP Digital",
+        "Company": "IT Online Learning",
         "open_postings": 120
       }
     ]
