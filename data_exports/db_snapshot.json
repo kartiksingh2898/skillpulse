@@ -3,7 +3,7 @@
     "total_rows": 66257,
     "total_mappings": 13306,
     "total_skills": 48,
-    "total_runs": 53
+    "total_runs": 54
   },
   "country_counts": [
     {
@@ -11,12 +11,12 @@
       "count": 21734
     },
     {
-      "country": "in",
-      "count": 22368
-    },
-    {
       "country": "gb",
       "count": 22155
+    },
+    {
+      "country": "in",
+      "count": 22368
     }
   ],
   "transparency": [
@@ -182,11 +182,11 @@
         "Mentions": 238
       },
       {
-        "Skill": "Microservices",
+        "Skill": "Python",
         "Mentions": 235
       },
       {
-        "Skill": "Python",
+        "Skill": "Microservices",
         "Mentions": 235
       },
       {
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 70,
+      "trained_at": "2026-10-05 13:45:54",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 69,
       "trained_at": "2026-10-04 20:15:12",
@@ -766,14 +774,6 @@
       "log_mae": 0.3,
       "log_rmse": 0.5996,
       "notes": "{\"trigger\": \"cloud-auto-retrain (GitHub Actions)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1946, \"raw_mae_usd\": 30419.59}"
-    },
-    {
-      "RunID": 19,
-      "trained_at": "2026-07-25 19:46:51",
-      "Type": "xgboost",
-      "log_mae": 0.3052,
-      "log_rmse": 0.6721,
-      "notes": "{\"best_params\": {\"n_estimators\": 167, \"max_depth\": 10, \"learning_rate\": 0.04972735830234338, \"subsample\": 0.6525414087539219, \"colsample_bytree\": 0.8936199868689829, \"min_child_weight\": 2, \"reg_alpha\": 1.4549192802735085, \"reg_lambda\": 0.0010033355624291687}, \"r2\": 0.1609, \"raw_mae_usd\": 29849.27}"
     }
   ],
   "all_skills": [
@@ -7858,7 +7858,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-10-04 20:15 IST",
+  "last_refreshed": "2026-10-05 13:46 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -7898,19 +7898,19 @@
         "open_postings": 140
       },
       {
-        "Company": "Benovymed Healthcare",
-        "open_postings": 120
-      },
-      {
         "Company": "Open Text Technologies India Private Limited",
         "open_postings": 120
       },
       {
-        "Company": "Cisco",
-        "open_postings": 113
+        "Company": "Benovymed Healthcare",
+        "open_postings": 120
       },
       {
         "Company": "Weekday AI",
+        "open_postings": 113
+      },
+      {
+        "Company": "Cisco",
         "open_postings": 113
       },
       {
