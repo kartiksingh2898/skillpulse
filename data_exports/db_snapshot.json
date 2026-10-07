@@ -3,7 +3,7 @@
     "total_rows": 66257,
     "total_mappings": 13306,
     "total_skills": 48,
-    "total_runs": 55
+    "total_runs": 56
   },
   "country_counts": [
     {
@@ -21,6 +21,12 @@
   ],
   "transparency": [
     {
+      "country": "us",
+      "total": 21734,
+      "with_salary": 21730.0,
+      "populated": 21730.0
+    },
+    {
       "country": "gb",
       "total": 22155,
       "with_salary": 22081.0,
@@ -31,12 +37,6 @@
       "total": 22368,
       "with_salary": 8429.0,
       "populated": 8429.0
-    },
-    {
-      "country": "us",
-      "total": 21734,
-      "with_salary": 21730.0,
-      "populated": 21730.0
     }
   ],
   "top_companies": [
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 72,
+      "trained_at": "2026-10-07 12:45:35",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 71,
       "trained_at": "2026-10-06 12:52:18",
@@ -762,14 +770,6 @@
     {
       "RunID": 22,
       "trained_at": "2026-08-12 11:42:14",
-      "Type": "xgboost_retrain",
-      "log_mae": 0.3,
-      "log_rmse": 0.5996,
-      "notes": "{\"trigger\": \"cloud-auto-retrain (GitHub Actions)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1946, \"raw_mae_usd\": 30419.59}"
-    },
-    {
-      "RunID": 21,
-      "trained_at": "2026-08-12 11:34:28",
       "Type": "xgboost_retrain",
       "log_mae": 0.3,
       "log_rmse": 0.5996,
@@ -7858,7 +7858,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-10-06 12:52 IST",
+  "last_refreshed": "2026-10-07 12:45 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -7906,11 +7906,11 @@
         "open_postings": 120
       },
       {
-        "Company": "Weekday AI",
+        "Company": "Cisco",
         "open_postings": 113
       },
       {
-        "Company": "Cisco",
+        "Company": "Weekday AI",
         "open_postings": 113
       },
       {
