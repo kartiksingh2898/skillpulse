@@ -149,7 +149,7 @@ def run_drift_check(verbose: bool = True) -> dict:
     # ── 1. Load reference data ────────────────────────────────────
     log.info("Loading reference dataset (X_train.csv) …")
     X_ref = pd.read_csv(X_TRAIN_F)
-    y_ref = pd.read_csv(Y_TRAIN_F, header=None, names=["log_salary"])
+    y_ref = pd.read_csv(Y_TRAIN_F)["log_salary_usd"]
 
     with open(FEATURE_NAMES_F) as f:
         feature_names: list = json.load(f)
