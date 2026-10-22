@@ -13,6 +13,7 @@ can be launched from any working directory.
 import os
 import logging
 from pathlib import Path
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 
@@ -20,6 +21,7 @@ logger = logging.getLogger(__name__)
 
 # Resolved once at import time — always points to repo root regardless of cwd
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(_PROJECT_ROOT / ".env")
 
 
 def build_engine(pool_pre_ping: bool = True):

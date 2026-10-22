@@ -139,6 +139,19 @@ else:
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(ROOT, ".env"))
 
+# Bridge Streamlit Cloud secrets into os.environ for build_engine()
+try:
+    if hasattr(st, "secrets"):
+        for k, v in st.secrets.items():
+            if isinstance(v, (str, int, float, bool)):
+                os.environ.setdefault(str(k), str(v))
+            elif hasattr(v, "items"):  # Support sections like [general] or [mysql]
+                for sub_k, sub_v in v.items():
+                    if isinstance(sub_v, (str, int, float, bool)):
+                        os.environ.setdefault(str(sub_k), str(sub_v))
+except Exception:
+    pass
+
 @st.cache_resource
 def get_prediction_model():
     model_path = os.path.join(ROOT, "models", "xgboost_model.joblib")
@@ -153,12 +166,17 @@ def get_prediction_model():
         feature_names = json.load(f)
     return model, feature_names
 
+@st.cache_resource
+def get_db_engine():
+    return build_engine()
+
 HAS_DB = False
+engine = None
 try:
     db_user = os.getenv("DB_USER")
     db_pass = os.getenv("DB_PASSWORD")
     if db_user and db_pass:
-        engine = build_engine()
+        engine = get_db_engine()
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
         HAS_DB = True
@@ -205,7 +223,7 @@ def format_salary(salary_raw, country_code="us"):
         return str(salary_raw)
 
 def run_query(sql, params=None):
-    if HAS_DB:
+    if HAS_DB and engine is not None:
         try:
             with engine.connect() as conn:
                 return pd.read_sql(text(sql), conn, params=params)
@@ -277,7 +295,7 @@ def run_query(sql, params=None):
     return pd.DataFrame()
 
 def get_last_refreshed_time():
-    if HAS_DB:
+    if HAS_DB and engine is not None:
         try:
             with engine.connect() as conn:
                 res = conn.execute(text("SELECT max(trained_at) FROM model_runs")).fetchone()

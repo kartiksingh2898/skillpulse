@@ -133,7 +133,7 @@ def extract_skills_from_text(title: str, description: str) -> list:
     return list(set(matched))
 
 
-def fetch_adzuna_jobs(app_id: str, app_key: str, country: str = "in", keyword: str = "software engineer", page: int = 1, results_per_page: int = 50) -> list:
+def fetch_adzuna_jobs(app_id: str, app_key: str, country: str = "in", keyword: str = "software engineer", page: int = 1, results_per_page: int = 50, sort_by: str = "date") -> list:
     """Queries Adzuna API for job postings in a specific country."""
     url = f"https://api.adzuna.com/v1/api/jobs/{country}/search/{page}"
     params = {
@@ -142,6 +142,7 @@ def fetch_adzuna_jobs(app_id: str, app_key: str, country: str = "in", keyword: s
         "results_per_page": results_per_page,
         "what": keyword,
         "content-type": "application/json",
+        "sort_by": sort_by,
     }
     try:
         response = requests.get(url, params=params, timeout=12)
@@ -177,7 +178,7 @@ def sync_skills_table(engine):
     return dict(zip(df_skills['name'], df_skills['id']))
 
 
-def ingest_live_jobs(countries=None, keywords=None, pages_per_combo=2, results_per_page=25):
+def ingest_live_jobs(countries=None, keywords=None, pages_per_combo=2, results_per_page=25, sort_by="date"):
     """
     Main orchestration function to fetch live jobs from Adzuna API,
     clean, deduplicate, extract skills, and persist to MySQL.
@@ -222,7 +223,7 @@ def ingest_live_jobs(countries=None, keywords=None, pages_per_combo=2, results_p
         country_new = 0
         for kw in keywords:
             for page in range(1, pages_per_combo + 1):
-                raw_results = fetch_adzuna_jobs(app_id, app_key, country=country, keyword=kw, page=page, results_per_page=results_per_page)
+                raw_results = fetch_adzuna_jobs(app_id, app_key, country=country, keyword=kw, page=page, results_per_page=results_per_page, sort_by=sort_by)
                 if not raw_results:
                     break
                 

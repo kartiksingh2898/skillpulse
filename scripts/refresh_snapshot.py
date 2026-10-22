@@ -23,7 +23,7 @@ import json
 import logging
 import urllib.parse
 import subprocess
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 # Ensure UTF-8 output encoding for Windows CMD
@@ -236,8 +236,9 @@ if engine:
     except Exception as e:
         logger.warning(f"Failed to refresh matching jobs from MySQL: {e}")
 
-# Save snapshot
-snap["last_refreshed"] = datetime.now().strftime("%Y-%m-%d %H:%M") + " IST"
+# Save snapshot (UTC+5:30 accurate for both local and GitHub Actions Ubuntu runners)
+ist_now = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
+snap["last_refreshed"] = ist_now.strftime("%Y-%m-%d %H:%M") + " IST"
 
 with open(SNAP_PATH, "w", encoding="utf-8") as f:
     json.dump(snap, f, indent=2, ensure_ascii=False)
