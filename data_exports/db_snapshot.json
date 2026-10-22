@@ -1,9 +1,9 @@
 {
   "stats": {
-    "total_rows": 66257,
-    "total_mappings": 13306,
+    "total_rows": 66267,
+    "total_mappings": 13317,
     "total_skills": 48,
-    "total_runs": 70
+    "total_runs": 72
   },
   "country_counts": [
     {
@@ -11,12 +11,12 @@
       "count": 22155
     },
     {
-      "country": "us",
-      "count": 21734
+      "country": "in",
+      "count": 22378
     },
     {
-      "country": "in",
-      "count": 22368
+      "country": "us",
+      "count": 21734
     }
   ],
   "transparency": [
@@ -27,16 +27,16 @@
       "populated": 22081.0
     },
     {
+      "country": "in",
+      "total": 22378,
+      "with_salary": 8432.0,
+      "populated": 8432.0
+    },
+    {
       "country": "us",
       "total": 21734,
       "with_salary": 21730.0,
       "populated": 21730.0
-    },
-    {
-      "country": "in",
-      "total": 22368,
-      "with_salary": 8429.0,
-      "populated": 8429.0
     }
   ],
   "top_companies": [
@@ -105,7 +105,7 @@
     "in": [
       {
         "Skill": "Machine Learning",
-        "Mentions": 1314
+        "Mentions": 1315
       },
       {
         "Skill": "Python",
@@ -113,7 +113,7 @@
       },
       {
         "Skill": "API",
-        "Mentions": 331
+        "Mentions": 332
       },
       {
         "Skill": "SQL",
@@ -121,19 +121,19 @@
       },
       {
         "Skill": "Java",
-        "Mentions": 241
+        "Mentions": 242
       },
       {
         "Skill": "JavaScript",
-        "Mentions": 203
+        "Mentions": 204
       },
       {
         "Skill": "AWS",
-        "Mentions": 175
+        "Mentions": 176
       },
       {
         "Skill": "Node.js",
-        "Mentions": 158
+        "Mentions": 159
       },
       {
         "Skill": "Deep Learning",
@@ -161,7 +161,7 @@
       },
       {
         "Skill": "MongoDB",
-        "Mentions": 77
+        "Mentions": 78
       }
     ],
     "us": [
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 87,
+      "trained_at": "2026-10-22 11:15:41",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 86,
       "trained_at": "2026-10-21 11:16:39",
@@ -766,14 +774,6 @@
       "log_mae": 0.3,
       "log_rmse": 0.5996,
       "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
-    },
-    {
-      "RunID": 36,
-      "trained_at": "2026-09-03 10:25:57",
-      "Type": "xgboost_retrain",
-      "log_mae": 0.3,
-      "log_rmse": 0.5996,
-      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1945, \"raw_mae_usd\": 30422.02}"
     }
   ],
   "all_skills": [
@@ -1102,6 +1102,96 @@
   },
   "matching_jobs": {
     "in": [
+      {
+        "Title": "SENIOR CLOUD ENGINEER (JAVA AWS)",
+        "Company": "Vrinda International",
+        "Location": "India",
+        "salary_range": "4000000.00 - 4500000.00",
+        "Description": "Summary We are seeking an experienced Senior Cloud Engineer to lead the design, deployment, and optimization of our cloud-native infrastructure within the IT Services sector. This pivotal role demands a professional with deep expertise in Java development and AWS architecture to drive high-availability solutions and ensure robust system performance. The successful candidate will be instrumental in automating infrastructure workflows, securing cloud environments, and implementing advanced monito…",
+        "Apply URL": "https://www.adzuna.in/details/5937070773?utm_medium=api&utm_source=7a91684d",
+        "Posted": "2026-10-22"
+      },
+      {
+        "Title": "Manager, Software Development Engineer in Test",
+        "Company": "DU TECH",
+        "Location": "Ttti Taramani, Chennai",
+        "salary_range": "0.00 - 0.00",
+        "Description": "Job Summary - Job Description (Internal) Job Summary - Job Advert (External) The Manager, Software Development Engineer in Test leads software development engineering in test delivery and operational performance across test automation frameworks, quality engineering, CI/CD integration, performance testing, and release confidence. This people-leader role translates business and product priorities into plans, establishes quality and governance expectations, manages risks and dependencies, and dev…",
+        "Apply URL": "https://www.adzuna.in/details/5937070767?utm_medium=api&utm_source=7a91684d",
+        "Posted": "2026-10-22"
+      },
+      {
+        "Title": "Software Engineer (Full-Stack, AI & LLM Integration)",
+        "Company": "Ethical Hat Security Pvt. Ltd.",
+        "Location": "Dlf Ph, Gurgaon",
+        "salary_range": "0.00 - 0.00",
+        "Description": "This is a remote position. We at ETHICALHAT Cyber Security are hiring a full-stack Software Engineer to build and grow our web products, and to add AI features to them: LLM-powered assistance, AI integrations, and an MCP server that lets AI assistants work with our product data safely. Key responsibilities Product engineering • Design, build and maintain backend services and APIs. • Build clean, responsive frontend screens. • Design database schemas and write efficient queries. • Build features…",
+        "Apply URL": "https://www.adzuna.in/details/5937070789?utm_medium=api&utm_source=7a91684d",
+        "Posted": "2026-10-22"
+      },
+      {
+        "Title": "AI QA Engineer",
+        "Company": "Durapid Technologies Pvt Ltd",
+        "Location": "India",
+        "salary_range": "500000.00 - 1000000.00",
+        "Description": "About Durapid Durapid Technologies is a Microsoft Data & AI Solutions Partner and a Databricks Partner. We build AI-powered software, data platforms, and enterprise applications for clients in India, the USA, the UK, the Middle East, and Singapore. Our engineering teams work on Generative AI, LLM-based applications, data engineering, and enterprise software for global clients. Role Overview We are building a talent pipeline of AI QA Engineers for our clients’ current and upcoming AI and GenAI p…",
+        "Apply URL": "https://www.adzuna.in/details/5937256008?utm_medium=api&utm_source=7a91684d",
+        "Posted": "2026-10-22"
+      },
+      {
+        "Title": "Senior Software Engineer",
+        "Company": "Bizmatics India Private Limited",
+        "Location": "Mumbai, Maharashtra",
+        "salary_range": "92268.00 - 92268.00",
+        "Description": "Responsibilities: Deliver features end-to-end across the Synapse stack: React/Vite frontend, Node.js/Express/Apollo GraphQL backend, MongoDB/Elasticsearch data layer, and the surrounding Kubernetes deployment. Operate AI coding tools (Claude Code, agentic workflows, LLM-assisted code review) as a first-class part of the workflow — write effective prompts, critically evaluate AI-generated diffs, and know when to override the model. Contribute to HL7 v2 / FHIR / immunization data pipelines, inclu…",
+        "Apply URL": "https://www.adzuna.in/details/5937261169?utm_medium=api&utm_source=7a91684d",
+        "Posted": "2026-10-22"
+      },
+      {
+        "Title": "Manager, Site Reliability Engineer",
+        "Company": "Vertafore",
+        "Location": "Kyasaram, Hyderabad",
+        "salary_range": "0.00 - 0.00",
+        "Description": "Role Summary The Manager, Site Reliability Engineering (SRE) will lead a team of engineers responsible for improving the reliability, availability, and operational efficiency of assigned Vertafore products or platforms. This is a hands-on technical leadership role focused on executing reliability initiatives through proactive monitoring, automation, incident management, and continuous improvement. The Manager will work closely with engineering teams and SRE leadership to improve service stabili…",
+        "Apply URL": "https://www.adzuna.in/details/5937295260?utm_medium=api&utm_source=7a91684d",
+        "Posted": "2026-10-22"
+      },
+      {
+        "Title": "Security Engineer",
+        "Company": "Dialpad",
+        "Location": "Bangalore, Karnataka",
+        "salary_range": "0.00 - 0.00",
+        "Description": "About Dialpad Dialpad is the AI platform for customer experience, built to resolve customer problems in real time across voice and digital. Our AI agents learn from your best human agents and improve with every interaction, helping organizations understand their customers, deliver better experiences, increase operational efficiencies, and build a lasting competitive advantage. Unlike legacy systems built to route and answer, or standalone agentic bot vendors built to deflect, Dialpad was built …",
+        "Apply URL": "https://www.adzuna.in/details/5937322002?utm_medium=api&utm_source=7a91684d",
+        "Posted": "2026-10-22"
+      },
+      {
+        "Title": "Senior ML Engineer",
+        "Company": "Standard Chartered Bank",
+        "Location": "Chennai, Tamil Nadu",
+        "salary_range": "0.00 - 0.00",
+        "Description": "This job is with Standard Chartered Bank, an inclusive employer and a member of myGwork – the largest global platform for the LGBTQ business community. Please do not contact the recruiter directly. Job Summary • Deliver production-grade machine learning and generative AI solutions end-to-end, from business requirement and solution design through build, validation, deployment, monitoring and improvement. • Engineer governed, observable and auditable agentic AI systems, including tool calling, re…",
+        "Apply URL": "https://www.adzuna.in/land/ad/5937416712?se=fEu-7dnN8RG8f8HyuNM3ow&utm_medium=api&utm_source=7a91684d&v=AF9A0DA8A0796556DECBDC531A1413EBF963C961",
+        "Posted": "2026-10-22"
+      },
+      {
+        "Title": "BIM Modeler - Public Health",
+        "Company": "Egis Group",
+        "Location": "Bangalore, Karnataka",
+        "salary_range": "0.00 - 0.00",
+        "Description": "Job Description Lead and coordinate BIM activities across multidisciplinary projects, ensuring compliance with project and organizational BIM standards. Plan, schedule, monitor, and coordinate both technical and management aspects of BIM project delivery. Provide Revit and BIM technical support to the MEP discipline teams. Configure, manage, and administer BIM 360 collaboration environments and workflows. Develop, maintain, and coordinate 3D models across Architectural, Structural, and MEP disc…",
+        "Apply URL": "https://www.adzuna.in/details/5937446607?utm_medium=api&utm_source=7a91684d",
+        "Posted": "2026-10-22"
+      },
+      {
+        "Title": "Software Engineer",
+        "Company": "Miratech",
+        "Location": "India",
+        "salary_range": "0.00 - 0.00",
+        "Description": "Job Description We are seeking experienced Software Engineers to support the delivery of an AI Fabric Platform, a strategic enterprise initiative focused on accelerating conversational AI capabilities across the organization. AI Fabric provides shared services for bot onboarding, conversation orchestration, intelligent routing, integrations, observability, voice infrastructure, and production readiness. The platform enables teams to rapidly build and scale conversational AI experiences while re…",
+        "Apply URL": "https://www.adzuna.in/details/5937446539?utm_medium=api&utm_source=7a91684d",
+        "Posted": "2026-10-22"
+      },
       {
         "Title": "Backend Developer",
         "Company": "TestMu AI",
@@ -3261,96 +3351,6 @@
         "Description": "For our MNC client which caters to the BFSI domain This is currently a Hybrid mode WFO from the WeWork location closest to your home/option for a permanent Remote WFH position. Mandatory Experience: 1 to 4 years as LEAD or Overall experience of 6 Years in Software Development Responsibilities : - Build reusable code and libraries for future use. - Own & build new modules/features end-to-end independently. - Collaborate with other team members and stakeholders. Required Experience, skills and ab…",
         "Apply URL": "https://www.adzuna.in/details/3750622492?utm_medium=api&utm_source=7a91684d",
         "Posted": "2022-12-06"
-      },
-      {
-        "Title": "Backend Developer",
-        "Company": "Jobdost",
-        "Location": "Hyderabad, Telangana",
-        "salary_range": "500000.00 - 1500000.00",
-        "Description": "Job Location - Hyderabad & Ahmedabad What you'll do: Perform complex application programming activities with an emphasis on mobile development: Node.js, TypeScript, JavaScript, RESTful APIs and related backend frameworks Assist in the definition of system architecture and detailed solution design that are scalable and extensible Collaborate with Product Owners, Designers, and other engineers on different permutations to find the best solution possible Own the quality of code and do your own tes…",
-        "Apply URL": "https://www.adzuna.in/details/4344578479?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2023-10-02"
-      },
-      {
-        "Title": "Backend Developer",
-        "Company": "NomNom",
-        "Location": "Noida, Ghaziabad",
-        "salary_range": "0.00 - 0.00",
-        "Description": "About the role: You’ll be working directly with the founders in a very small engineering team and own the entire backend of the existing product as well as lead future product evolution – across the entire lifecycle – right from concept stage until delivery and post launch evolution. You will be building and breaking a lot of things; working towards developing an amazing product, in a VERY fast paced environment. Your opinion will count, and your ideas will translate into reality. You will, per…",
-        "Apply URL": "https://www.adzuna.in/details/4801511323?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2024-07-31"
-      },
-      {
-        "Title": "Backend Developer",
-        "Company": "BiggWorks",
-        "Location": "Bangalore, Karnataka",
-        "salary_range": "0.00 - 0.00",
-        "Description": "Responsibilities ● Writing reusable, testable, and efficient server-side code that solve problems ● Building RESTful APIs ● Design and implementation of scalable, low-latency, high-availability, and performant application/architecture ● Implementation of security and data protection measures ● Integration of data storage solutions (may include databases, key-value stores, blob stores, etc.) ● Deploying and managing applications on the cloud ● Supervising less experienced team members. Requireme…",
-        "Apply URL": "https://www.adzuna.in/details/4801646642?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2024-07-31"
-      },
-      {
-        "Title": "Backend Developer",
-        "Company": "Huptech Consultancy Services",
-        "Location": "Ahmedabad, Gujarat",
-        "salary_range": "0.00 - 1000000.00",
-        "Description": "Roles & Responsibilities: Excellent problem-solving & analytical skills & OO principles Solid understanding of the data structure & algorithms. Expert knowledge with any one of the Javascript Framework such as Node Js. Any additional experience with Java or python, GoLang would be nice to have. Experience working with SQL database like MySQL or PostgreSQL Experience working with NoSQL databases like mongoDB, couchbase would be nice to have Working experience with cache like redis, mem cached or…",
-        "Apply URL": "https://www.adzuna.in/details/4992020396?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2024-12-30"
-      },
-      {
-        "Title": "Backend Developer",
-        "Company": "Wedding Wishlist",
-        "Location": "Chennai, Tamil Nadu",
-        "salary_range": "300000.00 - 1200000.00",
-        "Description": "What are we looking for? : - Experience of upto 3 years in PHP or other backend programming languages. - Understanding of MVC structures, OOPs concepts and Frameworks. - Experience working with Linux, Nginx or Apache and Git, REST APIs. - Experience with Third party API integrations and using various vendor libraries. - Have knowledge of Database schemas, structures and migrations. - Experience in Laravel would be a huge plus. What you will be doing?: - Collaborate with team members and solve n…",
-        "Apply URL": "https://www.adzuna.in/details/4990143347?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2024-12-27"
-      },
-      {
-        "Title": "Backend developer",
-        "Company": "Gipfel & Schnell Consultings Pvt Ltd",
-        "Location": "Bangalore, Karnataka",
-        "salary_range": "1000000.00 - 4000000.00",
-        "Description": "Experience in Backend Experience in Java ,Spring boot Experience in Microservices Experience in Data structure ,Algorithm Skills:- J2EE, Spring Boot, Hibernate (Java) and Microservices",
-        "Apply URL": "https://www.adzuna.in/details/5171459118?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2025-05-01"
-      },
-      {
-        "Title": "Backend Developer",
-        "Company": "FactWise",
-        "Location": "Mumbai, Maharashtra",
-        "salary_range": "500000.00 - 2000000.00",
-        "Description": "Responsibilities: • Help define and create Backend architecture and deployment using Python- Django-AWS in an agile environment with lots of ownership and active mentoring • Work with the Product and Design teams to build new features to solve business problems and fill business needs • Participate in code reviews to create robust and maintainable code • Work in an agile environment where quick iterations and good feedback are a way of life • Interact with other stakeholders for requirement, de…",
-        "Apply URL": "https://www.adzuna.in/details/5347327395?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2025-08-11"
-      },
-      {
-        "Title": "Backend developer",
-        "Company": "PixelPhant",
-        "Location": "Udaipur, Rajasthan",
-        "salary_range": "300000.00 - 1200000.00",
-        "Description": "Full Job Description We are looking for a Senior Developer to build and implement programs. As a senior developer, you’ll gain valuable management experience delegating responsibilities to the rest of your team and reviewing the work of junior developers. Requirement Bachelor’s Degree in Computer Science required 3 years of experience in web and software development with NODE.JS and REACT.JS Ability to work independently and multi-task effectively Demonstrated understanding of projects from the…",
-        "Apply URL": "https://www.adzuna.in/details/3860718852?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2023-01-20"
-      },
-      {
-        "Title": "Backend Developer",
-        "Company": "WE Matter",
-        "Location": "Mumbai, Maharashtra",
-        "salary_range": "1000000.00 - 1300000.00",
-        "Description": "Develop and maintain server-side logic using Node.js, JavaScript, and Python. Collaborate with front-end developers, designers, and product managers to create scalable and responsive web applications. Design and implement APIs and web services to facilitate seamless integration with other systems. Optimize applications for maximum speed, scalability, and reliability. Identify and troubleshoot performance bottlenecks and implement effective solutions. Ensure the security and data protection of t…",
-        "Apply URL": "https://www.adzuna.in/details/4271917088?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2023-08-22"
-      },
-      {
-        "Title": "Backend Developer",
-        "Company": "IRIQUE HI TECH",
-        "Location": "Andheri, Mumbai",
-        "salary_range": "100000.00 - 300000.00",
-        "Description": "Looking for Software Developer - Node.js on urgent bases. Job Description: 1.Hands on experience in Backend database. 2.Knowledge of Nodejs, React. Exp: 1-2 Years Qualification:Diploma/B.E/Technical Degree Location :Andheri (E) Skills:- MongoDB, Mongoose and Express",
-        "Apply URL": "https://www.adzuna.in/details/4271917093?utm_medium=api&utm_source=7a91684d",
-        "Posted": "2023-08-22"
       }
     ],
     "us": [
@@ -7858,7 +7858,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-10-21 11:16 IST",
+  "last_refreshed": "2026-10-22 16:46 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -7898,19 +7898,19 @@
         "open_postings": 140
       },
       {
-        "Company": "Benovymed Healthcare",
-        "open_postings": 120
-      },
-      {
         "Company": "Open Text Technologies India Private Limited",
         "open_postings": 120
       },
       {
-        "Company": "Cisco",
-        "open_postings": 113
+        "Company": "Benovymed Healthcare",
+        "open_postings": 120
       },
       {
         "Company": "Weekday AI",
+        "open_postings": 113
+      },
+      {
+        "Company": "Cisco",
         "open_postings": 113
       },
       {
