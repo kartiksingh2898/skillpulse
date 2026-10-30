@@ -3,13 +3,9 @@
     "total_rows": 66862,
     "total_mappings": 13850,
     "total_skills": 48,
-    "total_runs": 79
+    "total_runs": 80
   },
   "country_counts": [
-    {
-      "country": "gb",
-      "count": 22352
-    },
     {
       "country": "in",
       "count": 22569
@@ -17,6 +13,10 @@
     {
       "country": "us",
       "count": 21941
+    },
+    {
+      "country": "gb",
+      "count": 22352
     }
   ],
   "transparency": [
@@ -367,6 +367,14 @@
     }
   ],
   "model_runs": [
+    {
+      "RunID": 95,
+      "trained_at": "2026-10-30 12:14:20",
+      "Type": "xgboost_retrain",
+      "log_mae": 0.3108,
+      "log_rmse": 0.646,
+      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
+    },
     {
       "RunID": 94,
       "trained_at": "2026-10-29 12:23:28",
@@ -762,14 +770,6 @@
     {
       "RunID": 45,
       "trained_at": "2026-09-12 09:49:54",
-      "Type": "xgboost_retrain",
-      "log_mae": 0.3108,
-      "log_rmse": 0.646,
-      "notes": "{\"trigger\": \"daily-automation (SkillPulse Engine)\", \"best_params\": {\"n_estimators\": 191, \"max_depth\": 5, \"learning_rate\": 0.0556, \"subsample\": 0.952, \"colsample_bytree\": 0.93, \"min_child_weight\": 5, \"reg_alpha\": 5.378, \"reg_lambda\": 5.53, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"n_jobs\": -1}, \"r2\": 0.1624, \"raw_mae_usd\": 30887.17}"
-    },
-    {
-      "RunID": 44,
-      "trained_at": "2026-09-11 10:16:11",
       "Type": "xgboost_retrain",
       "log_mae": 0.3108,
       "log_rmse": 0.646,
@@ -7858,7 +7858,7 @@
       }
     ]
   },
-  "last_refreshed": "2026-10-29 17:53 IST",
+  "last_refreshed": "2026-10-30 17:44 IST",
   "top_companies_by_country": {
     "in": [
       {
@@ -7906,11 +7906,11 @@
         "open_postings": 120
       },
       {
-        "Company": "Cisco",
+        "Company": "Weekday AI",
         "open_postings": 114
       },
       {
-        "Company": "Weekday AI",
+        "Company": "Cisco",
         "open_postings": 114
       },
       {
@@ -8022,11 +8022,11 @@
         "open_postings": 154
       },
       {
-        "Company": "Google",
+        "Company": "Spotify",
         "open_postings": 153
       },
       {
-        "Company": "Spotify",
+        "Company": "Google",
         "open_postings": 153
       },
       {
